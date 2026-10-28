@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Simulasi Jaringan — Kelas X</title>
+<style>
+:root {
+  --c-navy: #12233f;
+  --c-navy-deep: #0d1a2e;
+  --c-navy-soft: #1b3357;
+  --c-teal: #0f8b8d;
+  --c-teal-dark: #0a6a6c;
+  --c-teal-soft: #e2f2f1;
+  --c-paper: #fbf9f3;
+  --c-paper-deep: #efece5;
+  --c-card: #ffffff;
+  --c-ink: #1f2430;
+  --c-muted: #6b7280;
+  --c-line: #dcd5c7;
+  --c-line-soft: #e9e4d9;
+  --c-ok: #1f9d55;
+  --c-ok-soft: #e6f6ec;
+  --c-bad: #cf4444;
+  --c-bad-soft: #fbeaea;
+  --c-warn: #c98216;
+  --c-warn-soft: #fdf1dc;
+  --c-amber: #f2b544;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(18, 35, 63, .06), 0 5px 16px rgba(18, 35, 63, .06);
+  --shadow-md: 0 12px 34px rgba(18, 35, 63, .18);
+  --font-sans: 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  min-width: 1000px;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--c-ink);
+  background: var(--c-paper-deep);
+}
+
+button, input, select { font: inherit; }
+button { color: inherit; }
+[hidden] { display: none !important; }
+::selection { background: rgba(15, 139, 141, .22); }
+
+.app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) 32px;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* === TOOLBAR === */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 16px;
+  min-height: 66px;
+  color: var(--c-paper);
+  background: linear-gradient(180deg, #16305a 0%, var(--c-navy) 72%);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .12);
+  z-index: 5;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; min-width: 208px; }
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--c-teal);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22), 0 6px 16px rgba(0, 0, 0, .22);
+}
+
+.brand-mark svg { width: 31px; height: 31px; }
+
+.brand h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(251, 249, 243, .58);
+  white-space: nowrap;
+}
+
+.tool-group {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+
+.tool-btn {
+  width: 36px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(251, 249, 243, .74);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.tool-btn svg { width: 18px; height: 18px; }
+.tool-btn:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+
+.tool-btn.active {
+  background: var(--c-teal);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(15, 139, 141, .45);
+}
+
+.actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 16px; height: 16px; flex: none; }
+.btn.primary { background: var(--c-teal); color: #fff; box-shadow: 0 3px 10px rgba(15, 139, 141, .3); }
+.btn.primary:hover { background: var(--c-teal-dark); }
+.btn.accent { background: var(--c-amber); color: #23304a; box-shadow: 0 3px 10px rgba(242, 181, 68, .28); }
+.btn.accent:hover { background: #f6c25f; }
+.btn.ghost { color: rgba(251, 249, 243, .82); border-color: rgba(255, 255, 255, .22); background: rgba(255, 255, 255, .04); }
+.btn.ghost:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.btn.teal { background: var(--c-teal); color: #fff; }
+.btn.teal:hover { background: var(--c-teal-dark); }
+.btn.amber { background: var(--c-amber); color: #23304a; }
+.btn.amber:hover { background: #f6c25f; }
+.btn.danger { background: var(--c-bad-soft); color: #9f2f2f; border-color: #efc4c4; }
+.btn.danger:hover { background: #f6dada; }
+.btn.small { height: 32px; padding: 0 10px; font-size: 11.5px; border-radius: 8px; }
+.btn.wide { width: 100%; }
+
+.scenario-select {
+  height: 36px;
+  max-width: 168px;
+  padding: 0 30px 0 12px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background-color: rgba(255, 255, 255, .06);
+  color: var(--c-paper);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.scenario-select option { color: var(--c-ink); background: #fff; }
+
+.scenario-select:focus-visible,
+.btn:focus-visible,
+.tool-btn:focus-visible,
+.tab:focus-visible,
+.device-card:focus-visible,
+.field input:focus-visible,
+.popover-close:focus-visible {
+  outline: 2px solid #6fe0de;
+  outline-offset: 2px;
+}
+
+/* === WORKSPACE === */
+.workspace {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 292px;
+  min-height: 0;
+}
+
+/* === PALETTE === */
+.palette {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 10px 12px;
+  background: var(--c-paper);
+  border-right: 1px solid var(--c-line);
+}
+
+.palette h2 {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--c-navy);
+}
+
+.palette-hint { margin: 3px 0 10px; font-size: 10.5px; color: var(--c-muted); }
+
+.palette-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 2px 6px;
+}
+
+.device-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 5px 7px;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  background: var(--c-card);
+  cursor: grab;
+  user-select: none;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+
+.device-card:hover {
+  border-color: var(--c-teal);
+  box-shadow: 0 4px 12px rgba(15, 139, 141, .13);
+  transform: translateY(-1px);
+}
+
+.device-card:active { cursor: grabbing; }
+.device-card.dragging { opacity: .45; }
+.device-card svg { width: 34px; height: 34px; pointer-events: none; }
+
+.device-card span {
+  font-size: 10.5px;
+  font-weight: 750;
+  color: var(--c-navy);
+  text-align: center;
+  line-height: 1.15;
+  pointer-events: none;
+}
+/* === CANVAS === */
+.canvas-wrap {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-paper-deep);
+}
+
+#canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  user-select: none;
+}
+
+#canvas text { user-select: none; }
+#canvas.tool-link { cursor: crosshair; }
+#canvas.tool-delete { cursor: crosshair; }
+#canvas.pan-ready { cursor: grab; }
+#canvas.panning { cursor: grabbing; }
+
+.device { cursor: grab; }
+.device:active { cursor: grabbing; }
+
+#canvas.tool-link .device,
+#canvas.tool-delete .device,
+#canvas.tool-link .link,
+#canvas.tool-delete .link { cursor: crosshair; }
+
+.device-hit { fill: transparent; pointer-events: all; }
+
+.device-tile {
+  fill: var(--c-card);
+  stroke: #d8d2c4;
+  stroke-width: 1.6;
+  filter: drop-shadow(0 3px 4px rgba(18, 35, 63, .09));
+  transition: stroke .15s ease, fill .15s ease;
+}
+
+.device:hover .device-tile { stroke: var(--c-teal); }
+.device.selected .device-tile { stroke: var(--c-teal); stroke-width: 2; }
+.device.on-path .device-tile { fill: #fbfffe; stroke: #8ecfcd; }
+
+.device-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  fill: var(--c-navy);
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(239, 236, 229, .85);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.ip-chip rect { fill: #fff; stroke: #d5e3e1; stroke-width: 1; }
+
+.ip-chip text {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: #3a5a5b;
+  pointer-events: none;
+}
+
+.sel-ring {
+  fill: none;
+  stroke: var(--c-teal);
+  stroke-width: 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .12s ease;
+}
+
+.sel-ring.show { opacity: 1; }
+
+.pending-ring {
+  fill: rgba(201, 130, 22, .08);
+  stroke: var(--c-warn);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pending-ring.show { opacity: 1; }
+
+.hop-ring {
+  fill: none;
+  stroke: var(--c-teal);
+  stroke-width: 2.5;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hop-ring.show {
+  opacity: 1;
+  animation: hopPulse 1s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes hopPulse {
+  0% { opacity: .8; transform: scale(.96); }
+  70% { opacity: 0; transform: scale(1.24); }
+  100% { opacity: 0; transform: scale(1.24); }
+}
+
+.badge circle { stroke: #fff; stroke-width: 2; }
+.badge text {
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 900;
+  fill: #fff;
+  text-anchor: middle;
+}
+.badge-s circle { fill: var(--c-teal); }
+.badge-d circle { fill: var(--c-warn); }
+
+.link-hit { fill: none; stroke: transparent; stroke-width: 18; pointer-events: stroke; }
+
+.link-line {
+  fill: none;
+  stroke: #4b5563;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.link.wireless .link-line {
+  stroke: var(--c-teal);
+  stroke-width: 2.4;
+  stroke-dasharray: 7 7;
+}
+
+.link.selected .link-line {
+  stroke: var(--c-warn);
+  stroke-width: 4;
+  stroke-dasharray: none;
+}
+
+.wifi-marker { pointer-events: none; }
+.wifi-marker circle { fill: var(--c-paper); stroke: #cfd8d6; stroke-width: 1.2; }
+.wifi-marker path { fill: none; stroke: var(--c-teal); stroke-width: 1.6; stroke-linecap: round; }
+.wifi-marker .dot { fill: var(--c-teal); stroke: none; }
+
+.packet-halo { fill: rgba(15, 139, 141, .2); animation: packetPulse .9s ease-out infinite; }
+.packet-dot { fill: var(--c-teal); stroke: #fff; stroke-width: 2; filter: drop-shadow(0 2px 4px rgba(15, 139, 141, .55)); }
+
+@keyframes packetPulse {
+  0% { opacity: .85; r: 10; }
+  80%, 100% { opacity: 0; r: 19; }
+}
+
+.canvas-hint {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  max-width: min(460px, calc(100% - 110px));
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(18, 35, 63, .86);
+  color: rgba(251, 249, 243, .92);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+  box-shadow: 0 4px 14px rgba(18, 35, 63, .16);
+  pointer-events: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zoom-indicator {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 5px 9px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: rgba(251, 249, 243, .9);
+  color: var(--c-muted);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  pointer-events: none;
+}
+
+.canvas-wrap.drop-target::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 2px dashed var(--c-teal);
+  border-radius: 18px;
+  background: rgba(15, 139, 141, .045);
+  pointer-events: none;
+}
+
+/* === POPOVER === */
+.device-popover {
+  position: absolute;
+  z-index: 20;
+  width: 254px;
+  padding: 13px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-card);
+  box-shadow: var(--shadow-md);
+}
+
+.pop-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.pop-head strong { font-size: 12.5px; letter-spacing: .01em; }
+
+.popover-close {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--c-paper-deep);
+  color: var(--c-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.popover-close:hover { background: #e5e0d5; color: var(--c-ink); }
+
+.field { display: block; margin-bottom: 9px; }
+
+.field span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--c-muted);
+  letter-spacing: .02em;
+}
+
+.field input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--c-ink);
+  font-size: 12.5px;
+  font-weight: 650;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--c-teal);
+  box-shadow: 0 0 0 3px rgba(15, 139, 141, .13);
+}
+
+.field input:disabled { background: #f2f0eb; color: #999; cursor: not-allowed; }
+.pop-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 3px; }
+.pop-hint { font-size: 9.5px; color: var(--c-muted); line-height: 1.2; }
+/* === PANEL === */
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--c-paper);
+  border-left: 1px solid var(--c-line);
+}
+
+.tabs { display: flex; gap: 2px; padding: 9px 10px 0; border-bottom: 1px solid var(--c-line); }
+
+.tab {
+  flex: 1;
+  padding: 9px 4px 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--c-muted);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+
+.tab:hover { color: var(--c-navy); }
+.tab.active { color: var(--c-teal-dark); border-bottom-color: var(--c-teal); }
+
+.panel-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.panel-placeholder { padding: 6px 2px; }
+
+.empty-badge {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: var(--c-teal-soft);
+  color: var(--c-teal-dark);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.empty-badge svg { width: 26px; height: 26px; }
+
+.panel-placeholder h3,
+.validation-head h3 {
+  margin: 0 0 5px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.15;
+  color: var(--c-navy);
+}
+
+.panel-placeholder > p { margin: 0 0 12px; font-size: 11.5px; line-height: 1.55; color: var(--c-muted); }
+
+.steps { display: flex; flex-direction: column; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+
+.steps li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 9px;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+  background: var(--c-card);
+  font-size: 11px;
+  line-height: 1.45;
+  color: #4b5563;
+}
+
+.steps li > span {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--c-navy);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 900;
+}
+
+.steps b { color: var(--c-navy); }
+.mini-tip { margin: 0; font-size: 10px; line-height: 1.5; color: var(--c-muted); }
+
+kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--c-line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: #fff;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--c-navy);
+}
+
+.de-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+.de-icon {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.de-icon svg { width: 34px; height: 34px; }
+.de-title { font-size: 14px; font-weight: 850; color: var(--c-navy); line-height: 1.15; overflow-wrap: anywhere; }
+
+.de-kind {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--c-teal-dark);
+}
+
+.field-note {
+  margin: -3px 0 11px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: var(--c-teal-soft);
+  font-size: 10px;
+  line-height: 1.4;
+  color: #3f6666;
+}
+
+.endpoint-box {
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+  background: var(--c-card);
+}
+
+.endpoint-box > p {
+  margin: 0 0 7px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.endpoint-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+.peer-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin: 4px 0 12px;
+  font-size: 10.5px;
+  color: var(--c-muted);
+}
+
+.peer-list > span:first-child { width: 100%; font-weight: 750; color: #4b5563; }
+.peer-list em { font-size: 10.5px; }
+
+.peer-chip {
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+}
+
+.link-route {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--c-navy);
+}
+
+.route-arrow { color: var(--c-teal); font-weight: 900; }
+
+.tag {
+  display: inline-block;
+  margin-left: 3px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--c-warn-soft);
+  color: #9a6411;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+
+.score-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 9px;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  background: var(--c-card);
+}
+
+.score-card.ok { border-color: #b9e3ca; background: var(--c-ok-soft); }
+.score-card.bad { border-color: #f0c5c5; background: var(--c-bad-soft); }
+
+.score-num { font-family: var(--font-display); font-size: 30px; line-height: 1; color: var(--c-navy); white-space: nowrap; }
+.score-num span { font-size: 16px; color: var(--c-muted); }
+.score-copy strong { display: block; font-size: 12px; color: var(--c-navy); margin-bottom: 2px; }
+.score-copy p { margin: 0; font-size: 10.5px; line-height: 1.4; color: var(--c-muted); }
+
+.progress { height: 6px; margin-bottom: 15px; overflow: hidden; border-radius: 999px; background: #e6e1d6; }
+.progress span { display: block; height: 100%; border-radius: inherit; background: var(--c-teal); transition: width .35s ease; }
+.progress span.bad { background: var(--c-bad); }
+
+.rule-group-title {
+  margin: 0 0 7px;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.rule {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+  background: var(--c-card);
+}
+
+.rule.pass { border-color: #d3ecdc; }
+.rule.fail { border-color: #f2cccc; background: #fffafa; }
+.rule.skip { opacity: .7; }
+
+.rule-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.rule-icon svg { width: 12px; height: 12px; }
+.rule.pass .rule-icon { background: var(--c-ok); }
+.rule.fail .rule-icon { background: var(--c-bad); }
+.rule.skip .rule-icon { background: #b8b2a6; }
+.rule-body { min-width: 0; }
+.rule-title { font-size: 10.5px; font-weight: 800; line-height: 1.35; color: var(--c-navy); }
+.rule-msg { margin-top: 2px; font-size: 10px; line-height: 1.4; color: var(--c-muted); }
+.opt-note { margin: 10px 0 0; font-size: 9.5px; line-height: 1.45; color: var(--c-muted); }
+
+.endpoint-status { display: flex; align-items: center; gap: 6px; margin: 12px 0 14px; }
+
+.ep-card {
+  flex: 1;
+  min-width: 0;
+  padding: 8px;
+  border: 1px dashed var(--c-line);
+  border-radius: 9px;
+  background: #fff;
+}
+
+.ep-card.set { border-style: solid; border-color: #b9d9d7; background: var(--c-teal-soft); }
+
+.ep-card span {
+  display: block;
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 2px;
+}
+
+.ep-card strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--c-navy);
+}
+
+.sim-route { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-bottom: 10px; }
+
+.route-chip {
+  padding: 3px 7px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--c-navy);
+}
+
+.sim-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.sim-live { color: var(--c-teal-dark); }
+
+.narr {
+  display: flex;
+  gap: 9px;
+  padding: 9px;
+  margin-top: 7px;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+  background: var(--c-card);
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.narr.active { border-color: var(--c-teal); background: var(--c-teal-soft); }
+.narr.done { border-color: #d3ecdc; }
+
+.narr-num {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8e3d9;
+  color: #6b6456;
+  font-size: 9.5px;
+  font-weight: 900;
+}
+
+.narr.done .narr-num { background: var(--c-ok); color: #fff; }
+.narr.active .narr-num { background: var(--c-teal); color: #fff; }
+.narr-title { font-size: 10.5px; font-weight: 850; color: var(--c-navy); line-height: 1.3; }
+.narr-title span { color: var(--c-teal); }
+.narr-body p { margin: 2px 0 0; font-size: 10px; line-height: 1.5; color: var(--c-muted); }
+
+.sim-success {
+  margin-top: 12px;
+  padding: 11px;
+  border: 1px solid #b9e3ca;
+  border-radius: 10px;
+  background: var(--c-ok-soft);
+}
+
+.sim-success strong { display: block; font-size: 11.5px; color: #167545; margin-bottom: 2px; }
+.sim-success p { margin: 0; font-size: 10.5px; line-height: 1.5; color: #2f6c4c; }
+
+.sim-error {
+  padding: 11px;
+  border: 1px solid #f0c5c5;
+  border-radius: 10px;
+  background: var(--c-bad-soft);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #8f2f2f;
+}
+
+.panel-actions { display: flex; gap: 6px; margin-top: 12px; }
+
+/* === STATUS BAR === */
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 16px;
+  background: var(--c-navy-deep);
+  color: rgba(251, 249, 243, .68);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.status-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+#statusInfo { white-space: nowrap; }
+.status-sep { opacity: .28; }
+#statusHint { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .09);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+.status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: #97a1b2; }
+.status-pill.ok { background: rgba(55, 201, 122, .16); color: #8ff0b9; }
+.status-pill.ok .dot { background: #37c97a; }
+.status-pill.bad { background: rgba(255, 107, 107, .16); color: #ffb3b3; }
+.status-pill.bad .dot { background: #ff6b6b; }
+
+/* === TOAST === */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 52px;
+  z-index: 50;
+  max-width: min(540px, calc(100vw - 40px));
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: var(--c-navy);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  box-shadow: var(--shadow-md);
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.success { background: #167545; }
+.toast.error { background: #9f2f2f; }
+
+.mobile-banner {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 9px 16px;
+  background: var(--c-amber);
+  color: #3a2a04;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+
+@media (max-width: 1220px) {
+  .brand p { display: none; }
+  .brand { min-width: 188px; }
+  .actions { gap: 6px; }
+  .btn { padding: 0 10px; }
+  .scenario-select { max-width: 148px; }
+  #statusHint { display: none; }
+  .status-sep { display: none; }
+}
+
+@media (max-width: 1080px) {
+  .toolbar { gap: 9px; padding-left: 12px; padding-right: 12px; }
+  .brand { min-width: 170px; }
+  .brand h1 { font-size: 18px; }
+  .tool-btn { width: 32px; }
+  .workspace { grid-template-columns: 140px minmax(0, 1fr) 268px; }
+  .panel-body { padding: 11px; }
+  .btn { font-size: 11.5px; gap: 5px; }
+  .btn svg { width: 14px; height: 14px; }
+}
+
+@media (max-width: 767px) {
+  .mobile-banner { display: block; }
+  body { padding-top: 36px; }
+}
+</style>
+</head>
+<body>
+<div class="mobile-banner">Buka di layar yang lebih lebar untuk pengalaman terbaik.</div>
+
+<div class="app">
+  <header class="toolbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M8 30h24M20 30V18M20 18l-8-7M20 18l8-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="8" cy="30" r="3.2" fill="#fff"/>
+          <circle cx="20" cy="30" r="3.2" fill="#fff"/>
+          <circle cx="32" cy="30" r="3.2" fill="#fff"/>
+          <circle cx="12" cy="11" r="3.2" fill="#fff"/>
+          <circle cx="28" cy="11" r="3.2" fill="#fff"/>
+        </svg>
+      </span>
+      <div>
+        <h1>Simulasi Jaringan</h1>
+        <p>Kelas X — Lab Komputer</p>
+      </div>
+    </div>
+
+    <div class="tool-group" role="group" aria-label="Alat kanvas">
+      <button class="tool-btn active" data-tool="select" aria-label="Alat pilih" aria-pressed="true" title="Pilih (V)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 8-6 1.6L10 19z"/></svg>
+      </button>
+      <button class="tool-btn" data-tool="link-wired" aria-label="Alat kabel" aria-pressed="false" title="Kabel (L)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h4v8H4zM16 8h4v8h-4zM8 12h8"/><path d="M6 8V5M18 16v3"/></svg>
+      </button>
+      <button class="tool-btn" data-tool="link-wireless" aria-label="Alat koneksi nirkabel" aria-pressed="false" title="Nirkabel (W)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3.5 9a13 13 0 0 1 17 0M7 12.5a8 8 0 0 1 10 0M10.2 16a3.6 3.6 0 0 1 3.6 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <button class="tool-btn" data-tool="delete" aria-label="Alat hapus" aria-pressed="false" title="Hapus (D)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></svg>
+      </button>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="btnValidate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Validasi Jaringan
+      </button>
+      <button class="btn accent" id="btnSend">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></svg>
+        Kirim Paket
+      </button>
+      <button class="btn ghost" id="btnReset" title="Hapus semua perangkat dan koneksi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg>
+        Reset
+      </button>
+      <select class="scenario-select" id="scenarioSelect" aria-label="Muat skenario">
+        <option value="">Muat Skenario</option>
+        <option value="lab">Lab Komputer Sekolah</option>
+        <option value="home">Jaringan Rumah Sederhana</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="palette" aria-label="Palet perangkat">
+      <h2>Perangkat</h2>
+      <p class="palette-hint">Seret ke kanvas</p>
+      <div class="palette-list" id="paletteList"></div>
+    </aside>
+
+    <section class="canvas-wrap" id="canvasWrap" aria-label="Kanvas jaringan">
+      <svg id="canvas" role="group" aria-label="Kanvas simulasi jaringan">
+        <defs>
+          <pattern id="dotGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1.15" fill="#c7c1b3" opacity=".55"/>
+          </pattern>
+        </defs>
+        <g id="viewport">
+          <rect x="-20000" y="-20000" width="40000" height="40000" fill="url(#dotGrid)"/>
+          <g id="linkLayer"></g>
+          <g id="deviceLayer"></g>
+          <g id="packetLayer"></g>
+        </g>
+      </svg>
+
+      <div class="canvas-hint" id="canvasHint">Seret perangkat dari palet kiri untuk memulai.</div>
+      <div class="zoom-indicator" id="zoomIndicator">100%</div>
+
+      <div class="device-popover" id="popover" role="dialog" aria-label="Edit perangkat" hidden>
+        <div class="pop-head">
+          <strong>Edit Perangkat</strong>
+          <button class="popover-close" id="popClose" type="button" aria-label="Tutup editor">×</button>
+        </div>
+        <label class="field">
+          <span>Nama perangkat</span>
+          <input id="popName" type="text" maxlength="24" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Alamat IP</span>
+          <input id="popIp" type="text" placeholder="192.168.1.10" autocomplete="off">
+        </label>
+        <div class="pop-actions">
+          <span class="pop-hint">Perubahan langsung<br>tersimpan di kanvas.</span>
+          <button class="btn small teal" id="popDone" type="button">Selesai</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Panel informasi">
+      <div class="tabs" role="tablist" aria-label="Panel kanan">
+        <button class="tab active" role="tab" id="tabInfo" data-tab="info" aria-selected="true" aria-controls="panelBody">Info</button>
+        <button class="tab" role="tab" id="tabValidation" data-tab="validation" aria-selected="false" aria-controls="panelBody">Validasi</button>
+        <button class="tab" role="tab" id="tabSimulation" data-tab="simulation" aria-selected="false" aria-controls="panelBody">Simulasi</button>
+      </div>
+      <div class="panel-body" id="panelBody" role="tabpanel" aria-labelledby="tabInfo"></div>
+    </aside>
+  </main>
+
+  <footer class="statusbar">
+    <div class="status-left">
+      <span id="statusInfo">Perangkat: 0 • Koneksi: 0 • Alat: Pilih</span>
+      <span class="status-sep">|</span>
+      <span id="statusHint">Klik dua kali perangkat untuk mengubah nama &amp; IP.</span>
+    </div>
+    <div class="status-pill" id="statusPill"><span class="dot"></span>Siap</div>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+// === CONSTANTS (devices, scenarios, strings) ===
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+const STRINGS = {
+  appTitle: 'Simulasi Jaringan',
+  subtitle: 'Kelas X — Lab Komputer',
+  validate: 'Validasi Jaringan',
+  sendPacket: 'Kirim Paket',
+  reset: 'Reset Canvas',
+  loadScenario: 'Muat Skenario',
+  packetSuccess: 'Paket berhasil sampai ke {dest}! Melewati {n} perangkat.',
+  noPath: 'Tidak ada jalur antara kedua perangkat ini. Periksa koneksi kabelmu.',
+  tipDefault: 'Seret perangkat ke canvas untuk memulai.',
+  selectSource: 'Pilih perangkat sumber terlebih dahulu.',
+  selectDest: 'Sekarang pilih perangkat tujuan.',
+  deviceLabels: {
+    router: 'Router',
+    switch: 'Switch',
+    ap: 'Access Point',
+    server: 'Server',
+    desktop: 'Komputer',
+    laptop: 'Laptop',
+    phone: 'HP / Ponsel',
+    internet: 'Internet'
+  }
+};
+
+const DEVICE_ICONS = {
+  router: `
+    <circle cx="24" cy="24" r="15" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <path d="M24 12v6M24 30v6M12 24h6M30 24h6" stroke="#12233f" stroke-width="2" stroke-linecap="round"/>
+    <path d="M22 14l2-2 2 2M22 34l2 2 2-2M14 22l-2 2 2 2M34 22l2 2-2 2" fill="none" stroke="#12233f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="24" cy="24" r="3.2" fill="#12233f"/>
+  `,
+  switch: `
+    <rect x="6" y="15" width="36" height="18" rx="3.5" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <path d="M13 24h9M26 24h9" stroke="#12233f" stroke-width="2" stroke-linecap="round"/>
+    <path d="M16 21l-3 3 3 3M32 21l3 3-3 3" fill="none" stroke="#12233f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="13" cy="29" r="1.3" fill="#0f8b8d"/>
+    <circle cx="18" cy="29" r="1.3" fill="#0f8b8d"/>
+    <circle cx="30" cy="29" r="1.3" fill="#0f8b8d"/>
+    <circle cx="35" cy="29" r="1.3" fill="#0f8b8d"/>
+  `,
+  ap: `
+    <rect x="10" y="30" width="28" height="9" rx="2.5" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <circle cx="17" cy="34.5" r="1.3" fill="#0f8b8d"/>
+    <circle cx="22" cy="34.5" r="1.3" fill="#0f8b8d"/>
+    <circle cx="30" cy="34.5" r="1.3" fill="#12233f"/>
+    <path d="M17 26c2-1.8 4.5-2.8 7-2.8s5 .9 7 2.8" fill="none" stroke="#12233f" stroke-width="2" stroke-linecap="round"/>
+    <path d="M13 21c3.2-2.8 6.9-4.2 11-4.2s7.8 1.4 11 4.2" fill="none" stroke="#12233f" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+    <path d="M24 30v-4" stroke="#0f8b8d" stroke-width="2"/>
+  `,
+  server: `
+    <rect x="13" y="5" width="22" height="38" rx="3" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <path d="M18 13h8M18 21h8M18 29h8M18 37h5" stroke="#12233f" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="31" cy="13" r="1.3" fill="#0f8b8d"/>
+    <circle cx="31" cy="21" r="1.3" fill="#0f8b8d"/>
+  `,
+  desktop: `
+    <rect x="7" y="9" width="34" height="23" rx="2.5" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <rect x="11" y="13" width="26" height="15" rx="1.2" fill="#fff" stroke="#b9d9d8" stroke-width="1.5"/>
+    <path d="M24 32v6M17 39h14" stroke="#12233f" stroke-width="2.4" stroke-linecap="round"/>
+  `,
+  laptop: `
+    <rect x="9" y="10" width="30" height="21" rx="2.5" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <rect x="13" y="14" width="22" height="13" rx="1.2" fill="#fff" stroke="#b9d9d8" stroke-width="1.5"/>
+    <path d="M6 34h36l-4 5H10z" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M20 36.5h8" stroke="#b9d9d8" stroke-width="1.5" stroke-linecap="round"/>
+  `,
+  phone: `
+    <rect x="16" y="5" width="16" height="38" rx="4" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2"/>
+    <path d="M22 9h4" stroke="#12233f" stroke-width="2" stroke-linecap="round"/>
+    <rect x="19.5" y="13" width="9" height="22" rx="1.5" fill="#fff" stroke="#b9d9d8" stroke-width="1.5"/>
+    <circle cx="24" cy="39" r="1.6" fill="#12233f"/>
+  `,
+  internet: `
+    <path d="M14.5 33.5a7.5 7.5 0 0 1-1-14.9A10.5 10.5 0 0 1 34 19.5a7 7 0 0 1 1.5 14H14.5z" fill="#e6f4f4" stroke="#0f8b8d" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="24" cy="24.5" r="5" fill="none" stroke="#12233f" stroke-width="1.8"/>
+    <path d="M19 24.5h10M24 19.5c2 2.5 2 7.5 0 10M24 19.5c-2 2.5-2 7.5 0 10" fill="none" stroke="#12233f" stroke-width="1.4" stroke-linecap="round"/>
+  `
+};
+
+const DEVICE_KINDS = ['router', 'switch', 'ap', 'server', 'desktop', 'laptop', 'phone', 'internet'];
+const ENDPOINT_KINDS = ['desktop', 'laptop', 'phone'];
+
+const SCENARIOS = [
+  {
+    id: 'lab',
+    name: 'Lab Komputer Sekolah',
+    devices: [
+      { id: 's1-internet', kind: 'internet', label: 'Internet', ip: '', x: 520, y: 80 },
+      { id: 's1-router', kind: 'router', label: 'Router Sekolah', ip: '192.168.1.1', x: 400, y: 170 },
+      { id: 's1-switch', kind: 'switch', label: 'Switch Lab', ip: '192.168.1.2', x: 220, y: 280 },
+      { id: 's1-ap', kind: 'ap', label: 'AP Wi-Fi', ip: '192.168.1.3', x: 430, y: 350 },
+      { id: 's1-pc1', kind: 'desktop', label: 'PC-01', ip: '192.168.1.10', x: 80, y: 100 },
+      { id: 's1-pc2', kind: 'desktop', label: 'PC-02', ip: '192.168.1.11', x: 80, y: 190 },
+      { id: 's1-pc3', kind: 'desktop', label: 'PC-03', ip: '192.168.1.12', x: 80, y: 280 },
+      { id: 's1-pc4', kind: 'desktop', label: 'PC-04', ip: '192.168.1.13', x: 80, y: 370 }
+    ],
+    links: [
+      { id: 's1-l1', from: 's1-pc1', to: 's1-switch', type: 'wired' },
+      { id: 's1-l2', from: 's1-pc2', to: 's1-switch', type: 'wired' },
+      { id: 's1-l3', from: 's1-pc3', to: 's1-switch', type: 'wired' },
+      { id: 's1-l4', from: 's1-pc4', to: 's1-switch', type: 'wired' },
+      { id: 's1-l5', from: 's1-switch', to: 's1-router', type: 'wired' },
+      { id: 's1-l6', from: 's1-router', to: 's1-internet', type: 'wired' },
+      { id: 's1-l7', from: 's1-ap', to: 's1-switch', type: 'wired' }
+    ]
+  },
+  {
+    id: 'home',
+    name: 'Jaringan Rumah Sederhana',
+    devices: [
+      { id: 's2-internet', kind: 'internet', label: 'Internet', ip: '', x: 470, y: 90 },
+      { id: 's2-router', kind: 'router', label: 'Router Rumah', ip: '192.168.1.1', x: 300, y: 200 },
+      { id: 's2-ap', kind: 'ap', label: 'AP Wi-Fi', ip: '192.168.1.2', x: 450, y: 320 },
+      { id: 's2-laptop', kind: 'laptop', label: 'Laptop Ayah', ip: '192.168.1.10', x: 170, y: 360 },
+      { id: 's2-phone', kind: 'phone', label: 'HP Kakak', ip: '192.168.1.11', x: 300, y: 440 }
+    ],
+    links: [
+      { id: 's2-l1', from: 's2-router', to: 's2-internet', type: 'wired' },
+      { id: 's2-l2', from: 's2-router', to: 's2-ap', type: 'wired' },
+      { id: 's2-l3', from: 's2-laptop', to: 's2-ap', type: 'wireless' },
+      { id: 's2-l4', from: 's2-phone', to: 's2-ap', type: 'wireless' }
+    ]
+  }
+];
+// === VALIDATION RULES ===
+const RULES = [
+  { id: 'R01', label: 'Minimal 2 perangkat', optional: false, failMessage: 'Tambahkan minimal dua perangkat ke kanvas.', check: (devices) => devices.length >= 2 },
+  { id: 'R02', label: 'Semua perangkat terhubung', optional: false, failMessage: 'Ada perangkat yang belum terhubung ke jaringan.', check: (devices, links) => devices.length > 0 && devices.every((d) => links.some((l) => l.from === d.id || l.to === d.id)) },
+  { id: 'R03', label: 'Ada router', optional: false, failMessage: 'Tambahkan satu Router sebagai penghubung jaringan.', check: (devices) => devices.some((d) => d.kind === 'router') },
+  { id: 'R04', label: 'Ada switch atau access point', optional: false, failMessage: 'Tambahkan Switch atau Access Point untuk menghubungkan perangkat.', check: (devices) => devices.some((d) => d.kind === 'switch' || d.kind === 'ap') },
+  { id: 'R05', label: 'PC/laptop tersambung ke switch atau AP', optional: false, failMessage: 'Setiap komputer, laptop, dan HP harus terhubung ke Switch atau Access Point.', check: (devices, links) => {
+      const byId = new Map(devices.map((d) => [d.id, d]));
+      const endpoints = devices.filter((d) => ENDPOINT_KINDS.includes(d.kind));
+      return endpoints.length > 0 && endpoints.every((d) => links.some((l) => {
+        const other = l.from === d.id ? byId.get(l.to) : l.to === d.id ? byId.get(l.from) : null;
+        return other && (other.kind === 'switch' || other.kind === 'ap');
+      }));
+    } },
+  { id: 'R06', label: 'Router terhubung ke internet', optional: false, failMessage: 'Hubungkan Router ke perangkat Internet.', check: (devices, links) => {
+      const byId = new Map(devices.map((d) => [d.id, d]));
+      return devices.filter((d) => d.kind === 'router').some((r) => links.some((l) => {
+        const other = l.from === r.id ? byId.get(l.to) : l.to === r.id ? byId.get(l.from) : null;
+        return other && other.kind === 'internet';
+      }));
+    } },
+  { id: 'R07', label: 'Switch/AP terhubung ke router', optional: false, failMessage: 'Hubungkan Switch atau Access Point ke Router.', check: (devices, links) => {
+      const byId = new Map(devices.map((d) => [d.id, d]));
+      return devices.filter((d) => d.kind === 'switch' || d.kind === 'ap').some((s) => links.some((l) => {
+        const other = l.from === s.id ? byId.get(l.to) : l.to === s.id ? byId.get(l.from) : null;
+        return other && other.kind === 'router';
+      }));
+    } },
+  { id: 'R08', label: 'IP address diisi semua', optional: true, failMessage: 'Isi alamat IP untuk semua perangkat (kecuali Internet).', check: (devices) => devices.filter((d) => d.kind !== 'internet').every((d) => d.ip.trim() !== '') },
+  { id: 'R09', label: 'Tidak ada IP duplikat', optional: true, failMessage: 'Ada alamat IP yang dipakai lebih dari satu perangkat.', check: (devices) => {
+      const seen = new Set();
+      for (const d of devices) {
+        const ip = d.ip.trim();
+        if (!ip) continue;
+        if (seen.has(ip)) return false;
+        seen.add(ip);
+      }
+      return true;
+    } }
+];
+
+// === DATA MODEL (Device, Link, AppState) ===
+const state = {
+  devices: [],
+  links: [],
+  tool: 'select',
+  selectedDeviceId: null,
+  selectedLinkId: null,
+  pendingLinkId: null,
+  simSource: null,
+  simDest: null,
+  validation: null,
+  sim: null,
+  simToken: 0,
+  activeTab: 'info',
+  pan: { x: 0, y: 0 },
+  zoom: 1,
+  popoverDeviceId: null,
+  drag: null
+};
+
+let uidCounter = 0;
+let spaceDown = false;
+let toastTimer = 0;
+
+const el = {
+  canvas: document.getElementById('canvas'),
+  canvasWrap: document.getElementById('canvasWrap'),
+  viewport: document.getElementById('viewport'),
+  linkLayer: document.getElementById('linkLayer'),
+  deviceLayer: document.getElementById('deviceLayer'),
+  packetLayer: document.getElementById('packetLayer'),
+  paletteList: document.getElementById('paletteList'),
+  panelBody: document.getElementById('panelBody'),
+  tabInfo: document.getElementById('tabInfo'),
+  tabValidation: document.getElementById('tabValidation'),
+  tabSimulation: document.getElementById('tabSimulation'),
+  statusInfo: document.getElementById('statusInfo'),
+  statusHint: document.getElementById('statusHint'),
+  statusPill: document.getElementById('statusPill'),
+  canvasHint: document.getElementById('canvasHint'),
+  zoomIndicator: document.getElementById('zoomIndicator'),
+  popover: document.getElementById('popover'),
+  popName: document.getElementById('popName'),
+  popIp: document.getElementById('popIp'),
+  popClose: document.getElementById('popClose'),
+  popDone: document.getElementById('popDone'),
+  btnValidate: document.getElementById('btnValidate'),
+  btnSend: document.getElementById('btnSend'),
+  btnReset: document.getElementById('btnReset'),
+  scenarioSelect: document.getElementById('scenarioSelect'),
+  toast: document.getElementById('toast')
+};
+
+// === HELPERS ===
+function esc(value) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  return String(value ?? '').replace(/[&<>"']/g, (ch) => map[ch]);
+}
+
+function truncate(value, max) {
+  const text = String(value ?? '');
+  return text.length > max ? text.slice(0, max - 1) + '…' : text;
+}
+
+function uid(prefix) {
+  uidCounter += 1;
+  return prefix + '-' + Date.now().toString(36) + '-' + uidCounter;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getDevice(id) {
+  return state.devices.find((d) => d.id === id) || null;
+}
+
+function getLink(id) {
+  return state.links.find((l) => l.id === id) || null;
+}
+
+function findLinkBetween(aId, bId) {
+  return state.links.find((l) => (l.from === aId && l.to === bId) || (l.from === bId && l.to === aId)) || null;
+}
+
+function iconSVG(kind, className) {
+  return '<svg class="' + (className || '') + '" viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + DEVICE_ICONS[kind] + '</svg>';
+}
+
+function toolName() {
+  return { select: 'Pilih', 'link-wired': 'Kabel', 'link-wireless': 'Nirkabel', delete: 'Hapus' }[state.tool] || 'Pilih';
+}
+
+function showToast(message, type) {
+  el.toast.textContent = message;
+  el.toast.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.toast.className = 'toast';
+  }, 3400);
+}
+
+// === VALIDATION ENGINE ===
+function runValidation() {
+  const devices = state.devices;
+  const links = state.links;
+  const optionalActive = devices.some((d) => d.kind !== 'internet' && d.ip.trim() !== '');
+  const items = RULES.map((rule) => {
+    const skipped = rule.optional && !optionalActive;
+    return {
+      ...rule,
+      skipped,
+      passed: skipped ? null : Boolean(rule.check(devices, links))
+    };
+  });
+  const required = items.filter((r) => !r.optional);
+  const optional = items.filter((r) => r.optional);
+  const requiredPassed = required.filter((r) => r.passed).length;
+  const optionalPassed = optional.filter((r) => r.passed).length;
+  return {
+    items,
+    requiredPassed,
+    requiredTotal: required.length,
+    optionalPassed,
+    optionalTotal: optional.length,
+    optionalActive,
+    allRequiredPass: requiredPassed === required.length
+  };
+}
+// === SIMULATION ENGINE (BFS, narration) ===
+function bfsPath(startId, endId) {
+  if (startId === endId) return [startId];
+  const adjacency = new Map(state.devices.map((d) => [d.id, []]));
+  for (const link of state.links) {
+    if (adjacency.has(link.from) && adjacency.has(link.to)) {
+      adjacency.get(link.from).push(link.to);
+      adjacency.get(link.to).push(link.from);
+    }
+  }
+  const queue = [startId];
+  const previous = new Map([[startId, null]]);
+  while (queue.length) {
+    const current = queue.shift();
+    if (current === endId) break;
+    for (const next of adjacency.get(current) || []) {
+      if (!previous.has(next)) {
+        previous.set(next, current);
+        queue.push(next);
+      }
+    }
+  }
+  if (!previous.has(endId)) return null;
+  const path = [];
+  let cursor = endId;
+  while (cursor) {
+    path.push(cursor);
+    cursor = previous.get(cursor);
+  }
+  return path.reverse();
+}
+
+function narrate(from, to, linkType) {
+  if (from.kind === 'internet') return `Respons datang dari Internet ke ${to.label}.`;
+  if (to.kind === 'internet') return `${from.label} meneruskan paket ke jaringan Internet melalui ISP.`;
+  if (from.kind === 'ap' && to.kind === 'router') return `${from.label} mengirim paket ke ${to.label} melalui kabel.`;
+  if (from.kind === 'switch' && to.kind === 'router') return `${from.label} meneruskan paket ke ${to.label}.`;
+  if (from.kind === 'router' && (to.kind === 'switch' || to.kind === 'ap')) return `${from.label} meneruskan paket ke ${to.label}.`;
+  if ((from.kind === 'switch' || from.kind === 'ap') && ENDPOINT_KINDS.includes(to.kind)) return `${from.label} meneruskan paket ke ${to.label}${linkType === 'wireless' ? ' melalui Wi-Fi.' : '.'}`;
+  if (ENDPOINT_KINDS.includes(from.kind) && to.kind === 'switch') return `${from.label} mengirim paket ke ${to.label} melalui kabel Ethernet.`;
+  if (ENDPOINT_KINDS.includes(from.kind) && to.kind === 'ap') return `${from.label} mengirim paket melalui Wi-Fi ke ${to.label}.`;
+  if (linkType === 'wireless') return `${from.label} mengirim paket secara nirkabel ke ${to.label}.`;
+  return `Paket berpindah dari ${from.label} ke ${to.label}.`;
+}
+
+function buildNarrations(path) {
+  const hops = [];
+  for (let i = 0; i < path.length - 1; i += 1) {
+    const from = getDevice(path[i]);
+    const to = getDevice(path[i + 1]);
+    if (!from || !to) continue;
+    const link = findLinkBetween(from.id, to.id);
+    hops.push({
+      from,
+      to,
+      linkType: link ? link.type : 'wired',
+      text: narrate(from, to, link ? link.type : 'wired')
+    });
+  }
+  return hops;
+}
+
+// === SVG RENDERING ===
+function deviceMarkup(d) {
+  const selected = state.selectedDeviceId === d.id;
+  const pending = state.pendingLinkId === d.id;
+  const onPath = Boolean(state.sim && state.sim.path && state.sim.path.includes(d.id));
+  const currentHop = Boolean(state.sim && state.sim.hopTo === d.id);
+  const ip = d.ip.trim();
+  const label = esc(truncate(d.label || STRINGS.deviceLabels[d.kind], 19));
+  const kindLabel = esc(STRINGS.deviceLabels[d.kind]);
+  let badges = '';
+  if (state.simSource === d.id) {
+    badges += '<g class="badge badge-s" transform="translate(24 -27)"><circle r="9"/><text y="3.4">S</text></g>';
+  }
+  if (state.simDest === d.id) {
+    const y = state.simSource === d.id ? -9 : -27;
+    badges += `<g class="badge badge-d" transform="translate(24 ${y})"><circle r="9"/><text y="3.4">D</text></g>`;
+  }
+  let ipChip = '';
+  if (ip) {
+    const width = Math.max(46, Math.min(96, ip.length * 5.4 + 16));
+    ipChip = `<g class="ip-chip" transform="translate(0 47)"><rect x="${-width / 2}" y="0" width="${width}" height="16" rx="8"/><text y="11" text-anchor="middle">${esc(ip)}</text></g>`;
+  }
+  return `<g class="device${selected ? ' selected' : ''}${onPath ? ' on-path' : ''}" data-device-id="${d.id}" transform="translate(${d.x} ${d.y})">
+    <title>${esc(d.label)} — ${kindLabel}${ip ? ' — IP ' + esc(ip) : ''}</title>
+    <rect class="device-hit" x="-38" y="-40" width="76" height="108" rx="18"/>
+    <rect class="device-tile" x="-30" y="-34" width="60" height="60" rx="15"/>
+    <rect class="sel-ring${selected ? ' show' : ''}" x="-35" y="-39" width="70" height="70" rx="18"/>
+    <rect class="pending-ring${pending ? ' show' : ''}" x="-35" y="-39" width="70" height="70" rx="18"/>
+    <rect class="hop-ring${currentHop ? ' show' : ''}" x="-35" y="-39" width="70" height="70" rx="18"/>
+    <svg class="device-icon" x="-24" y="-28" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">${DEVICE_ICONS[d.kind]}</svg>
+    <text class="device-label" y="41" text-anchor="middle">${label}</text>
+    ${ipChip}${badges}
+  </g>`;
+}
+
+function linkMarkup(link) {
+  const from = getDevice(link.from);
+  const to = getDevice(link.to);
+  if (!from || !to) return '';
+  const selected = state.selectedLinkId === link.id;
+  const mx = (from.x + to.x) / 2;
+  const my = (from.y + to.y) / 2;
+  const wifi = link.type === 'wireless'
+    ? `<g class="wifi-marker" transform="translate(${mx} ${my})">
+        <circle r="11"/>
+        <path d="M-5 3 Q0 -4 5 3"/>
+        <path d="M-2.5 3 Q0 -0.5 2.5 3"/>
+        <circle class="dot" cy="3" r="1.15"/>
+      </g>`
+    : '';
+  return `<g class="link ${link.type}${selected ? ' selected' : ''}" data-link-id="${link.id}">
+    <title>${esc(from.label)} ↔ ${esc(to.label)} (${link.type === 'wireless' ? 'nirkabel' : 'kabel'})</title>
+    <line class="link-hit" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}"/>
+    <line class="link-line" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}"/>
+    ${wifi}
+  </g>`;
+}
+
+function renderCanvas() {
+  el.viewport.setAttribute('transform', `translate(${state.pan.x} ${state.pan.y}) scale(${state.zoom})`);
+  el.linkLayer.innerHTML = state.links.map(linkMarkup).join('');
+  el.deviceLayer.innerHTML = state.devices.map(deviceMarkup).join('');
+  el.zoomIndicator.textContent = Math.round(state.zoom * 100) + '%';
+}
+// === PALETTE & TABS ===
+function renderPalette() {
+  el.paletteList.innerHTML = DEVICE_KINDS.map((kind) =>
+    `<div class="device-card" draggable="true" role="button" tabindex="0" data-kind="${kind}" aria-label="Tambah ${esc(STRINGS.deviceLabels[kind])} ke kanvas">
+      ${iconSVG(kind)}
+      <span>${esc(STRINGS.deviceLabels[kind])}</span>
+    </div>`
+  ).join('');
+}
+
+function tabMeta(tab) {
+  if (tab === 'validation') return { id: 'tabValidation', label: 'Validasi' };
+  if (tab === 'simulation') return { id: 'tabSimulation', label: 'Simulasi' };
+  return { id: 'tabInfo', label: 'Info' };
+}
+
+function renderTabs() {
+  [el.tabInfo, el.tabValidation, el.tabSimulation].forEach((btn) => {
+    const active = btn.dataset.tab === state.activeTab;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', String(active));
+  });
+  el.panelBody.setAttribute('aria-labelledby', tabMeta(state.activeTab).id);
+}
+
+// === PANEL CONTENT ===
+function defaultPanelHTML() {
+  return `<div class="panel-placeholder">
+    <div class="empty-badge">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="34" r="5"/><circle cx="36" cy="34" r="5"/><circle cx="24" cy="13" r="5"/><path d="M16 31l5-13M32 31l-5-13M17 34h14"/></svg>
+    </div>
+    <h3>Mulai membangun jaringan</h3>
+    <p>${esc(STRINGS.tipDefault)}</p>
+    <ol class="steps">
+      <li><span>1</span><div><b>Seret perangkat</b> dari palet kiri ke kanvas.</div></li>
+      <li><span>2</span><div><b>Hubungkan</b> dengan alat Kabel atau Nirkabel.</div></li>
+      <li><span>3</span><div><b>Klik dua kali</b> perangkat untuk mengisi nama dan IP.</div></li>
+      <li><span>4</span><div><b>Validasi</b> lalu pilih sumber &amp; tujuan untuk mengirim paket.</div></li>
+    </ol>
+    <p class="mini-tip">Tips: tahan <kbd>Space</kbd> sambil menggeser untuk pan, scroll untuk zoom, dan <kbd>Esc</kbd> untuk membatalkan.</p>
+  </div>`;
+}
+
+function devicePanelHTML(d) {
+  const peers = state.links
+    .filter((l) => l.from === d.id || l.to === d.id)
+    .map((l) => getDevice(l.from === d.id ? l.to : l.from))
+    .filter(Boolean);
+  const isSource = state.simSource === d.id;
+  const isDest = state.simDest === d.id;
+  const ipNote = d.kind === 'internet' ? '<p class="field-note">Perangkat Internet tidak memakai alamat IP lokal di simulasi ini.</p>' : '';
+  return `<div class="device-editor">
+    <div class="de-head">
+      <span class="de-icon">${iconSVG(d.kind)}</span>
+      <div><div class="de-title" data-live-label>${esc(d.label)}</div><div class="de-kind">${esc(STRINGS.deviceLabels[d.kind])}</div></div>
+    </div>
+    <label class="field"><span>Nama perangkat</span><input type="text" maxlength="24" autocomplete="off" data-edit="label" data-id="${d.id}" value="${esc(d.label)}"></label>
+    <label class="field"><span>Alamat IP</span><input type="text" autocomplete="off" placeholder="192.168.1.10" data-edit="ip" data-id="${d.id}" value="${esc(d.ip)}"${d.kind === 'internet' ? ' disabled' : ''}></label>
+    ${ipNote}
+    <div class="endpoint-box">
+      <p>Peran dalam simulasi paket</p>
+      <div class="endpoint-buttons">
+        <button class="btn small ${isSource ? 'teal' : ''}" data-act="set-source" data-id="${d.id}">${isSource ? '✓ Sumber' : 'Jadikan Sumber'}</button>
+        <button class="btn small ${isDest ? 'amber' : ''}" data-act="set-dest" data-id="${d.id}">${isDest ? '✓ Tujuan' : 'Jadikan Tujuan'}</button>
+      </div>
+    </div>
+    <div class="peer-list"><span>Terhubung ke ${peers.length} perangkat</span>
+      ${peers.length ? peers.map((p) => `<span class="peer-chip">${esc(truncate(p.label, 18))}</span>`).join('') : '<em>Belum ada koneksi</em>'}
+    </div>
+    <button class="btn small danger wide" data-act="delete-device" data-id="${d.id}">Hapus perangkat ini</button>
+  </div>`;
+}
+
+function linkPanelHTML(link) {
+  const from = getDevice(link.from);
+  const to = getDevice(link.to);
+  if (!from || !to) return defaultPanelHTML();
+  return `<div class="link-editor">
+    <div class="de-head">
+      <span class="de-icon"><svg viewBox="0 0 48 48" fill="none" stroke="#0f8b8d" stroke-width="2.4" stroke-linecap="round"><path d="M8 18h9v12H8zM31 18h9v12h-9zM17 24h14"/></svg></span>
+      <div><div class="de-title">Koneksi</div><div class="de-kind">${link.type === 'wireless' ? 'Nirkabel' : 'Kabel'}</div></div>
+    </div>
+    <div class="link-route"><span>${esc(from.label)}</span><span class="route-arrow">↔</span><span>${esc(to.label)}</span></div>
+    <p class="mini-tip">Klik alat Hapus lalu klik kabel untuk menghapus koneksi ini.</p>
+    <button class="btn small danger wide" style="margin-top:12px" data-act="delete-link" data-id="${link.id}">Hapus koneksi ini</button>
+  </div>`;
+}
+
+function ruleRowHTML(rule) {
+  const className = rule.skipped ? 'skip' : rule.passed ? 'pass' : 'fail';
+  const icon = rule.skipped
+    ? '<span>–</span>'
+    : rule.passed
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const message = rule.skipped ? 'Belum ada alamat IP yang diisi.' : rule.passed ? 'Terpenuhi.' : rule.failMessage;
+  return `<div class="rule ${className}">
+    <span class="rule-icon">${icon}</span>
+    <div class="rule-body">
+      <div class="rule-title">${rule.id} · ${esc(rule.label)} ${rule.optional ? '<span class="tag">Opsional</span>' : ''}</div>
+      <div class="rule-msg">${esc(message)}</div>
+    </div>
+  </div>`;
+}
+
+function validationPanelHTML() {
+  const result = state.validation;
+  if (!result) {
+    return `<div class="panel-placeholder">
+      <div class="empty-badge">✓</div>
+      <h3>Belum divalidasi</h3>
+      <p>Susun topologi, lalu klik <b>Validasi Jaringan</b> untuk memeriksa aturan koneksi dan pengalamatan IP.</p>
+      <button class="btn small teal" data-act="validate">Validasi sekarang</button>
+    </div>`;
+  }
+  const ok = result.allRequiredPass;
+  const required = result.items.filter((r) => !r.optional);
+  const optional = result.items.filter((r) => r.optional);
+  const pct = Math.round((result.requiredPassed / result.requiredTotal) * 100);
+  const optNote = result.optionalActive
+    ? `Pemeriksaan IP opsional: ${result.optionalPassed}/${result.optionalTotal} terpenuhi.`
+    : 'Pemeriksaan IP opsional belum aktif karena belum ada IP yang diisi.';
+  return `<div role="region" aria-live="polite">
+    <div class="score-card ${ok ? 'ok' : 'bad'}">
+      <div class="score-num">${result.requiredPassed}<span>/${result.requiredTotal}</span></div>
+      <div class="score-copy">
+        <strong>${ok ? 'Jaringan siap!' : 'Perlu perbaikan'}</strong>
+        <p>${ok ? 'Semua aturan wajib terpenuhi.' : `${result.requiredTotal - result.requiredPassed} aturan wajib belum terpenuhi.`}</p>
+      </div>
+    </div>
+    <div class="progress"><span class="${ok ? '' : 'bad'}" style="width:${pct}%"></span></div>
+    <p class="rule-group-title">Aturan wajib</p>
+    ${required.map(ruleRowHTML).join('')}
+    <p class="rule-group-title" style="margin-top:12px">Pemeriksaan opsional</p>
+    ${optional.map(ruleRowHTML).join('')}
+    <p class="opt-note">${esc(optNote)}</p>
+  </div>`;
+}
+
+function simulationPanelHTML() {
+  const sim = state.sim;
+  if (!sim) {
+    const source = getDevice(state.simSource);
+    const dest = getDevice(state.simDest);
+    const ready = Boolean(source && dest);
+    return `<div class="panel-placeholder">
+      <div class="empty-badge">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24h30M30 17l7 7-7 7"/><circle cx="40" cy="24" r="3"/></svg>
+      </div>
+      <h3>Simulasi paket</h3>
+      <p>Pilih perangkat <b>sumber</b> dan <b>tujuan</b>, lalu kirim paket untuk melihat perjalanannya hop demi hop.</p>
+      <div class="endpoint-status">
+        <div class="ep-card ${source ? 'set' : ''}"><span>Sumber</span><strong>${source ? esc(source.label) : 'Belum dipilih'}</strong></div>
+        <span class="route-arrow">→</span>
+        <div class="ep-card ${dest ? 'set' : ''}"><span>Tujuan</span><strong>${dest ? esc(dest.label) : 'Belum dipilih'}</strong></div>
+      </div>
+      ${ready
+        ? '<button class="btn small teal wide" data-act="send">Kirim Paket sekarang</button>'
+        : `<p class="mini-tip">${source ? esc(STRINGS.selectDest) : esc(STRINGS.selectSource)} Klik perangkat di kanvas, lalu gunakan tombol Sumber/Tujuan di tab Info. Shift+klik juga bisa dipakai.</p>`}
+    </div>`;
+  }
+  if (sim.error) {
+    return `<div class="panel-placeholder">
+      <div class="empty-badge" style="background:var(--c-bad-soft);color:var(--c-bad)">!</div>
+      <h3>Tidak ada jalur</h3>
+      <div class="sim-error">${esc(sim.error)}</div>
+      <div class="panel-actions"><button class="btn small teal" data-act="send">Coba lagi</button><button class="btn small" data-act="tab-info">Periksa perangkat</button></div>
+    </div>`;
+  }
+  const total = sim.narrations.length;
+  const route = sim.path.map((id, index) => {
+    const d = getDevice(id);
+    return `${index ? '<span class="route-arrow">→</span>' : ''}<span class="route-chip">${d ? esc(truncate(d.label, 16)) : '?'}</span>`;
+  }).join('');
+  const cards = sim.narrations.map((hop, index) => {
+    const done = sim.done || index < sim.current;
+    const active = !sim.done && index === sim.current;
+    return `<div class="narr${done ? ' done' : ''}${active ? ' active' : ''}">
+      <span class="narr-num">${index + 1}</span>
+      <div class="narr-body">
+        <div class="narr-title">${esc(hop.from.label)} <span>→</span> ${esc(hop.to.label)}</div>
+        <p>${esc(hop.text)}</p>
+      </div>
+    </div>`;
+  }).join('');
+  const dest = getDevice(sim.dest);
+  const successText = STRINGS.packetSuccess
+    .replace('{dest}', dest ? dest.label : 'tujuan')
+    .replace('{n}', String(sim.path.length));
+  const progress = sim.done ? 'Selesai' : `Langkah ${Math.min(sim.current + 1, total)} dari ${total}`;
+  return `<div role="region" aria-live="assertive">
+    <div class="sim-route">${route}</div>
+    <div class="sim-progress"><span>${progress}</span>${sim.playing ? '<span class="sim-live">● Mengirim…</span>' : ''}</div>
+    <div class="progress"><span style="width:${sim.done ? 100 : Math.round((sim.current / total) * 100)}%"></span></div>
+    ${cards}
+    ${sim.done ? `<div class="sim-success"><strong>Paket berhasil sampai!</strong><p>${esc(successText)}</p></div>` : ''}
+    <div class="panel-actions">
+      ${sim.playing ? '<button class="btn small" data-act="stop-sim">Hentikan</button>' : ''}
+      ${sim.done ? '<button class="btn small teal" data-act="send">Kirim ulang</button>' : ''}
+    </div>
+  </div>`;
+}
+
+function renderPanel() {
+  renderTabs();
+  let html = defaultPanelHTML();
+  if (state.activeTab === 'info') {
+    if (state.selectedDeviceId) {
+      const device = getDevice(state.selectedDeviceId);
+      if (device) html = devicePanelHTML(device);
+    } else if (state.selectedLinkId) {
+      const link = getLink(state.selectedLinkId);
+      if (link) html = linkPanelHTML(link);
+    }
+  } else if (state.activeTab === 'validation') {
+    html = validationPanelHTML();
+  } else if (state.activeTab === 'simulation') {
+    html = simulationPanelHTML();
+  }
+  el.panelBody.innerHTML = html;
+  if (state.activeTab === 'simulation') {
+    requestAnimationFrame(() => {
+      const active = el.panelBody.querySelector('.narr.active');
+      if (!active) return;
+      const top = active.offsetTop;
+      const bottom = top + active.offsetHeight;
+      if (top < el.panelBody.scrollTop || bottom > el.panelBody.scrollTop + el.panelBody.clientHeight) {
+        el.panelBody.scrollTop = Math.max(0, top - 24);
+      }
+    });
+  }
+}
+
+function renderStatus() {
+  el.statusInfo.textContent = `Perangkat: ${state.devices.length} • Koneksi: ${state.links.length} • Alat: ${toolName()}`;
+  let label = 'Siap';
+  let cls = '';
+  if (state.sim && state.sim.playing) {
+    label = 'Mengirim paket…';
+  } else if (state.validation) {
+    if (state.validation.allRequiredPass) {
+      label = `Siap · ${state.validation.requiredPassed}/${state.validation.requiredTotal}`;
+      cls = 'ok';
+    } else {
+      label = 'Ada masalah';
+      cls = 'bad';
+    }
+  }
+  el.statusPill.className = 'status-pill' + (cls ? ' ' + cls : '');
+  el.statusPill.innerHTML = '<span class="dot"></span>' + label;
+}
+
+function updateHint() {
+  let text = STRINGS.tipDefault;
+  if (state.devices.length) {
+    if (state.sim && state.sim.playing) {
+      text = 'Paket sedang dikirim. Perhatikan kartu narasi di panel kanan.';
+    } else if (state.tool === 'link-wired') {
+      text = 'Kabel: klik perangkat pertama, lalu perangkat kedua. Esc untuk batal.';
+    } else if (state.tool === 'link-wireless') {
+      text = 'Nirkabel: klik dua perangkat untuk membuat koneksi Wi-Fi. Esc untuk batal.';
+    } else if (state.tool === 'delete') {
+      text = 'Hapus: klik perangkat atau kabel yang ingin dihapus.';
+    } else if (state.sim && state.sim.done) {
+      text = 'Paket sudah sampai. Klik Kirim Paket untuk mencoba lagi.';
+    } else if (state.simSource && !state.simDest) {
+      const source = getDevice(state.simSource);
+      text = `Sumber: ${source ? source.label : '?'}. Sekarang pilih perangkat tujuan.`;
+    } else if (state.simSource && state.simDest) {
+      text = 'Sumber dan tujuan siap. Klik Kirim Paket untuk memulai simulasi.';
+    } else {
+      text = 'Klik perangkat untuk memilih. Shift+klik untuk menandai sumber/tujuan.';
+    }
+  }
+  el.canvasHint.textContent = text;
+}
+
+function updateToolbar() {
+  document.querySelectorAll('.tool-btn').forEach((btn) => {
+    const active = btn.dataset.tool === state.tool;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  el.canvas.classList.toggle('tool-link', state.tool === 'link-wired' || state.tool === 'link-wireless');
+  el.canvas.classList.toggle('tool-delete', state.tool === 'delete');
+}
+
+function renderAll() {
+  renderCanvas();
+  renderPanel();
+  renderStatus();
+  updateToolbar();
+  updateHint();
+}
+// === TOPOLOGY ACTIONS ===
+function uniqueLabel(kind) {
+  const base = STRINGS.deviceLabels[kind];
+  const used = new Set(state.devices.map((d) => d.label));
+  if (!used.has(base)) return base;
+  let index = 2;
+  while (used.has(`${base} ${index}`)) index += 1;
+  return `${base} ${index}`;
+}
+
+function addDevice(kind, x, y) {
+  if (!DEVICE_ICONS[kind]) return null;
+  const device = {
+    id: uid('d'),
+    kind,
+    label: uniqueLabel(kind),
+    ip: '',
+    x: Math.round(x),
+    y: Math.round(y)
+  };
+  state.devices.push(device);
+  state.selectedDeviceId = device.id;
+  state.selectedLinkId = null;
+  state.activeTab = 'info';
+  state.validation = null;
+  clearSimulation();
+  closePopover();
+  renderAll();
+  return device;
+}
+
+function addLink(fromId, toId, type) {
+  if (fromId === toId) {
+    showToast('Perangkat tidak bisa dihubungkan ke dirinya sendiri.', 'error');
+    return false;
+  }
+  if (findLinkBetween(fromId, toId)) {
+    showToast('Kedua perangkat sudah terhubung.', 'error');
+    return false;
+  }
+  const from = getDevice(fromId);
+  const to = getDevice(toId);
+  if (!from || !to) return false;
+  state.links.push({ id: uid('l'), from: fromId, to: toId, type });
+  state.validation = null;
+  clearSimulation();
+  renderAll();
+  showToast(`Koneksi ${type === 'wireless' ? 'nirkabel' : 'kabel'} dibuat: ${from.label} ↔ ${to.label}.`, 'success');
+  return true;
+}
+
+function deleteDevice(id) {
+  const device = getDevice(id);
+  if (!device) return;
+  state.devices = state.devices.filter((d) => d.id !== id);
+  state.links = state.links.filter((l) => l.from !== id && l.to !== id);
+  if (state.selectedDeviceId === id) state.selectedDeviceId = null;
+  if (state.simSource === id) state.simSource = null;
+  if (state.simDest === id) state.simDest = null;
+  if (state.popoverDeviceId === id) closePopover();
+  state.validation = null;
+  clearSimulation();
+  renderAll();
+  showToast(`Perangkat "${device.label}" dihapus.`, 'success');
+}
+
+function deleteLink(id) {
+  const link = getLink(id);
+  if (!link) return;
+  state.links = state.links.filter((l) => l.id !== id);
+  if (state.selectedLinkId === id) state.selectedLinkId = null;
+  state.validation = null;
+  clearSimulation();
+  renderAll();
+  showToast('Koneksi dihapus.', 'success');
+}
+
+function selectDevice(id) {
+  state.selectedDeviceId = id;
+  state.selectedLinkId = null;
+  state.activeTab = 'info';
+  renderCanvas();
+  renderPanel();
+  updateHint();
+}
+
+function selectLink(id) {
+  state.selectedLinkId = id;
+  state.selectedDeviceId = null;
+  state.activeTab = 'info';
+  renderCanvas();
+  renderPanel();
+  updateHint();
+}
+
+function clearSelection() {
+  state.selectedDeviceId = null;
+  state.selectedLinkId = null;
+  renderCanvas();
+  if (state.activeTab === 'info') renderPanel();
+  updateHint();
+}
+
+function cancelPendingLink() {
+  if (!state.pendingLinkId) return;
+  state.pendingLinkId = null;
+  renderCanvas();
+  updateHint();
+}
+
+function handleLinkClick(id) {
+  if (!state.pendingLinkId) {
+    state.pendingLinkId = id;
+    renderCanvas();
+    updateHint();
+    showToast('Perangkat pertama dipilih. Klik perangkat tujuan.');
+    return;
+  }
+  if (state.pendingLinkId === id) {
+    cancelPendingLink();
+    showToast('Pembuatan koneksi dibatalkan.');
+    return;
+  }
+  const fromId = state.pendingLinkId;
+  state.pendingLinkId = null;
+  addLink(fromId, id, state.tool === 'link-wireless' ? 'wireless' : 'wired');
+}
+
+function setTool(tool) {
+  state.tool = tool;
+  state.pendingLinkId = null;
+  closePopover();
+  updateToolbar();
+  updateHint();
+  renderCanvas();
+}
+
+// === ENDPOINTS & SIMULATION CONTROL ===
+function clearSimulation() {
+  state.simToken += 1;
+  el.packetLayer.innerHTML = '';
+  state.sim = null;
+}
+
+function setEndpoint(which, id) {
+  const device = getDevice(id);
+  if (!device) return;
+  if (which === 'source') {
+    if (state.simSource === id) {
+      state.simSource = null;
+      showToast('Penanda sumber dibatalkan.');
+    } else {
+      state.simSource = id;
+      if (state.simDest === id) state.simDest = null;
+      showToast(`Sumber: ${device.label}.`);
+    }
+  } else {
+    if (state.simDest === id) {
+      state.simDest = null;
+      showToast('Penanda tujuan dibatalkan.');
+    } else {
+      state.simDest = id;
+      if (state.simSource === id) state.simSource = null;
+      showToast(`Tujuan: ${device.label}.`);
+    }
+  }
+  clearSimulation();
+  renderAll();
+  const source = getDevice(state.simSource);
+  const dest = getDevice(state.simDest);
+  if (source && dest) showToast(`${source.label} → ${dest.label}. Siap mengirim paket.`);
+}
+
+function assignEndpointQuick(id) {
+  const device = getDevice(id);
+  if (!device) return;
+  if (!state.simSource) {
+    state.simSource = id;
+  } else if (!state.simDest && id !== state.simSource) {
+    state.simDest = id;
+  } else if (id === state.simSource) {
+    state.simDest = null;
+  } else {
+    state.simSource = id;
+    state.simDest = null;
+  }
+  state.selectedDeviceId = id;
+  state.selectedLinkId = null;
+  state.activeTab = 'info';
+  clearSimulation();
+  renderAll();
+  const source = getDevice(state.simSource);
+  const dest = getDevice(state.simDest);
+  if (source && dest) {
+    showToast(`Rute siap: ${source.label} → ${dest.label}.`);
+  } else if (source) {
+    showToast(`Sumber: ${source.label}. Sekarang shift+klik perangkat tujuan.`);
+  }
+}
+
+function startSimulation() {
+  const source = getDevice(state.simSource);
+  const dest = getDevice(state.simDest);
+  if (!source) {
+    state.activeTab = 'simulation';
+    renderAll();
+    showToast(STRINGS.selectSource, 'error');
+    return;
+  }
+  if (!dest) {
+    state.activeTab = 'simulation';
+    renderAll();
+    showToast(STRINGS.selectDest, 'error');
+    return;
+  }
+  if (source.id === dest.id) {
+    state.activeTab = 'simulation';
+    renderAll();
+    showToast('Pilih perangkat tujuan yang berbeda dari sumber.', 'error');
+    return;
+  }
+  const path = bfsPath(source.id, dest.id);
+  clearSimulation();
+  if (!path) {
+    state.sim = {
+      path: [],
+      narrations: [],
+      current: 0,
+      playing: false,
+      done: false,
+      error: STRINGS.noPath,
+      source: source.id,
+      dest: dest.id,
+      hopTo: null
+    };
+    state.activeTab = 'simulation';
+    renderAll();
+    showToast(STRINGS.noPath, 'error');
+    return;
+  }
+  const token = state.simToken;
+  state.sim = {
+    path,
+    narrations: buildNarrations(path),
+    current: 0,
+    playing: true,
+    done: false,
+    error: null,
+    source: source.id,
+    dest: dest.id,
+    hopTo: path[1] || null
+  };
+  state.activeTab = 'simulation';
+  renderAll();
+  showToast(`Mengirim paket dari ${source.label} ke ${dest.label}…`);
+  runSimulation(token);
+}
+
+async function runSimulation(token) {
+  const sim = state.sim;
+  if (!sim) return;
+  await sleep(320);
+  for (let i = 0; i < sim.path.length - 1; i += 1) {
+    if (token !== state.simToken || state.sim !== sim) return;
+    const from = getDevice(sim.path[i]);
+    const to = getDevice(sim.path[i + 1]);
+    if (!from || !to) return;
+    sim.current = i;
+    sim.hopTo = to.id;
+    renderCanvas();
+    renderPanel();
+    renderStatus();
+    updateHint();
+    await animatePacket(from, to, token);
+    if (token !== state.simToken || state.sim !== sim) return;
+    await sleep(650);
+  }
+  if (token !== state.simToken || state.sim !== sim) return;
+  sim.playing = false;
+  sim.done = true;
+  sim.current = Math.max(0, sim.narrations.length - 1);
+  sim.hopTo = null;
+  renderCanvas();
+  renderPanel();
+  renderStatus();
+  updateHint();
+  const dest = getDevice(sim.dest);
+  const success = STRINGS.packetSuccess
+    .replace('{dest}', dest ? dest.label : 'tujuan')
+    .replace('{n}', String(sim.path.length));
+  showToast(success, 'success');
+}
+
+function animatePacket(from, to, token) {
+  return new Promise((resolve) => {
+    if (token !== state.simToken) {
+      resolve();
+      return;
+    }
+    el.packetLayer.innerHTML = '';
+    const group = document.createElementNS(SVG_NS, 'g');
+    group.setAttribute('class', 'packet');
+    const halo = document.createElementNS(SVG_NS, 'circle');
+    halo.setAttribute('class', 'packet-halo');
+    halo.setAttribute('r', '13');
+    const dot = document.createElementNS(SVG_NS, 'circle');
+    dot.setAttribute('class', 'packet-dot');
+    dot.setAttribute('r', '8');
+    group.append(halo, dot);
+    const distance = Math.hypot(to.x - from.x, to.y - from.y) || 1;
+    const duration = clamp(distance * 2.2, 520, 1500);
+    const motion = document.createElementNS(SVG_NS, 'animateMotion');
+    motion.setAttribute('path', `M ${from.x} ${from.y} L ${to.x} ${to.y}`);
+    motion.setAttribute('dur', `${Math.round(duration)}ms`);
+    motion.setAttribute('fill', 'freeze');
+    group.appendChild(motion);
+    el.packetLayer.appendChild(group);
+    setTimeout(() => {
+      el.packetLayer.innerHTML = '';
+      if (token === state.simToken) placePacket(to.x, to.y);
+      resolve();
+    }, duration + 80);
+  });
+}
+
+function placePacket(x, y) {
+  const group = document.createElementNS(SVG_NS, 'g');
+  group.setAttribute('class', 'packet packet-rest');
+  const halo = document.createElementNS(SVG_NS, 'circle');
+  halo.setAttribute('class', 'packet-halo');
+  halo.setAttribute('cx', String(x));
+  halo.setAttribute('cy', String(y));
+  halo.setAttribute('r', '13');
+  const dot = document.createElementNS(SVG_NS, 'circle');
+  dot.setAttribute('class', 'packet-dot');
+  dot.setAttribute('cx', String(x));
+  dot.setAttribute('cy', String(y));
+  dot.setAttribute('r', '8');
+  group.append(halo, dot);
+  el.packetLayer.appendChild(group);
+}
+
+function stopSimulation() {
+  if (!state.sim || !state.sim.playing) return;
+  clearSimulation();
+  renderAll();
+  showToast('Simulasi dihentikan.');
+}
+
+// === VALIDATION ACTION ===
+function runValidationNow() {
+  state.validation = runValidation();
+  state.activeTab = 'validation';
+  renderAll();
+  el.panelBody.scrollTop = 0;
+  const result = state.validation;
+  if (result.allRequiredPass) {
+    showToast(`Validasi selesai — ${result.requiredPassed}/${result.requiredTotal} aturan wajib terpenuhi.`, 'success');
+  } else {
+    showToast(`Validasi selesai — ${result.requiredTotal - result.requiredPassed} aturan wajib belum terpenuhi.`, 'error');
+  }
+}
+
+// === CANVAS TRANSFORM & DRAG ===
+function screenToWorld(clientX, clientY) {
+  const rect = el.canvas.getBoundingClientRect();
+  return {
+    x: (clientX - rect.left - state.pan.x) / state.zoom,
+    y: (clientY - rect.top - state.pan.y) / state.zoom
+  };
+}
+
+function startDeviceDrag(event, device) {
+  const world = screenToWorld(event.clientX, event.clientY);
+  state.drag = {
+    type: 'device',
+    id: device.id,
+    offsetX: device.x - world.x,
+    offsetY: device.y - world.y,
+    moved: false
+  };
+  closePopover();
+  try { el.canvas.setPointerCapture(event.pointerId); } catch (error) { /* ignore */ }
+}
+
+function startPan(event) {
+  state.drag = {
+    type: 'pan',
+    startClientX: event.clientX,
+    startClientY: event.clientY,
+    startPanX: state.pan.x,
+    startPanY: state.pan.y
+  };
+  closePopover();
+  el.canvas.classList.add('panning');
+  try { el.canvas.setPointerCapture(event.pointerId); } catch (error) { /* ignore */ }
+}
+
+function fitToContent() {
+  const rect = el.canvas.getBoundingClientRect();
+  const width = rect.width || 800;
+  const height = rect.height || 560;
+  if (!state.devices.length) {
+    state.pan = { x: 0, y: 0 };
+    state.zoom = 1;
+    renderCanvas();
+    return;
+  }
+  const xs = state.devices.map((d) => d.x);
+  const ys = state.devices.map((d) => d.y);
+  const minX = Math.min(...xs) - 95;
+  const maxX = Math.max(...xs) + 95;
+  const minY = Math.min(...ys) - 105;
+  const maxY = Math.max(...ys) + 105;
+  const boxWidth = Math.max(1, maxX - minX);
+  const boxHeight = Math.max(1, maxY - minY);
+  const zoom = clamp(Math.min((width - 70) / boxWidth, (height - 70) / boxHeight), 0.45, 1.25);
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+  state.zoom = zoom;
+  state.pan = {
+    x: width / 2 - centerX * zoom,
+    y: height / 2 - centerY * zoom
+  };
+  renderCanvas();
+}
+
+// === SCENARIOS & RESET ===
+function loadScenario(id) {
+  const scenario = SCENARIOS.find((s) => s.id === id);
+  if (!scenario) return;
+  clearSimulation();
+  state.devices = scenario.devices.map((d) => ({ ...d }));
+  state.links = scenario.links.map((l) => ({ ...l }));
+  state.selectedDeviceId = null;
+  state.selectedLinkId = null;
+  state.pendingLinkId = null;
+  state.simSource = null;
+  state.simDest = null;
+  state.validation = null;
+  state.activeTab = 'info';
+  closePopover();
+  renderAll();
+  fitToContent();
+  el.scenarioSelect.value = '';
+  showToast(`Skenario "${scenario.name}" dimuat.`, 'success');
+}
+
+function resetCanvas() {
+  if (state.devices.length && !confirm('Reset canvas? Semua perangkat dan koneksi akan dihapus.')) return;
+  clearSimulation();
+  state.devices = [];
+  state.links = [];
+  state.selectedDeviceId = null;
+  state.selectedLinkId = null;
+  state.pendingLinkId = null;
+  state.simSource = null;
+  state.simDest = null;
+  state.validation = null;
+  state.activeTab = 'info';
+  state.pan = { x: 0, y: 0 };
+  state.zoom = 1;
+  closePopover();
+  renderAll();
+  showToast('Canvas direset.');
+}
+
+// === POPOVER ===
+function positionPopover(device) {
+  const wrapRect = el.canvasWrap.getBoundingClientRect();
+  const width = 254;
+  const height = 232;
+  const screenX = device.x * state.zoom + state.pan.x;
+  const screenY = device.y * state.zoom + state.pan.y;
+  let left = screenX + 42;
+  if (left + width > wrapRect.width - 12) left = screenX - width - 42;
+  left = clamp(left, 12, Math.max(12, wrapRect.width - width - 12));
+  let top = screenY - 46;
+  top = clamp(top, 12, Math.max(12, wrapRect.height - height - 12));
+  el.popover.style.left = `${left}px`;
+  el.popover.style.top = `${top}px`;
+}
+
+function openPopover(id) {
+  const device = getDevice(id);
+  if (!device) return;
+  state.popoverDeviceId = id;
+  el.popName.value = device.label;
+  el.popIp.value = device.ip;
+  el.popIp.disabled = device.kind === 'internet';
+  el.popover.hidden = false;
+  positionPopover(device);
+  el.popName.focus();
+  el.popName.select();
+}
+
+function closePopover() {
+  state.popoverDeviceId = null;
+  el.popover.hidden = true;
+}
+
+// === POINTER INTERACTIONS ===
+function onPointerDown(event) {
+  if (event.button === 1 || (spaceDown && event.button === 0)) {
+    event.preventDefault();
+    startPan(event);
+    return;
+  }
+  if (event.button !== 0) return;
+  const target = event.target;
+  const deviceElement = target && target.closest ? target.closest('[data-device-id]') : null;
+  if (deviceElement) {
+    const id = deviceElement.getAttribute('data-device-id');
+    const device = getDevice(id);
+    if (!device) return;
+    if (state.tool === 'delete') {
+      event.preventDefault();
+      deleteDevice(id);
+      return;
+    }
+    if (state.tool === 'link-wired' || state.tool === 'link-wireless') {
+      event.preventDefault();
+      handleLinkClick(id);
+      return;
+    }
+    if (event.shiftKey) {
+      event.preventDefault();
+      assignEndpointQuick(id);
+      return;
+    }
+    event.preventDefault();
+    selectDevice(id);
+    startDeviceDrag(event, device);
+    return;
+  }
+  const linkElement = target && target.closest ? target.closest('[data-link-id]') : null;
+  if (linkElement) {
+    const id = linkElement.getAttribute('data-link-id');
+    if (state.tool === 'delete') {
+      event.preventDefault();
+      deleteLink(id);
+      return;
+    }
+    if (state.tool === 'select') {
+      event.preventDefault();
+      selectLink(id);
+    }
+    return;
+  }
+  if (state.tool === 'link-wired' || state.tool === 'link-wireless') {
+    cancelPendingLink();
+  } else if (state.tool === 'select') {
+    clearSelection();
+  }
+}
+
+function onPointerMove(event) {
+  if (!state.drag) return;
+  if (state.drag.type === 'device') {
+    const device = getDevice(state.drag.id);
+    if (!device) {
+      state.drag = null;
+      return;
+    }
+    const world = screenToWorld(event.clientX, event.clientY);
+    const nextX = world.x + state.drag.offsetX;
+    const nextY = world.y + state.drag.offsetY;
+    if (Math.abs(nextX - device.x) > 0.2 || Math.abs(nextY - device.y) > 0.2) state.drag.moved = true;
+    device.x = nextX;
+    device.y = nextY;
+    renderCanvas();
+  } else if (state.drag.type === 'pan') {
+    state.pan.x = state.drag.startPanX + (event.clientX - state.drag.startClientX);
+    state.pan.y = state.drag.startPanY + (event.clientY - state.drag.startClientY);
+    renderCanvas();
+  }
+}
+
+function endDrag(event) {
+  if (!state.drag) return;
+  state.drag = null;
+  el.canvas.classList.remove('panning');
+  try {
+    if (el.canvas.hasPointerCapture(event.pointerId)) el.canvas.releasePointerCapture(event.pointerId);
+  } catch (error) { /* ignore */ }
+}
+
+function onWheel(event) {
+  event.preventDefault();
+  const rect = el.canvas.getBoundingClientRect();
+  const localX = event.clientX - rect.left;
+  const localY = event.clientY - rect.top;
+  const factor = event.deltaY < 0 ? 1.12 : 1 / 1.12;
+  const nextZoom = clamp(state.zoom * factor, 0.45, 2.2);
+  const worldX = (localX - state.pan.x) / state.zoom;
+  const worldY = (localY - state.pan.y) / state.zoom;
+  state.zoom = nextZoom;
+  state.pan.x = localX - worldX * nextZoom;
+  state.pan.y = localY - worldY * nextZoom;
+  closePopover();
+  renderCanvas();
+}
+
+function onDoubleClick(event) {
+  const target = event.target;
+  const deviceElement = target && target.closest ? target.closest('[data-device-id]') : null;
+  if (!deviceElement) return;
+  const id = deviceElement.getAttribute('data-device-id');
+  if (!getDevice(id)) return;
+  selectDevice(id);
+  openPopover(id);
+}
+
+// === PALETTE & DRAG/DROP ===
+function addDeviceAtCenter(kind) {
+  const rect = el.canvas.getBoundingClientRect();
+  const offset = (state.devices.length % 6) * 26;
+  const clientX = rect.left + rect.width / 2 - 60 + offset;
+  const clientY = rect.top + rect.height / 2 - 40 + offset;
+  const world = screenToWorld(clientX, clientY);
+  addDevice(kind, world.x, world.y);
+}
+
+function bindPalette() {
+  el.paletteList.addEventListener('dragstart', (event) => {
+    const card = event.target.closest('.device-card');
+    if (!card) return;
+    event.dataTransfer.setData('text/plain', card.dataset.kind);
+    event.dataTransfer.effectAllowed = 'copy';
+    card.classList.add('dragging');
+  });
+  el.paletteList.addEventListener('dragend', () => {
+    el.paletteList.querySelectorAll('.device-card').forEach((card) => card.classList.remove('dragging'));
+  });
+  el.paletteList.addEventListener('click', (event) => {
+    const card = event.target.closest('.device-card');
+    if (!card) return;
+    addDeviceAtCenter(card.dataset.kind);
+  });
+  el.paletteList.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest('.device-card');
+    if (!card) return;
+    event.preventDefault();
+    addDeviceAtCenter(card.dataset.kind);
+  });
+}
+
+function bindDropZone() {
+  el.canvasWrap.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+    el.canvasWrap.classList.add('drop-target');
+  });
+  el.canvasWrap.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+    el.canvasWrap.classList.add('drop-target');
+  });
+  el.canvasWrap.addEventListener('dragleave', (event) => {
+    if (event.relatedTarget && el.canvasWrap.contains(event.relatedTarget)) return;
+    el.canvasWrap.classList.remove('drop-target');
+  });
+  el.canvasWrap.addEventListener('drop', (event) => {
+    event.preventDefault();
+    el.canvasWrap.classList.remove('drop-target');
+    el.paletteList.querySelectorAll('.device-card').forEach((card) => card.classList.remove('dragging'));
+    const kind = event.dataTransfer.getData('text/plain');
+    if (!DEVICE_ICONS[kind]) return;
+    const world = screenToWorld(event.clientX, event.clientY);
+    addDevice(kind, world.x, world.y);
+  });
+}
+
+// === PANEL EVENTS ===
+function bindPanel() {
+  el.panelBody.addEventListener('click', (event) => {
+    const actionElement = event.target.closest('[data-act]');
+    if (!actionElement) return;
+    const action = actionElement.dataset.act;
+    const id = actionElement.dataset.id;
+    if (action === 'tab-info') {
+      state.activeTab = 'info';
+      renderPanel();
+    } else if (action === 'validate') {
+      runValidationNow();
+    } else if (action === 'send') {
+      startSimulation();
+    } else if (action === 'stop-sim') {
+      stopSimulation();
+    } else if (action === 'set-source') {
+      setEndpoint('source', id);
+    } else if (action === 'set-dest') {
+      setEndpoint('dest', id);
+    } else if (action === 'delete-device') {
+      deleteDevice(id);
+    } else if (action === 'delete-link') {
+      deleteLink(id);
+    }
+  });
+
+  el.panelBody.addEventListener('input', (event) => {
+    const field = event.target.closest('[data-edit]');
+    if (!field) return;
+    const device = getDevice(field.dataset.id);
+    if (!device) return;
+    device[field.dataset.edit] = field.value;
+    state.validation = null;
+    renderStatus();
+    renderCanvas();
+    updateHint();
+    const liveLabel = el.panelBody.querySelector('[data-live-label]');
+    if (liveLabel) liveLabel.textContent = device.label || STRINGS.deviceLabels[device.kind];
+    if (state.popoverDeviceId === device.id) {
+      if (field.dataset.edit === 'label' && document.activeElement !== el.popName) el.popName.value = device.label;
+      if (field.dataset.edit === 'ip' && document.activeElement !== el.popIp) el.popIp.value = device.ip;
+    }
+  });
+}
+
+// === POPOVER EVENTS ===
+function syncPopoverFromState() {
+  const device = getDevice(state.popoverDeviceId);
+  if (!device) return;
+  device.label = el.popName.value;
+  device.ip = el.popIp.disabled ? '' : el.popIp.value;
+  state.validation = null;
+  renderStatus();
+  renderCanvas();
+  updateHint();
+  if (state.activeTab === 'info') renderPanel();
+}
+
+// === KEYBOARD ===
+function handleKeyDown(event) {
+  const tag = (event.target.tagName || '').toLowerCase();
+  const typing = tag === 'input' || tag === 'select' || tag === 'textarea' || event.target.isContentEditable;
+  const onButton = tag === 'button' || tag === 'a';
+
+  if (event.code === 'Space' && !typing && !onButton) {
+    if (!spaceDown) {
+      spaceDown = true;
+      el.canvas.classList.add('pan-ready');
+    }
+    event.preventDefault();
+    return;
+  }
+  if (typing) return;
+
+  if (event.key === 'Escape') {
+    if (state.pendingLinkId) {
+      cancelPendingLink();
+      showToast('Pembuatan koneksi dibatalkan.');
+    } else if (state.popoverDeviceId) {
+      closePopover();
+    } else if (state.sim && state.sim.playing) {
+      stopSimulation();
+    }
+    return;
+  }
+
+  if (event.key === 'Delete' || event.key === 'Backspace') {
+    if (state.selectedDeviceId) {
+      event.preventDefault();
+      deleteDevice(state.selectedDeviceId);
+    } else if (state.selectedLinkId) {
+      event.preventDefault();
+      deleteLink(state.selectedLinkId);
+    }
+    return;
+  }
+
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
+  const key = event.key.toLowerCase();
+  if (key === 'v') setTool('select');
+  else if (key === 'l') setTool('link-wired');
+  else if (key === 'w') setTool('link-wireless');
+  else if (key === 'd') setTool('delete');
+}
+
+function handleKeyUp(event) {
+  if (event.code === 'Space') {
+    spaceDown = false;
+    el.canvas.classList.remove('pan-ready');
+  }
+}
+
+// === INIT ===
+function bindEvents() {
+  document.querySelectorAll('.tool-btn').forEach((button) => {
+    button.addEventListener('click', () => setTool(button.dataset.tool));
+  });
+
+  el.btnValidate.addEventListener('click', runValidationNow);
+  el.btnSend.addEventListener('click', startSimulation);
+  el.btnReset.addEventListener('click', resetCanvas);
+  el.scenarioSelect.addEventListener('change', () => {
+    const id = el.scenarioSelect.value;
+    if (!id) return;
+    el.scenarioSelect.value = '';
+    if (state.devices.length && !confirm('Reset canvas dan muat skenario ini?')) return;
+    loadScenario(id);
+  });
+
+  document.querySelectorAll('.tab').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.activeTab = button.dataset.tab;
+      renderPanel();
+      if (state.activeTab === 'validation') el.panelBody.scrollTop = 0;
+    });
+  });
+
+  el.canvas.addEventListener('pointerdown', onPointerDown);
+  el.canvas.addEventListener('pointermove', onPointerMove);
+  el.canvas.addEventListener('pointerup', endDrag);
+  el.canvas.addEventListener('pointercancel', endDrag);
+  el.canvas.addEventListener('wheel', onWheel, { passive: false });
+  el.canvas.addEventListener('dblclick', onDoubleClick);
+
+  el.popName.addEventListener('input', syncPopoverFromState);
+  el.popIp.addEventListener('input', syncPopoverFromState);
+  el.popClose.addEventListener('click', closePopover);
+  el.popDone.addEventListener('click', closePopover);
+
+  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keyup', handleKeyUp);
+  window.addEventListener('resize', closePopover);
+
+  bindPalette();
+  bindDropZone();
+  bindPanel();
+}
+
+function initApp() {
+  renderPalette();
+  bindEvents();
+  renderAll();
+}
+
+initApp();
+</script>
+</body>
+</html>

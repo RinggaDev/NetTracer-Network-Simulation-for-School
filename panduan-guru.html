@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Panduan Guru — Simulasi Jaringan Kelas X</title>
+<style>
+:root {
+  --c-navy: #12233f;
+  --c-navy-deep: #0d1a2e;
+  --c-teal: #0f8b8d;
+  --c-teal-dark: #0a6a6c;
+  --c-teal-soft: #e2f2f1;
+  --c-paper: #fbf9f3;
+  --c-paper-deep: #efece5;
+  --c-card: #ffffff;
+  --c-ink: #1f2430;
+  --c-muted: #667085;
+  --c-line: #dcd5c7;
+  --c-line-soft: #e9e4d9;
+  --c-ok: #1f9d55;
+  --c-ok-soft: #e6f6ec;
+  --c-bad: #cf4444;
+  --c-bad-soft: #fbeaea;
+  --c-warn: #c98216;
+  --c-warn-soft: #fdf1dc;
+  --c-amber: #f2b544;
+  --font-sans: 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --shadow-sm: 0 1px 2px rgba(18, 35, 63, .05), 0 8px 24px rgba(18, 35, 63, .06);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+
+body {
+  margin: 0;
+  background: var(--c-paper-deep);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+a { color: var(--c-teal-dark); }
+a:hover { color: var(--c-teal); }
+b, strong { color: var(--c-navy); }
+
+code, pre, kbd { font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; }
+
+code {
+  padding: 1px 5px;
+  border: 1px solid var(--c-line);
+  border-radius: 5px;
+  background: #fff;
+  color: #0a5f61;
+  font-size: .88em;
+}
+
+pre {
+  margin: 14px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid #233b5e;
+  border-radius: 12px;
+  background: #132540;
+  color: #dce9ff;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--c-line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: #fff;
+  color: var(--c-navy);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.mobile-banner {
+  display: none;
+  padding: 9px 16px;
+  background: var(--c-amber);
+  color: #3a2a04;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* === HERO === */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+  padding: 46px clamp(24px, 6vw, 84px) 50px;
+  overflow: hidden;
+  color: var(--c-paper);
+  background:
+    radial-gradient(circle at 82% 20%, rgba(15, 139, 141, .34), transparent 26%),
+    radial-gradient(circle at 12% 90%, rgba(242, 181, 68, .13), transparent 24%),
+    linear-gradient(140deg, #17315b 0%, var(--c-navy) 48%, var(--c-navy-deep) 100%);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .14) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: .22;
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 820px; }
+
+.hero-kicker {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #87e3e1;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5vw, 58px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -.02em;
+}
+
+.hero h1 span {
+  display: block;
+  margin-top: 5px;
+  font-size: .43em;
+  letter-spacing: .05em;
+  color: #f3c46f;
+  text-transform: uppercase;
+}
+
+.hero-lead {
+  max-width: 700px;
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(251, 249, 243, .79);
+}
+
+.hero-lead b { color: #fff; }
+
+.hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 20px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  font-size: 11.5px;
+  color: rgba(251, 249, 243, .66);
+}
+
+.hero-meta b { color: rgba(251, 249, 243, .92); }
+
+.hero-art {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 250px;
+  opacity: .9;
+}
+
+.hero-art svg { width: 100%; height: auto; }
+
+/* === LAYOUT === */
+.shell {
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  align-items: start;
+  gap: 34px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 34px clamp(18px, 4vw, 54px) 60px;
+}
+
+.toc { position: sticky; top: 22px; }
+
+.toc-card {
+  padding: 18px;
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  background: var(--c-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.toc-title {
+  margin: 0 0 10px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.toc nav { display: flex; flex-direction: column; gap: 2px; }
+
+.toc nav a {
+  padding: 7px 9px;
+  border-radius: 8px;
+  color: #465064;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.toc nav a:hover { background: var(--c-teal-soft); color: var(--c-teal-dark); }
+.toc nav a.active { background: var(--c-teal-soft); color: var(--c-teal-dark); box-shadow: inset 3px 0 0 var(--c-teal); }
+.toc nav a.sub { padding-left: 20px; font-size: 11.5px; font-weight: 600; color: var(--c-muted); }
+
+.print-btn { width: 100%; margin-top: 14px; }
+
+.toc-note {
+  margin: 12px 0 0;
+  padding-top: 11px;
+  border-top: 1px solid var(--c-line-soft);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--c-muted);
+}
+
+/* === DOC SECTIONS === */
+.doc-section {
+  margin-bottom: 22px;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  background: var(--c-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.doc-section:target { border-color: #a9d8d6; box-shadow: 0 0 0 4px rgba(15, 139, 141, .1), var(--shadow-sm); }
+
+.section-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--c-line-soft);
+}
+
+.section-no {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--c-navy);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.12;
+  color: var(--c-navy);
+}
+
+.section-head p {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+.doc-section h3 {
+  margin: 26px 0 8px;
+  font-size: 16.5px;
+  font-weight: 850;
+  letter-spacing: -.01em;
+  color: var(--c-navy);
+}
+
+.doc-section h3:first-of-type { margin-top: 0; }
+
+.doc-section h4 {
+  margin: 18px 0 6px;
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: .02em;
+  color: var(--c-navy);
+}
+
+.doc-section p { margin: 0 0 12px; }
+.doc-section ul, .doc-section ol { margin: 0 0 14px; padding-left: 22px; }
+.doc-section li { margin-bottom: 5px; }
+.doc-section li::marker { color: var(--c-teal); font-weight: 800; }
+
+.lead {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #3f4a5c;
+}
+
+.small { font-size: 11.5px; color: var(--c-muted); }
+/* === TABLES === */
+.table-wrap {
+  margin: 14px 0 18px;
+  overflow-x: auto;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+thead th {
+  padding: 10px 12px;
+  background: #f3f0e9;
+  border-bottom: 1px solid var(--c-line);
+  color: var(--c-navy);
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--c-line-soft);
+  vertical-align: top;
+}
+
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) { background: #fcfbf8; }
+
+td.num, th.num { text-align: center; white-space: nowrap; }
+td.mono, th.mono { font-family: 'Cascadia Code', Consolas, monospace; font-size: 11.5px; white-space: nowrap; }
+td.nowrap { white-space: nowrap; }
+
+/* === CALLOUTS === */
+.note, .tip, .warn, .important {
+  position: relative;
+  margin: 16px 0;
+  padding: 13px 16px 13px 44px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  background: #faf8f3;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.note::before, .tip::before, .warn::before, .important::before {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.note::before { content: 'i'; background: var(--c-teal); font-family: Georgia, serif; }
+.tip::before { content: '✓'; background: var(--c-ok); }
+.warn::before { content: '!'; background: var(--c-warn); }
+.important::before { content: '★'; background: var(--c-navy); font-size: 10px; }
+
+.tip { border-color: #bfe4cb; background: var(--c-ok-soft); }
+.warn { border-color: #eed5a4; background: var(--c-warn-soft); }
+.important { border-color: #b9c8de; background: #edf2fa; }
+
+.note b, .tip b, .warn b, .important b { color: inherit; }
+
+/* === QUICK START / STEPS === */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0 4px;
+}
+
+.quick-card {
+  padding: 14px;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  background: #fcfbf8;
+}
+
+.quick-card .qno {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: var(--c-teal);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.quick-card h4 { margin: 0 0 4px; font-size: 12px; }
+.quick-card p { margin: 0; font-size: 11px; line-height: 1.5; color: var(--c-muted); }
+
+.steps { counter-reset: step; margin: 14px 0; padding: 0; list-style: none; }
+
+.steps > li {
+  position: relative;
+  margin: 0 0 10px;
+  padding: 12px 14px 12px 48px;
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+  background: #fcfbf8;
+  font-size: 13px;
+}
+
+.steps > li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--c-navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.steps > li:last-child { margin-bottom: 0; }
+
+/* === UI SCHEMATIC === */
+.ui-map {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 176px;
+  grid-template-rows: 36px 230px 30px;
+  gap: 7px;
+  margin: 16px 0;
+  padding: 10px;
+  border: 1px solid #233b5e;
+  border-radius: 14px;
+  background: #132540;
+  color: #dce9ff;
+  font-size: 9.5px;
+  line-height: 1.35;
+}
+
+.ui-map .u {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  border: 1px dashed rgba(255, 255, 255, .28);
+  border-radius: 7px;
+  text-align: center;
+}
+
+.ui-map .u span { font-weight: 800; }
+.ui-map .u em { display: block; margin-top: 3px; color: #8fb1d8; font-size: 8.5px; font-style: normal; }
+
+.u-top { grid-column: 1 / -1; }
+.u-side { grid-row: 2; }
+.u-canvas {
+  position: relative;
+  grid-row: 2;
+  background-image: radial-gradient(rgba(255, 255, 255, .22) 1px, transparent 1px);
+  background-size: 13px 13px;
+  background-color: #0e1d33;
+  border-style: solid;
+  border-color: rgba(125, 216, 214, .3);
+}
+.u-panel { grid-row: 2; }
+.u-status { grid-column: 1 / -1; grid-row: 3; justify-content: space-between; padding: 0 12px; }
+
+.ui-map .u-canvas .mini {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid rgba(125, 216, 214, .5);
+  border-radius: 8px;
+  background: rgba(15, 139, 141, .16);
+  font-size: 8.5px;
+  color: #b9f0ee;
+}
+
+.ui-map .aria {
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, .35);
+  color: #8fb1d8;
+  font-size: 7.5px;
+  letter-spacing: .08em;
+}
+
+/* === FLOW CHIPS === */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: 14px 0;
+  padding: 14px;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  background: #fcfbf8;
+}
+
+.flow .node {
+  padding: 6px 10px;
+  border: 1px solid #b9d8d7;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--c-navy);
+  white-space: nowrap;
+}
+
+.flow .node.src { border-color: var(--c-teal); background: var(--c-teal-soft); }
+.flow .node.dst { border-color: var(--c-amber); background: #fdf5e6; }
+.flow .arrow { color: var(--c-teal); font-weight: 900; }
+
+/* === MISC COMPONENTS === */
+.pill {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--c-teal-soft);
+  color: var(--c-teal-dark);
+  font-size: 10px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.pill.ok { background: var(--c-ok-soft); color: var(--c-ok); }
+.pill.bad { background: var(--c-bad-soft); color: var(--c-bad); }
+.pill.opt { background: #edf2fa; color: #3e5d86; }
+.pill.warn { background: var(--c-warn-soft); color: #9a620c; }
+
+.checklist { margin: 12px 0; padding: 0; list-style: none; }
+.checklist li { position: relative; margin: 0 0 7px; padding-left: 26px; font-size: 12.5px; }
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #b9c8de;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0;
+}
+
+.split .box {
+  padding: 14px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  background: #fcfbf8;
+}
+
+.split .box h4 { margin: 0 0 6px; font-size: 12.5px; }
+.split .box ul { margin: 0; padding-left: 18px; font-size: 12px; }
+
+.rubric td:first-child { font-weight: 800; color: var(--c-navy); }
+
+.big-stat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.big-stat div {
+  flex: 1 1 130px;
+  padding: 12px 14px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  background: #fcfbf8;
+}
+
+.big-stat b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.1; color: var(--c-teal-dark); }
+.big-stat span { font-size: 10.5px; font-weight: 700; color: var(--c-muted); }
+
+details {
+  margin: 10px 0;
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+  background: #fcfbf8;
+}
+
+summary {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--c-navy);
+}
+
+details[open] summary { border-bottom: 1px solid var(--c-line-soft); }
+details .detail-body { padding: 12px 14px; font-size: 12.5px; }
+details .detail-body p:last-child { margin-bottom: 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--c-navy);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn:hover { border-color: var(--c-teal); color: var(--c-teal-dark); }
+
+.doc-footer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px 44px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--c-muted);
+}
+
+.doc-footer p { margin: 0 0 4px; }
+
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-navy);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity .2s ease, transform .2s ease;
+  box-shadow: 0 8px 22px rgba(18, 35, 63, .24);
+}
+
+.to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+
+/* === PRINT === */
+@media print {
+  @page { margin: 14mm; }
+  body { background: #fff; font-size: 10.5pt; }
+  .mobile-banner, .hero-art, .toc, .to-top, .print-btn, .hero-badges { display: none !important; }
+  .hero { padding: 0 0 18px; color: #111; background: #fff; border-bottom: 3px solid #12233f; }
+  .hero::after { display: none; }
+  .hero-kicker, .hero h1 span { color: #0a6a6c; }
+  .hero h1 { font-size: 34pt; color: #12233f; }
+  .hero-lead, .hero-meta { color: #333; }
+  .hero-lead b, .hero-meta b { color: #111; }
+  .shell { display: block; padding: 0; }
+  .doc-section { break-inside: avoid; margin: 0 0 14px; padding: 14px 0; border: 0; border-bottom: 1px solid #ccc; box-shadow: none; border-radius: 0; }
+  .doc-section h2 { font-size: 20pt; }
+  .doc-section h3 { font-size: 12pt; }
+  .section-no { background: #12233f; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .table-wrap, .note, .tip, .warn, .important, .flow, .ui-map, .quick-card, .split .box, .big-stat div { break-inside: avoid; }
+  .table-wrap { overflow: visible; }
+  table { font-size: 8.5pt; }
+  thead th { background: #eee !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  tr, .quick-card, .flow { break-inside: avoid; }
+  pre { white-space: pre-wrap; }
+  a { color: #111; text-decoration: none; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: 210px minmax(0, 1fr); gap: 22px; }
+  .ui-map { grid-template-columns: 96px minmax(0, 1fr) 150px; }
+}
+
+@media (max-width: 900px) {
+  .mobile-banner { display: block; }
+  .hero { padding: 34px 22px 38px; }
+  .hero-art { display: none; }
+  .hero h1 { font-size: 38px; }
+  .shell { display: block; padding: 20px 14px 40px; }
+  .toc { position: static; margin-bottom: 16px; }
+  .toc-card { padding: 14px; }
+  .toc nav { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+  .toc nav a { padding: 6px 8px; font-size: 11.5px; }
+  .toc-note { display: none; }
+  .doc-section { padding: 20px 16px; border-radius: 14px; }
+  .section-head h2 { font-size: 24px; }
+  .quick-grid { grid-template-columns: 1fr 1fr; }
+  .split { grid-template-columns: 1fr; }
+  .ui-map { grid-template-columns: 80px minmax(0, 1fr); grid-template-rows: 32px 200px 28px; }
+  .u-panel { display: none; }
+  .u-status { grid-column: 1 / -1; }
+}
+
+@media (max-width: 560px) {
+  .hero-kicker { font-size: 9.5px; }
+  .hero h1 { font-size: 31px; }
+  .hero-badges { gap: 5px; }
+  .badge { font-size: 9px; padding: 4px 8px; }
+  .toc nav { grid-template-columns: 1fr; }
+  .quick-grid { grid-template-columns: 1fr; }
+  .section-head { gap: 10px; }
+  .section-no { width: 32px; height: 32px; font-size: 15px; }
+  .section-head h2 { font-size: 21px; }
+  .hero-meta { gap: 4px 12px; font-size: 10.5px; }
+}
+</style>
+</head>
+<body>
+<div class="mobile-banner">Panduan ini nyaman dibaca di layar lebar. Aplikasi simulasi sendiri memerlukan lebar minimal 1024 px.</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-kicker">Panduan Guru &amp; Tim Pengajar · Edisi 28 Oktober 2026</p>
+    <h1>Simulasi Jaringan <span>Panduan Lengkap</span></h1>
+    <p class="hero-lead">Dokumen operasional untuk menjalankan, mengajar, menilai, dan menyesuaikan simulasi jaringan berbasis browser untuk siswa SMA/SMK kelas X. Semua nilai bawaan, aturan validasi, skenario, dan perilaku aplikasi dijelaskan berdasarkan implementasi <b>index.html</b>.</p>
+    <div class="hero-badges">
+      <span class="badge">Satu file HTML</span>
+      <span class="badge">Tanpa instalasi</span>
+      <span class="badge">Offline</span>
+      <span class="badge">Bahasa Indonesia</span>
+      <span class="badge">Tanpa backend</span>
+    </div>
+    <div class="hero-meta">
+      <span><b>Aplikasi:</b> index.html</span>
+      <span><b>Panduan:</b> panduan-guru.html</span>
+      <span><b>Versi:</b> 1.0</span>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 260 220" fill="none">
+      <path d="M60 160h140M130 160V100M130 100L72 62M130 100l58-38" stroke="#7dd8d6" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="130" cy="160" r="20" fill="#0f8b8d" stroke="#9de7e4" stroke-width="3"/>
+      <path d="M130 148v6M130 166v6M118 160h6M136 160h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="60" cy="160" r="15" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2"/>
+      <circle cx="200" cy="160" r="15" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2"/>
+      <circle cx="72" cy="62" r="17" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2"/>
+      <circle cx="188" cy="62" r="17" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2"/>
+      <path d="M66 62h12M72 56v12M182 62h12M188 56v12" stroke="#f2b544" stroke-width="2" stroke-linecap="round"/>
+      <text x="130" y="166" text-anchor="middle" fill="#fff" font-family="Segoe UI, sans-serif" font-size="9" font-weight="700">SWITCH</text>
+    </svg>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="toc" aria-label="Daftar isi panduan">
+    <div class="toc-card">
+      <p class="toc-title">Daftar Isi</p>
+      <nav>
+        <a href="#mulai-cepat">Mulai cepat</a>
+        <a href="#ringkasan">1. Ringkasan &amp; cakupan</a>
+        <a href="#menjalankan">2. Menjalankan aplikasi</a>
+        <a href="#antarmuka">3. Tur antarmuka</a>
+        <a href="#kontrol">4. Alat &amp; kontrol</a>
+        <a href="#alur">5. Alur mengajar</a>
+        <a href="#perangkat">6. Perangkat &amp; nilai bawaan</a>
+        <a href="#skenario">7. Skenario bawaan</a>
+        <a href="#validasi">8. Aturan validasi</a>
+        <a href="#simulasi">9. Simulasi paket</a>
+        <a href="#latihan">10. Latihan &amp; rubrik</a>
+        <a href="#kustomisasi">11. Kustomisasi</a>
+        <a href="#masalah">12. Troubleshooting</a>
+        <a href="#checklist">13. Checklist &amp; batasan</a>
+        <a href="#teknis">14. Referensi teknis</a>
+      </nav>
+      <button class="btn print-btn" id="printBtn" type="button">Cetak / Simpan PDF</button>
+      <p class="toc-note">Tips: gunakan <kbd>Ctrl</kbd> + <kbd>F</kbd> untuk mencari istilah seperti <b>R05</b>, <b>PC-01</b>, atau <b>192.168.1.1</b>.</p>
+    </div>
+  </aside>
+
+  <main id="konten">
+    <section class="doc-section" id="mulai-cepat">
+      <div class="section-head">
+        <div class="section-no" aria-hidden="true">★</div>
+        <div>
+          <h2>Mulai cepat</h2>
+          <p>Empat menit untuk siap mengajar.</p>
+        </div>
+      </div>
+
+      <div class="quick-grid">
+        <div class="quick-card">
+          <div class="qno">1</div>
+          <h4>Buka aplikasi</h4>
+          <p>Klik dua kali <code>index.html</code>. Gunakan Chrome, Edge, atau Firefox.</p>
+        </div>
+        <div class="quick-card">
+          <div class="qno">2</div>
+          <h4>Pilih skenario</h4>
+          <p>Di toolbar, pilih <b>Muat Skenario → Lab Komputer Sekolah</b>.</p>
+        </div>
+        <div class="quick-card">
+          <div class="qno">3</div>
+          <h4>Validasi</h4>
+          <p>Buka tab <b>Validasi</b>, klik <b>Periksa Jaringan</b>. Target: <b>7/7</b>.</p>
+        </div>
+        <div class="quick-card">
+          <div class="qno">4</div>
+          <h4>Simulasikan</h4>
+          <p>Di tab <b>Simulasi</b>, pilih sumber &amp; tujuan, lalu <b>Kirim Paket</b>.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>Alur demo tercepat:</b> muat <b>Lab Komputer Sekolah</b> → Validasi <b>7/7</b> → pilih <b>PC-01</b> sebagai sumber dan <b>Internet</b> sebagai tujuan → <b>Kirim Paket</b>. Paket akan melewati PC-01 → Switch Lab → Router Sekolah → Internet.
+      </div>
+
+      <h3>Sebelum masuk kelas</h3>
+      <ul class="checklist">
+        <li>Pastikan folder berisi <code>index.html</code> dan <code>panduan-guru.html</code>.</li>
+        <li>Uji buka <code>index.html</code> di browser yang akan dipakai siswa.</li>
+        <li>Muat kedua skenario dan jalankan satu simulasi untuk memastikan tampilan normal.</li>
+        <li>Siapkan proyektor; aplikasi nyaman pada lebar 1366 px atau lebih.</li>
+        <li>Ingat: tidak ada penyimpanan otomatis. Jangan menutup tab sebelum pekerjaan siswa selesai.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="ringkasan">
+      <div class="section-head">
+        <div class="section-no">1</div>
+        <div>
+          <h2>Ringkasan &amp; cakupan</h2>
+          <p>Apa yang dibangun, untuk siapa, dan apa yang sengaja tidak termasuk.</p>
+        </div>
+      </div>
+
+      <p class="lead">Aplikasi adalah laboratorium jaringan visual untuk siswa SMA/SMK kelas X yang belum memiliki pengetahuan jaringan. Siswa menyusun perangkat, menghubungkannya, memberi alamat IP, memvalidasi topologi, lalu mengirim paket dan membaca perjalanannya langkah demi langkah.</p>
+
+      <h3>Tujuan pembelajaran yang didukung</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Konsep</th><th>Bentuk di aplikasi</th><th>Bukti pemahaman</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Perangkat jaringan</td><td>Komputer, laptop, ponsel, server, switch, access point, router, internet.</td><td>Siswa memilih perangkat yang tepat untuk peran tertentu.</td></tr>
+            <tr><td>Topologi LAN</td><td>Kabel Ethernet dan tautan Wi-Fi pada kanvas.</td><td>Semua perangkat terhubung; endpoint menuju switch/AP; switch/AP menuju router.</td></tr>
+            <tr><td>Peran router</td><td>Router menjadi penghubung jaringan lokal ke Internet.</td><td>R06 dan R07 lolos; narasi hop menyebut penerusan paket.</td></tr>
+            <tr><td>Access point</td><td>Tautan nirkabel ke laptop/ponsel dan kabel ke router.</td><td>R05 lolos untuk perangkat nirkabel; simulasi memakai hop Wi-Fi.</td></tr>
+            <tr><td>Pengalamatan IP</td><td>Bidang IP pada panel Info tiap perangkat.</td><td>R08 (lengkap) dan R09 (unik) opsional.</td></tr>
+            <tr><td>Rute paket</td><td>Animasi hop, panel narasi, ringkasan jumlah perangkat.</td><td>Siswa menjelaskan urutan dan fungsi tiap perangkat.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Yang sudah tersedia</h3>
+      <div class="split">
+        <div class="box">
+          <h4>Fitur inti</h4>
+          <ul>
+            <li>Kanvas dengan 8 jenis perangkat.</li>
+            <li>Tautan kabel dan nirkabel.</li>
+            <li>Ubah nama dan IP perangkat.</li>
+            <li>Validasi 7 aturan wajib + 2 pemeriksaan IP opsional.</li>
+            <li>Simulasi paket dengan narasi per hop.</li>
+            <li>Dua skenario siap pakai dan reset.</li>
+            <li>Zoom, pan, dan status bar.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Kenyamanan pengajaran</h4>
+          <ul>
+            <li>Antarmuka penuh Bahasa Indonesia.</li>
+            <li>Tanpa instalasi, akun, atau internet.</li>
+            <li>Satu file, mudah dibagikan.</li>
+            <li>Pesan kesalahan spesifik dan suportif.</li>
+            <li>Bisa dicetak/ditampilkan di proyektor.</li>
+            <li>Bisa dimodifikasi dengan editor teks.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Batasan yang perlu diketahui guru</h3>
+      <div class="warn">
+        <b>Simulasi ini bersifat logis, bukan emulasi jaringan nyata.</b> Aplikasi tidak menjalankan protokol TCP/IP, tidak melakukan DNS lookup, tidak menghitung latency atau packet loss, dan tidak memeriksa subnet mask, gateway, atau format IPv4. Validasi IP hanya memeriksa <b>kosong/tidak</b> dan <b>duplikat</b>. Ajarkan format dan konsep subnet secara terpisah.
+      </div>
+      <ul>
+        <li><b>Tidak ada penyimpanan otomatis.</b> Memuat ulang halaman menghapus seluruh pekerjaan.</li>
+        <li><b>Tidak ada ekspor gambar/PDF bawaan.</b> Gunakan tangkapan layar atau cetak halaman browser.</li>
+        <li><b>Tidak ada kuis, login, atau rekap nilai.</b> Penilaian dilakukan guru dengan rubrik di bagian 10.</li>
+        <li><b>Tidak ada DNS, DHCP, NAT, atau subnetting.</b> Cocok untuk pengenalan topologi dan alamat IP dasar.</li>
+        <li><b>Bukan untuk ponsel.</b> Di bawah 1024 px aplikasi menampilkan banner; gunakan laptop/PC.</li>
+        <li><b>Tautan selalu dua arah.</b> Tidak ada konsep arah kabel atau VLAN.</li>
+      </ul>
+
+      <h3>Berkas dalam paket</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Berkas</th><th>Fungsi</th><th>Perlu diubah?</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">index.html</td><td>Aplikasi simulasi lengkap (HTML + CSS + JS + ikon SVG).</td><td>Tidak, kecuali ingin kustomisasi.</td></tr>
+            <tr><td class="mono">panduan-guru.html</td><td>Dokumen ini.</td><td>Boleh dicetak atau disimpan sebagai PDF.</td></tr>
+            <tr><td class="mono">README.md</td><td>Petunjuk singkat repositori dan tautan ke panduan.</td><td>Tidak.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="menjalankan">
+      <div class="section-head">
+        <div class="section-no">2</div>
+        <div>
+          <h2>Menjalankan aplikasi</h2>
+          <p>Tanpa server, tanpa instalasi, tanpa koneksi internet.</p>
+        </div>
+      </div>
+
+      <h3>Kebutuhan minimum</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th>Kebutuhan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td>Browser</td><td>Chrome, Edge, atau Firefox versi modern</td><td>Disarankan Chrome/Edge terbaru.</td></tr>
+            <tr><td>Layar</td><td>Lebar minimal 1024 px</td><td>Optimal 1366 px atau lebih.</td></tr>
+            <tr><td>Internet</td><td>Tidak diperlukan</td><td>Tidak ada permintaan ke server luar.</td></tr>
+            <tr><td>Instalasi</td><td>Tidak ada</td><td>Cukup buka file HTML.</td></tr>
+            <tr><td>Penyimpanan</td><td>Berkas <code>index.html</code> (± 90 KB)</td><td>Mudah dikirim lewat USB, LMS, atau LAN.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Langkah membuka</h3>
+      <ol class="steps">
+        <li>Ekstrak atau salin folder yang berisi <code>index.html</code> ke komputer.</li>
+        <li>Klik dua kali <code>index.html</code>. Browser default akan membukanya sebagai <code>file:///...</code>.</li>
+        <li>Jika terbuka di editor teks, klik kanan → <b>Open with</b> → Chrome/Edge/Firefox.</li>
+        <li>Pastikan kanvas, panel kanan, dan toolbar tampil. Aplikasi siap dipakai.</li>
+      </ol>
+
+      <div class="note">
+        <b>Mengapa aman dibuka langsung?</b> Seluruh CSS, JavaScript, dan ikon ditulis di dalam file. Tidak ada Google Fonts, CDN, gambar eksternal, atau API. Jika sekolah memblokir internet, aplikasi tetap berjalan penuh.
+      </div>
+
+      <h3>Cara membagikan ke siswa</h3>
+      <div class="split">
+        <div class="box">
+          <h4>Paling sederhana</h4>
+          <ul>
+            <li>Kirim satu file <code>index.html</code> melalui Google Classroom, Teams, atau LMS.</li>
+            <li>Siswa mengunduh, lalu membukanya di browser.</li>
+            <li>Panduan guru tidak perlu dibagikan ke siswa.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Lab komputer</h4>
+          <ul>
+            <li>Salin file ke setiap komputer atau folder bersama.</li>
+            <li>Buat pintasan di desktop agar mudah ditemukan.</li>
+            <li>Tidak perlu hak administrator.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Kondisi awal saat pertama dibuka</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Bagian</th><th>Nilai bawaan</th></tr></thead>
+          <tbody>
+            <tr><td>Perangkat</td><td>0 perangkat, kanvas kosong</td></tr>
+            <tr><td>Tautan</td><td>0 tautan</td></tr>
+            <tr><td>Alat aktif</td><td><b>Pilih</b></td></tr>
+            <tr><td>Tab panel</td><td><b>Info</b></td></tr>
+            <tr><td>Zoom</td><td>100% (kanvas kosong)</td></tr>
+            <tr><td>Sumber/tujuan paket</td><td>Belum ditentukan</td></tr>
+            <tr><td>Hasil validasi</td><td>Belum ada</td></tr>
+            <tr><td>Status bar</td><td><b>Siap</b> · petunjuk singkat</td></tr>
+            <tr><td>Petunjuk kanvas</td><td>“Seret perangkat ke canvas untuk memulai.”</td></tr>
+            <tr><td>Pilihan skenario</td><td>“Muat Skenario” (belum ada yang dimuat)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warn">
+        <b>Tidak ada autosave.</b> Aplikasi menyimpan state hanya di memori tab. Menekan <kbd>F5</kbd>, menutup tab, atau memuat skenario baru akan menghapus pekerjaan yang belum selesai. Minta siswa menyelesaikan satu sesi tanpa refresh, atau beri tahu bahwa pekerjaan akan hilang.
+      </div>
+
+      <h3>Jika ingin meng-host (opsional)</h3>
+      <p>Aplikasi dapat diletakkan di server statis sekolah, GitHub Pages, Netlify, atau Google Sites (unggah file). Tidak ada konfigurasi server, basis data, atau build step. Selama file HTML dapat diakses, aplikasi berjalan.</p>
+    </section>
+
+    <section class="doc-section" id="antarmuka">
+      <div class="section-head">
+        <div class="section-no">3</div>
+        <div>
+          <h2>Tur antarmuka</h2>
+          <p>Kenali setiap area sebelum menjelaskan ke siswa.</p>
+        </div>
+      </div>
+
+      <div class="ui-map" role="img" aria-label="Skema tata letak aplikasi: toolbar di atas, palet perangkat di kiri, kanvas di tengah, panel Info Validasi Simulasi di kanan, status bar di bawah.">
+        <div class="u u-top"><span>TOOLBAR</span><em>alat · zoom · skenario · reset</em></div>
+        <div class="u u-side"><span>PALET<br>PERANGKAT</span><em>8 kartu yang bisa diseret</em></div>
+        <div class="u u-canvas">
+          <span class="aria">KANVAS</span>
+          <div class="mini"><span>PC</span><span>⟷</span><span>SWITCH</span><span>⟷</span><span>ROUTER</span><span>⟷</span><span>INTERNET</span></div>
+        </div>
+        <div class="u u-panel"><span>PANEL KANAN</span><em>Info · Validasi · Simulasi</em></div>
+        <div class="u u-status"><span>STATUS BAR</span><span>zoom · petunjuk</span></div>
+      </div>
+
+      <h3>Fungsi setiap area</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Area</th><th>Isi</th><th>Yang dilakukan guru/siswa</th></tr></thead>
+          <tbody>
+            <tr><td><b>Toolbar</b></td><td>Merek, alat Pilih/Kabel/Nirkabel/Hapus, zoom, Muat Skenario, Reset.</td><td>Berpindah alat, mengatur tampilan, memuat latihan, memulai ulang.</td></tr>
+            <tr><td><b>Palet kiri</b></td><td>Komputer, Laptop, Ponsel, Server, Switch, Access Point, Router, Internet.</td><td>Seret ke kanvas atau klik kartu untuk menambah di tengah.</td></tr>
+            <tr><td><b>Kanvas</b></td><td>Titik grid, perangkat, kabel, tautan Wi-Fi, label IP, paket animasi.</td><td>Menyusun topologi, memilih perangkat, menggeser, menghubungkan.</td></tr>
+            <tr><td><b>Panel kanan</b></td><td>Tab <b>Info</b>, <b>Validasi</b>, <b>Simulasi</b>.</td><td>Mengedit perangkat, memeriksa aturan, menjalankan paket.</td></tr>
+            <tr><td><b>Status bar</b></td><td>Status siap/masalah, jumlah perangkat/tautan, zoom, petunjuk.</td><td>Membaca kondisi cepat tanpa membuka panel.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tab panel kanan</h3>
+      <div class="split">
+        <div class="box">
+          <h4>Info</h4>
+          <ul>
+            <li>Saat belum ada perangkat: petunjuk menyeret perangkat.</li>
+            <li>Saat perangkat dipilih: nama, jenis, IP, tombol <b>Jadikan Sumber</b> dan <b>Jadikan Tujuan</b>.</li>
+            <li>Perubahan nama/IP langsung terlihat di kanvas.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Validasi</h4>
+          <ul>
+            <li>Tombol <b>Periksa Jaringan</b>.</li>
+            <li>Skor wajib <b>x/7</b> dan status opsional IP.</li>
+            <li>Daftar 9 aturan dengan status lulus/gagal dan pesan perbaikan.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="split">
+        <div class="box">
+          <h4>Simulasi</h4>
+          <ul>
+            <li>Ringkasan sumber dan tujuan.</li>
+            <li>Tombol <b>Kirim Paket</b> / <b>Kirim Ulang</b>, <b>Hentikan</b>.</li>
+            <li>Kartu narasi per hop dan ringkasan akhir.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Umpan balik</h4>
+          <ul>
+            <li><b>Toast</b> muncul singkat di bawah untuk konfirmasi/kesalahan.</li>
+            <li><b>Dialog konfirmasi</b> muncul saat memuat skenario atau reset jika kanvas berisi perangkat.</li>
+            <li><b>Banner mobile</b> muncul di layar sempit.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Membaca status dan petunjuk</h3>
+      <ul>
+        <li><b>Siap</b> — belum ada masalah atau validasi belum dijalankan.</li>
+        <li><b>Siap · 7/7</b> — validasi terakhir lulus semua aturan wajib.</li>
+        <li><b>Ada masalah</b> — masih ada aturan wajib yang gagal; skor rinci terlihat di tab Validasi.</li>
+        <li><b>Zoom</b> — persentase tampilan kanvas; skenario otomatis di-fit saat dimuat.</li>
+        <li><b>Petunjuk bawah</b> — berubah sesuai konteks, misalnya “Klik dua kali perangkat untuk mengubah nama &amp; IP.”</li>
+      </ul>
+
+      <div class="tip">
+        <b>Untuk proyektor:</b> gunakan zoom 100–125% agar label dan IP terbaca. Jika topologi melebar, gunakan <kbd>Space</kbd> + seret atau klik tengah untuk pan, bukan mengecilkan sampai tidak terbaca.
+      </div>
+    </section>
+    <section class="doc-section" id="kontrol">
+      <div class="section-head">
+        <div class="section-no">4</div>
+        <div>
+          <h2>Alat &amp; kontrol</h2>
+          <p>Semua interaksi mouse, keyboard, dan perilaku yang perlu diketahui.</p>
+        </div>
+      </div>
+
+      <h3>Alat di toolbar</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Alat</th><th>Pintasan</th><th>Cara pakai</th><th>Perilaku penting</th></tr></thead>
+          <tbody>
+            <tr><td><b>Pilih</b></td><td><kbd>V</kbd></td><td>Klik perangkat/tautan untuk memilih, seret perangkat untuk memindahkan.</td><td>Kabel mengikuti perangkat. Klik latar kanvas menghapus pilihan. <kbd>Shift</kbd>+klik menandai sumber/tujuan.</td></tr>
+            <tr><td><b>Kabel</b></td><td><kbd>L</kbd></td><td>Klik perangkat A, lalu perangkat B.</td><td>Alat tetap aktif untuk membuat beberapa kabel. Klik latar atau <kbd>Esc</kbd> membatalkan. Duplikat dan tautan diri ditolak.</td></tr>
+            <tr><td><b>Nirkabel</b></td><td><kbd>W</kbd></td><td>Klik perangkat A, lalu perangkat B.</td><td>Sama seperti kabel, tetapi garis putus-putus dengan penanda Wi-Fi di tengah.</td></tr>
+            <tr><td><b>Hapus</b></td><td><kbd>D</kbd></td><td>Klik perangkat atau tautan.</td><td>Menghapus perangkat juga menghapus semua tautannya. Tool tetap aktif sampai diganti.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>Urutan tautan tidak penting.</b> Klik A lalu B sama dengan B lalu A. Tautan selalu dua arah, sehingga simulasi dapat berjalan bolak-balik. Satu pasang perangkat hanya boleh memiliki satu tautan; tipe kabel/nirkabel tidak dapat diubah tanpa menghapus tautan lama.
+      </div>
+
+      <h3>Mouse dan kanvas</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aksi</th><th>Hasil</th></tr></thead>
+          <tbody>
+            <tr><td>Klik perangkat</td><td>Memilih perangkat, membuka tab <b>Info</b>, menampilkan bidang nama dan IP.</td></tr>
+            <tr><td>Seret perangkat</td><td>Memindahkan perangkat; semua tautan ikut menyesuaikan.</td></tr>
+            <tr><td>Klik dua kali perangkat</td><td>Membuka popover editor nama &amp; IP di dekat perangkat.</td></tr>
+            <tr><td><kbd>Shift</kbd> + klik perangkat</td><td>Cepat menetapkan sumber, lalu tujuan. Jika keduanya sudah terisi, perangkat baru menjadi sumber dan tujuan dikosongkan.</td></tr>
+            <tr><td>Klik tautan</td><td>Memilih tautan; panel Info menampilkan jenis dan kedua ujungnya.</td></tr>
+            <tr><td>Klik latar kanvas</td><td>Menghapus pilihan; pada alat kabel/nirkabel, membatalkan tautan yang tertunda.</td></tr>
+            <tr><td>Klik tengah + seret</td><td>Menggeser tampilan (pan).</td></tr>
+            <tr><td><kbd>Space</kbd> + seret kiri</td><td>Pan tanpa mengubah perangkat. Lepas <kbd>Space</kbd> untuk kembali ke alat semula.</td></tr>
+            <tr><td>Roda mouse</td><td>Zoom di sekitar posisi kursor, rentang <b>45%–220%</b>.</td></tr>
+            <tr><td>Seret kartu palet</td><td>Menambah perangkat tepat di titik jatuh.</td></tr>
+            <tr><td>Klik kartu palet</td><td>Menambah perangkat di tengah kanvas dengan geser bertahap 26 px.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Keyboard</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tombol</th><th>Fungsi</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>V</kbd> / <kbd>L</kbd> / <kbd>W</kbd> / <kbd>D</kbd></td><td>Pilih / Kabel / Nirkabel / Hapus</td><td>Diabaikan saat mengetik di input, select, atau textarea.</td></tr>
+            <tr><td><kbd>Esc</kbd></td><td>Batalkan tautan tertunda → tutup popover → hentikan simulasi</td><td>Prioritas dari kiri ke kanan.</td></tr>
+            <tr><td><kbd>Delete</kbd> atau <kbd>Backspace</kbd></td><td>Hapus perangkat/tautan yang dipilih</td><td>Hanya jika fokus tidak berada di bidang teks.</td></tr>
+            <tr><td><kbd>Space</kbd> (tahan) + seret</td><td>Pan sementara</td><td>Pintasan tidak aktif saat fokus di tombol atau tautan.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tombol aksi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tombol</th><th>Lokasi</th><th>Perilaku</th></tr></thead>
+          <tbody>
+            <tr><td><b>Muat Skenario</b></td><td>Toolbar</td><td>Memuat <i>Lab Komputer Sekolah</i> atau <i>Jaringan Rumah Sederhana</i>. Jika kanvas berisi perangkat, muncul konfirmasi. Setelah dimuat, pilihan kembali ke placeholder.</td></tr>
+            <tr><td><b>Reset Canvas</b></td><td>Toolbar</td><td>Menghapus semua perangkat, tautan, sumber/tujuan, validasi, dan simulasi. Konfirmasi hanya muncul jika ada perangkat.</td></tr>
+            <tr><td><b>Periksa Jaringan</b></td><td>Tab Validasi</td><td>Menjalankan 7 aturan wajib dan 2 pemeriksaan IP opsional.</td></tr>
+            <tr><td><b>Kirim Paket</b></td><td>Toolbar / tab Simulasi</td><td>Memulai simulasi jika sumber dan tujuan sudah dipilih.</td></tr>
+            <tr><td><b>Hentikan</b></td><td>Tab Simulasi</td><td>Menghentikan animasi dan menghapus state simulasi.</td></tr>
+            <tr><td><b>Kirim ulang</b></td><td>Tab Simulasi</td><td>Menjalankan ulang rute yang sama setelah simulasi selesai.</td></tr>
+            <tr><td><b>Jadikan Sumber / Tujuan</b></td><td>Tab Info</td><td>Menetapkan endpoint. Klik lagi untuk membatalkan. Menetapkan perangkat yang sama untuk kedua peran akan mengosongkan peran lainnya.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Perilaku umpan balik</h3>
+      <ul>
+        <li><b>Toast</b> tampil ± 3,4 detik di bawah kanvas. Warna hijau untuk sukses, merah untuk kesalahan, netral untuk informasi.</li>
+        <li><b>Konfirmasi</b> memakai dialog browser, bukan dialog kustom. Teksnya: “Reset canvas dan muat skenario ini?” atau “Reset canvas? Semua perangkat dan koneksi akan dihapus.”</li>
+        <li><b>Status bar</b> berubah menjadi <b>Mengirim paket…</b> saat animasi berjalan, lalu <b>Siap · 7/7</b> atau <b>Ada masalah</b> setelah validasi.</li>
+        <li><b>Validasi lama dihapus</b> saat perangkat, tautan, nama, atau IP diubah. Jalankan ulang validasi setelah perbaikan.</li>
+      </ul>
+
+      <div class="warn">
+        <b>Jangan mengandalkan klik kanan.</b> Aplikasi tidak memiliki menu konteks khusus. Semua aksi ada di toolbar, panel, atau melalui klik dua kali. Jika ragu, kembali ke alat <b>Pilih</b> dengan <kbd>V</kbd>.
+      </div>
+    </section>
+
+    <section class="doc-section" id="alur">
+      <div class="section-head">
+        <div class="section-no">5</div>
+        <div>
+          <h2>Alur mengajar</h2>
+          <p>Rencana 60–90 menit dari demonstrasi sampai asesmen.</p>
+        </div>
+      </div>
+
+      <p class="lead">Gunakan pola <b>Lihat → Tiru → Bangun → Jelaskan</b>. Siswa perlu melihat satu rute yang benar sebelum membangun sendiri, lalu menjelaskan alasannya dengan kata-kata sendiri.</p>
+
+      <h3>Rencana pembelajaran 60 menit</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Waktu</th><th>Fase</th><th>Kegiatan</th><th>Bukti belajar</th></tr></thead>
+          <tbody>
+            <tr><td class="nowrap">5 menit</td><td>Pembuka</td><td>Tanyakan: “Apa yang terjadi saat kamu membuka video dari HP?” Kumpulkan dugaan siswa.</td><td>Dugaan awal tentang perjalanan data.</td></tr>
+            <tr><td class="nowrap">10 menit</td><td>Demonstrasi</td><td>Muat Lab, tunjukkan perangkat, validasi 7/7, lalu kirim paket PC-01 → Internet. Hentikan di setiap hop dan minta siswa menebak langkah berikutnya.</td><td>Siswa menyebut switch, router, internet.</td></tr>
+            <tr><td class="nowrap">15 menit</td><td>Tiru terbimbing</td><td>Siswa memuat Lab, mengganti nama satu PC, mengubah IP, lalu mengirim paket dari PC lain ke Internet. Guru berkeliling.</td><td>Narasi 3 hop dan ringkasan 4 perangkat.</td></tr>
+            <tr><td class="nowrap">20 menit</td><td>Bangun mandiri</td><td>Reset, lalu bangun jaringan rumah: Internet, router, AP, laptop, HP. Target validasi 7/7 dan IP 2/2.</td><td>Topologi 5 perangkat, 4 tautan, validasi 7/7.</td></tr>
+            <tr><td class="nowrap">10 menit</td><td>Presentasi</td><td>Dua siswa menunjukkan topologi dan menjelaskan mengapa AP dipakai untuk laptop/HP, bukan router langsung.</td><td>Penjelasan lisan yang runtut.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Alur kerja siswa (poster ringkas)</h3>
+      <ol class="steps">
+        <li><b>Susun perangkat.</b> Seret dari palet. Mulai dari Internet → Router → Switch/AP → endpoint.</li>
+        <li><b>Hubungkan.</b> Gunakan Kabel untuk backbone dan Nirkabel untuk laptop/HP ke AP. Cek tidak ada perangkat yatim.</li>
+        <li><b>Beri identitas.</b> Klik dua kali perangkat; isi nama yang bermakna dan IP unik. Internet tidak diberi IP.</li>
+        <li><b>Validasi.</b> Buka tab Validasi. Baca aturan yang gagal, perbaiki satu per satu, lalu periksa ulang.</li>
+        <li><b>Simulasikan.</b> Tandai sumber dan tujuan. Kirim paket. Baca setiap kartu narasi, bukan hanya pesan sukses.</li>
+        <li><b>Jelaskan.</b> Minta siswa menutup panel dan menceritakan rute dari ingatan.</li>
+      </ol>
+
+      <div class="tip">
+        <b>Aturan emas saat demonstrasi:</b> selalu validasi sebelum simulasi. Ini membiasakan siswa memeriksa topologi, bukan menebak-nebak. Jika simulasi gagal, arahkan ke tab Validasi terlebih dahulu, bukan langsung mengubah kabel.
+      </div>
+
+      <h3>Variasi kegiatan</h3>
+      <div class="split">
+        <div class="box">
+          <h4>Demo interaktif</h4>
+          <ul>
+            <li>Proyeksikan aplikasi; siswa memberi instruksi (“tambah router”, “hubungkan PC-03”).</li>
+            <li>Guru sengaja salah memilih alat untuk memancing koreksi.</li>
+            <li>Minta siswa memprediksi warna hop dan label berikutnya.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Kerja berpasangan</h4>
+          <ul>
+            <li>Siswa A membangun, siswa B memvalidasi dan mencatat aturan yang gagal.</li>
+            <li>Setelah 10 menit, tukar peran dan muat ulang skenario.</li>
+            <li>Pasangan lain mengecek rute dengan simulasi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="box">
+          <h4>Lab komputer</h4>
+          <ul>
+            <li>Satu siswa per komputer; simpan file di folder yang mudah diakses.</li>
+            <li>Minta siswa tidak menutup tab sampai presentasi selesai.</li>
+            <li>Siapkan skenario cadangan jika ada siswa yang tertinggal.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4>Kelas tanpa lab</h4>
+          <ul>
+            <li>Guru mendemonstrasikan, siswa menggambar topologi di buku.</li>
+            <li>Siswa menuliskan narasi hop berdasarkan apa yang dilihat.</li>
+            <li>Gunakan tangkapan layar sebagai bahan kuis tertulis.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Pertanyaan pemandu</h3>
+      <ul>
+        <li>Mengapa komputer tidak langsung dihubungkan ke Internet tanpa router?</li>
+        <li>Apa perbedaan peran switch dan access point?</li>
+        <li>Mengapa laptop dan HP pada skenario rumah terhubung ke AP, bukan ke router?</li>
+        <li>Apa yang terjadi jika satu kabel backbone dihapus? Aturan mana yang gagal?</li>
+        <li>Mengapa dua perangkat tidak boleh memakai IP yang sama?</li>
+        <li>Jika ada dua jalur, jalur mana yang dipilih aplikasi? (Jalur terpendek berdasarkan jumlah hop.)</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="perangkat">
+      <div class="section-head">
+        <div class="section-no">6</div>
+        <div>
+          <h2>Perangkat &amp; nilai bawaan</h2>
+          <p>Delapan jenis perangkat, nama otomatis, IP awal, dan perannya.</p>
+        </div>
+      </div>
+
+      <p class="lead">Saat perangkat baru ditambahkan, <b>nama diisi otomatis</b> dan <b>IP selalu kosong</b>. Nama duplikat diberi angka: “Komputer”, “Komputer 2”, “Komputer 3”, dan seterusnya. Nama unik tidak wajib; aturan validasi bekerja berdasarkan <b>jenis</b> perangkat, bukan nama.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Jenis</th><th>Label UI</th><th>Nama bawaan</th><th>IP bawaan</th><th>Peran utama</th><th>Endpoint R05?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">desktop</td><td>Komputer</td><td>Komputer</td><td>— (kosong)</td><td>Perangkat pengguna di lab.</td><td><span class="pill ok">Ya</span></td></tr>
+            <tr><td class="mono">laptop</td><td>Laptop</td><td>Laptop</td><td>— (kosong)</td><td>Perangkat pengguna, biasanya nirkabel.</td><td><span class="pill ok">Ya</span></td></tr>
+            <tr><td class="mono">phone</td><td>HP / Ponsel</td><td>HP / Ponsel</td><td>— (kosong)</td><td>Perangkat pengguna nirkabel.</td><td><span class="pill ok">Ya</span></td></tr>
+            <tr><td class="mono">server</td><td>Server</td><td>Server</td><td>— (kosong)</td><td>Penyedia layanan; dapat disimulasikan sebagai sumber/tujuan.</td><td><span class="pill bad">Tidak</span></td></tr>
+            <tr><td class="mono">switch</td><td>Switch</td><td>Switch</td><td>— (kosong)</td><td>Menghubungkan banyak kabel Ethernet di LAN.</td><td><span class="pill bad">Tidak</span></td></tr>
+            <tr><td class="mono">ap</td><td>Access Point</td><td>Access Point</td><td>— (kosong)</td><td>Menghubungkan klien Wi-Fi ke jaringan kabel.</td><td><span class="pill bad">Tidak</span></td></tr>
+            <tr><td class="mono">router</td><td>Router</td><td>Router</td><td>— (kosong)</td><td>Menghubungkan LAN ke Internet.</td><td><span class="pill bad">Tidak</span></td></tr>
+            <tr><td class="mono">internet</td><td>Internet</td><td>Internet</td><td><b>Tidak berlaku</b></td><td>Jaringan luar; ujung rute.</td><td><span class="pill bad">Tidak</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="important">
+        <b>Internet adalah pengecualian.</b> Bidang IP untuk perangkat Internet dinonaktifkan dan selalu disimpan kosong. Internet tidak dihitung pada R08/R09. Namun Internet tetap dapat dijadikan sumber atau tujuan simulasi; narasi dari Internet selalu berbentuk “Respons datang dari Internet ke …”.
+      </div>
+
+      <h3>Detail perilaku perangkat</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th>Nilai / perilaku</th></tr></thead>
+          <tbody>
+            <tr><td>Ukuran tile</td><td>60 × 60 px pada koordinat dunia; area klik 76 × 108 px termasuk label/IP.</td></tr>
+            <tr><td>Label di kanvas</td><td>Dipenggal pada 19 karakter dengan elipsis. Nama lengkap tetap ada di panel dan tooltip.</td></tr>
+            <tr><td>Chip IP</td><td>Muncul hanya jika IP tidak kosong. Lebar menyesuaikan panjang, maksimum 96 px.</td></tr>
+            <tr><td>Jarak antar perangkat baru</td><td>Klik palet: posisi tengah + offset 26 px berulang tiap 6 perangkat.</td></tr>
+            <tr><td>Drag dari palet</td><td>Dijatuhkan tepat di posisi kursor dalam koordinat dunia.</td></tr>
+            <tr><td>Penghapusan</td><td>Menghapus perangkat juga menghapus semua tautan dan peran sumber/tujuan-nya.</td></tr>
+            <tr><td>Validasi nama</td><td>Tidak ada. Nama kosong akan ditampilkan sebagai label jenis perangkat.</td></tr>
+            <tr><td>Validasi IP</td><td>Tidak ada format. Hanya kosong/tidak dan duplikat. Spasi awal/akhir diabaikan saat pemeriksaan.</td></tr>
+            <tr><td>Peran endpoint</td><td>Hanya <b>desktop, laptop, phone</b>. Server tidak memicu R05.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Kombinasi yang disarankan</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Perangkat</th><th>Terhubung ke</th><th>Jenis tautan</th><th>Alasan</th></tr></thead>
+          <tbody>
+            <tr><td>Komputer / Server</td><td>Switch</td><td>Kabel</td><td>Koneksi stabil dan umum di lab.</td></tr>
+            <tr><td>Laptop / HP</td><td>Access Point</td><td>Nirkabel</td><td>Mensimulasikan klien Wi-Fi.</td></tr>
+            <tr><td>Switch</td><td>Router</td><td>Kabel</td><td>Backbone LAN menuju gateway.</td></tr>
+            <tr><td>Access Point</td><td>Router atau Switch</td><td>Kabel</td><td>AP meneruskan trafik Wi-Fi ke jaringan kabel.</td></tr>
+            <tr><td>Router</td><td>Internet</td><td>Kabel</td><td>Syarat R06; menghubungkan LAN ke WAN.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>Bolehkah endpoint langsung ke router?</b> Secara teknis bisa dibuat, tetapi <b>R05 akan gagal</b> karena aturan mensyaratkan setiap komputer/laptop/HP terhubung ke Switch atau Access Point. Ini disengaja agar siswa memahami peran perangkat intermediari.
+      </div>
+
+      <div class="tip">
+        <b>Gunakan nama yang bermakna.</b> “PC-01”, “Laptop Ayah”, atau “Server Sekolah” membuat narasi simulasi lebih mudah dibaca daripada “Komputer 5”. Nama panjang dipenggal di kanvas, jadi gunakan maksimal ± 18 karakter.
+      </div>
+    </section>
+    <section class="doc-section" id="skenario">
+      <div class="section-head">
+        <div class="section-no">7</div>
+        <div>
+          <h2>Skenario bawaan</h2>
+          <p>Dua latihan siap pakai, lengkap dengan nilai awal dan hasil yang diharapkan.</p>
+        </div>
+      </div>
+
+      <p class="lead">Kedua skenario dimuat dari menu <b>Muat Skenario</b>. Saat dimuat, aplikasi menghapus simulasi dan validasi lama, mengosongkan pilihan sumber/tujuan, berpindah ke tab Info, lalu <b>auto-fit</b> kanvas ke seluruh perangkat (zoom 45%–125% tergantung ukuran layar).</p>
+
+      <div class="note">
+        <b>Konfirmasi:</b> jika kanvas sudah berisi perangkat, muncul pertanyaan “Reset canvas dan muat skenario ini?”. Jika dibatalkan, kanvas tidak berubah. Jika kanvas kosong, skenario langsung dimuat.
+      </div>
+
+      <h3>Skenario 1 — Lab Komputer Sekolah</h3>
+      <div class="big-stat">
+        <div><b>8</b><span>perangkat</span></div>
+        <div><b>7</b><span>tautan kabel</span></div>
+        <div><b>7/7</b><span>aturan wajib</span></div>
+        <div><b>2/2</b><span>pemeriksaan IP</span></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nama</th><th>Jenis</th><th>IP</th><th class="num">x</th><th class="num">y</th></tr></thead>
+          <tbody>
+            <tr><td><b>Internet</b></td><td>internet</td><td class="mono">—</td><td class="num">520</td><td class="num">80</td></tr>
+            <tr><td><b>Router Sekolah</b></td><td>router</td><td class="mono">192.168.1.1</td><td class="num">400</td><td class="num">170</td></tr>
+            <tr><td><b>Switch Lab</b></td><td>switch</td><td class="mono">192.168.1.2</td><td class="num">220</td><td class="num">280</td></tr>
+            <tr><td><b>AP Wi-Fi</b></td><td>ap</td><td class="mono">192.168.1.3</td><td class="num">430</td><td class="num">350</td></tr>
+            <tr><td><b>PC-01</b></td><td>desktop</td><td class="mono">192.168.1.10</td><td class="num">80</td><td class="num">100</td></tr>
+            <tr><td><b>PC-02</b></td><td>desktop</td><td class="mono">192.168.1.11</td><td class="num">80</td><td class="num">190</td></tr>
+            <tr><td><b>PC-03</b></td><td>desktop</td><td class="mono">192.168.1.12</td><td class="num">80</td><td class="num">280</td></tr>
+            <tr><td><b>PC-04</b></td><td>desktop</td><td class="mono">192.168.1.13</td><td class="num">80</td><td class="num">370</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Dari</th><th>Ke</th><th>Jenis</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>PC-01</td><td>Switch Lab</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">2</td><td>PC-02</td><td>Switch Lab</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">3</td><td>PC-03</td><td>Switch Lab</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">4</td><td>PC-04</td><td>Switch Lab</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">5</td><td>Switch Lab</td><td>Router Sekolah</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">6</td><td>Router Sekolah</td><td>Internet</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">7</td><td>AP Wi-Fi</td><td>Switch Lab</td><td><span class="pill">Kabel</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Rute yang dihasilkan</h4>
+      <div class="flow">
+        <span class="node src">PC-01</span><span class="arrow">→</span>
+        <span class="node">Switch Lab</span><span class="arrow">→</span>
+        <span class="node">Router Sekolah</span><span class="arrow">→</span>
+        <span class="node dst">Internet</span>
+      </div>
+      <p><b>4 perangkat, 3 hop.</b> Ini rute default untuk demonstrasi tercepat. Rute PC-01 → PC-04 menjadi PC-01 → Switch Lab → PC-04 (3 perangkat, 2 hop).</p>
+
+      <div class="tip">
+        <b>AP Wi-Fi di skenario ini berfungsi sebagai perangkat tambahan.</b> AP terhubung ke switch, tetapi tidak ada klien nirkabel. Menghapus AP <i>tidak</i> merusak skor wajib karena Switch Lab sudah memenuhi R04 dan R07. Gunakan fakta ini untuk diskusi “perangkat mana yang benar-benar dipakai jalur?”.
+      </div>
+
+      <h3>Skenario 2 — Jaringan Rumah Sederhana</h3>
+      <div class="big-stat">
+        <div><b>5</b><span>perangkat</span></div>
+        <div><b>4</b><span>tautan</span></div>
+        <div><b>7/7</b><span>aturan wajib</span></div>
+        <div><b>2/2</b><span>pemeriksaan IP</span></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nama</th><th>Jenis</th><th>IP</th><th>Peran</th><th class="num">x</th><th class="num">y</th></tr></thead>
+          <tbody>
+            <tr><td><b>Internet</b></td><td>internet</td><td class="mono">—</td><td>Ujung WAN</td><td class="num">470</td><td class="num">90</td></tr>
+            <tr><td><b>Router Rumah</b></td><td>router</td><td class="mono">192.168.1.1</td><td>Gateway LAN</td><td class="num">300</td><td class="num">200</td></tr>
+            <tr><td><b>AP Wi-Fi</b></td><td>ap</td><td class="mono">192.168.1.2</td><td>Pemancar Wi-Fi</td><td class="num">450</td><td class="num">320</td></tr>
+            <tr><td><b>Laptop Ayah</b></td><td>laptop</td><td class="mono">192.168.1.10</td><td>Klien nirkabel</td><td class="num">170</td><td class="num">360</td></tr>
+            <tr><td><b>HP Kakak</b></td><td>phone</td><td class="mono">192.168.1.11</td><td>Klien nirkabel</td><td class="num">300</td><td class="num">440</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Dari</th><th>Ke</th><th>Jenis</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Router Rumah</td><td>Internet</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">2</td><td>Router Rumah</td><td>AP Wi-Fi</td><td><span class="pill">Kabel</span></td></tr>
+            <tr><td class="num">3</td><td>Laptop Ayah</td><td>AP Wi-Fi</td><td><span class="pill opt">Nirkabel</span></td></tr>
+            <tr><td class="num">4</td><td>HP Kakak</td><td>AP Wi-Fi</td><td><span class="pill opt">Nirkabel</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Rute yang dihasilkan</h4>
+      <div class="flow">
+        <span class="node src">Laptop Ayah</span><span class="arrow">→</span>
+        <span class="node">AP Wi-Fi</span><span class="arrow">→</span>
+        <span class="node">Router Rumah</span><span class="arrow">→</span>
+        <span class="node dst">Internet</span>
+      </div>
+      <p><b>4 perangkat, 3 hop.</b> HP Kakak → Internet juga 4 perangkat. Laptop → HP menjadi Laptop Ayah → AP Wi-Fi → HP Kakak (3 perangkat, 2 hop).</p>
+
+      <div class="warn">
+        <b>Catatan perbedaan dengan spesifikasi awal.</b> Spesifikasi menyebut Skenario 2 hanya berisi Internet, Router, Laptop, dan Phone. Implementasi menambahkan <b>AP Wi-Fi</b> agar R04, R05, dan R07 dapat terpenuhi sekaligus mencerminkan jaringan rumah nyata. Jika tim pengajar ingin versi tanpa AP, endpoint harus dihubungkan langsung ke router; konsekuensinya R05 akan gagal karena aturan mensyaratkan switch/AP.
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Perubahan dari skenario</th><th>Skor wajib</th><th>Yang gagal</th><th>Pelajaran</th></tr></thead>
+          <tbody>
+            <tr><td>Lab: hapus satu PC</td><td><b>7/7</b></td><td>—</td><td>Jumlah endpoint tidak memengaruhi skor selama minimal satu endpoint tersisa dan semua terhubung.</td></tr>
+            <tr><td>Lab: hapus AP</td><td><b>7/7</b></td><td>—</td><td>Switch masih memenuhi R04/R07; AP tidak berada di jalur PC → Internet.</td></tr>
+            <tr><td>Lab: hapus tautan Router → Internet</td><td><b>6/7</b></td><td>R06</td><td>Router harus punya jalur ke Internet.</td></tr>
+            <tr><td>Home: hapus AP</td><td><b>3/7</b></td><td>R02, R04, R05, R07</td><td>Laptop/HP kehilangan tautan; tidak ada switch/AP; tidak ada jalur ke router.</td></tr>
+            <tr><td>Home: ubah tautan laptop menjadi kabel ke AP</td><td><b>7/7</b></td><td>—</td><td>R05 tidak membedakan kabel/nirkabel; jenis tautan hanya memengaruhi narasi.</td></tr>
+            <tr><td>Home: isi IP laptop sama dengan HP</td><td><b>7/7</b></td><td>R09 (opsional)</td><td>Skor wajib tetap; pemeriksaan IP menjadi 1/2.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="validasi">
+      <div class="section-head">
+        <div class="section-no">8</div>
+        <div>
+          <h2>Aturan validasi</h2>
+          <p>Tujuh aturan wajib, dua pemeriksaan IP opsional, dan cara membaca skor.</p>
+        </div>
+      </div>
+
+      <p class="lead">Validasi dijalankan dari tab <b>Validasi</b> atau tombol <b>Validasi Jaringan</b>. Skor utama selalu <b>x/7</b>. Pemeriksaan IP ditampilkan terpisah sebagai <b>x/2 opsional</b> dan <b>tidak menambah atau mengurangi skor wajib</b>.</p>
+
+      <div class="big-stat">
+        <div><b>7</b><span>aturan wajib</span></div>
+        <div><b>2</b><span>pemeriksaan IP opsional</span></div>
+        <div><b>0</b><span>batas minimal IP untuk lulus wajib</span></div>
+        <div><b>9</b><span>baris feedback</span></div>
+      </div>
+
+      <h3>Daftar aturan</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Label</th><th>Status</th><th>Lulus jika…</th><th>Pesan jika gagal</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="mono"><b>R01</b></td><td>Minimal 2 perangkat</td><td><span class="pill bad">Wajib</span></td>
+              <td>Jumlah perangkat ≥ 2.</td><td>“Tambahkan minimal dua perangkat ke kanvas.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R02</b></td><td>Semua perangkat terhubung</td><td><span class="pill bad">Wajib</span></td>
+              <td>Ada ≥ 1 perangkat dan <b>setiap</b> perangkat memiliki minimal satu tautan.</td><td>“Ada perangkat yang belum terhubung ke jaringan.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R03</b></td><td>Ada router</td><td><span class="pill bad">Wajib</span></td>
+              <td>Minimal satu perangkat berjenis router.</td><td>“Tambahkan satu Router sebagai penghubung jaringan.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R04</b></td><td>Ada switch atau access point</td><td><span class="pill bad">Wajib</span></td>
+              <td>Minimal satu switch <i>atau</i> satu access point.</td><td>“Tambahkan Switch atau Access Point untuk menghubungkan perangkat.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R05</b></td><td>PC/laptop tersambung ke switch atau AP</td><td><span class="pill bad">Wajib</span></td>
+              <td>Ada minimal satu endpoint (desktop/laptop/phone) dan <b>setiap</b> endpoint bertetangga langsung dengan switch/AP.</td><td>“Setiap komputer, laptop, dan HP harus terhubung ke Switch atau Access Point.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R06</b></td><td>Router terhubung ke internet</td><td><span class="pill bad">Wajib</span></td>
+              <td>Minimal satu router bertetangga langsung dengan perangkat Internet.</td><td>“Hubungkan Router ke perangkat Internet.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R07</b></td><td>Switch/AP terhubung ke router</td><td><span class="pill bad">Wajib</span></td>
+              <td>Minimal satu switch/AP bertetangga langsung dengan router.</td><td>“Hubungkan Switch atau Access Point ke Router.”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R08</b></td><td>IP address diisi semua</td><td><span class="pill opt">Opsional</span></td>
+              <td>Semua perangkat <b>selain Internet</b> memiliki IP tidak kosong. Diabaikan jika belum ada IP sama sekali.</td><td>“Isi alamat IP untuk semua perangkat (kecuali Internet).”</td>
+            </tr>
+            <tr>
+              <td class="mono"><b>R09</b></td><td>Tidak ada IP duplikat</td><td><span class="pill opt">Opsional</span></td>
+              <td>Tidak ada dua perangkat dengan string IP yang sama setelah spasi awal/akhir dipangkas. IP kosong dilewati.</td><td>“Ada alamat IP yang dipakai lebih dari satu perangkat.”</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cara membaca hasil</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tampilan</th><th>Arti</th></tr></thead>
+          <tbody>
+            <tr><td><b>Jaringan siap!</b> + skor <b>7/7</b></td><td>Semua aturan wajib lulus. Status bar menjadi <b>Siap · 7/7</b> (hijau).</td></tr>
+            <tr><td><b>Perlu perbaikan</b> + skor <b>x/7</b></td><td>Ada aturan wajib yang gagal. Panel menampilkan “N aturan wajib belum terpenuhi.” Status bar menjadi <b>Ada masalah</b> (merah).</td></tr>
+            <tr><td><b>Pemeriksaan IP opsional: 2/2 terpenuhi</b></td><td>R08 dan R09 lulus. Tidak mengubah skor wajib.</td></tr>
+            <tr><td><b>Pemeriksaan IP opsional: 1/2 terpenuhi</b></td><td>Salah satu dari R08/R09 gagal.</td></tr>
+            <tr><td><b>Pemeriksaan IP opsional belum aktif…</b></td><td>Belum ada IP yang diisi pada perangkat non-Internet. R08/R09 ditandai “–” dan pesan “Belum ada alamat IP yang diisi.”</td></tr>
+            <tr><td><b>Toast validasi</b></td><td>“Validasi selesai - 7/7 aturan wajib terpenuhi.” atau “Validasi selesai - N aturan wajib belum terpenuhi.”</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Contoh skor</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situasi</th><th>Wajib</th><th>Opsional IP</th><th>Penjelasan</th></tr></thead>
+          <tbody>
+            <tr><td>Kanvas kosong</td><td><b>0/7</b></td><td>Tidak aktif</td><td>R01 gagal karena &lt; 2 perangkat; R02–R07 juga gagal.</td></tr>
+            <tr><td>Dua PC dihubungkan dengan kabel</td><td><b>2/7</b></td><td>Tidak aktif</td><td>Hanya R01 dan R02 lulus; tidak ada router, switch/AP, atau Internet.</td></tr>
+            <tr><td>Lab Komputer Sekolah</td><td><b>7/7</b></td><td><b>2/2</b></td><td>Semua aturan wajib dan IP lengkap/unik.</td></tr>
+            <tr><td>Lab tanpa satu PC</td><td><b>7/7</b></td><td><b>2/2</b></td><td>Endpoint yang tersisa tetap terhubung ke switch.</td></tr>
+            <tr><td>Lab dengan satu IP dikosongkan</td><td><b>7/7</b></td><td><b>1/2</b></td><td>R08 gagal; R09 tetap lulus.</td></tr>
+            <tr><td>Lab dengan dua IP sama</td><td><b>7/7</b></td><td><b>1/2</b></td><td>R08 lulus; R09 gagal.</td></tr>
+            <tr><td>Dua “pulau” jaringan terpisah</td><td><b>7/7</b></td><td><b>2/2</b></td><td>Semua aturan wajib bisa lulus, tetapi simulasi antar-pulau akan <b>Tidak ada jalur</b>. Lihat peringatan di bawah.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="important">
+        <b>Validasi bukan jaminan konektivitas end-to-end.</b> Aturan memeriksa keberadaan komponen dan hubungan lokal, bukan apakah seluruh perangkat berada dalam satu komponen terhubung. Contoh: Internet–Router–Switch–PC-01 di satu sisi, dan Switch-2–PC-02 di sisi lain, dapat memperoleh 7/7 karena setiap syarat terpenuhi secara terpisah. <b>Selalu jalankan simulasi</b> dari endpoint ke Internet untuk membuktikan jalur. Ini juga bisa dijadikan tantangan “cari celah validasi” untuk siswa lanjutan.
+      </div>
+
+      <h3>Hal yang tidak diperiksa</h3>
+      <ul>
+        <li><b>Format IPv4.</b> “abc”, “999.999.999.999”, atau “192.168.1” diterima sebagai string.</li>
+        <li><b>Subnet mask, gateway, DNS, DHCP.</b> Tidak ada konsep ini di aplikasi.</li>
+        <li><b>Kelas IP, private/public, atau rentang yang benar.</b> Tidak divalidasi.</li>
+        <li><b>Kesamaan segmen jaringan.</b> 10.0.0.1 dan 192.168.1.10 dianggap unik dan valid.</li>
+        <li><b>Konektivitas penuh.</b> Gunakan simulasi untuk memastikan jalur benar-benar tersambung.</li>
+        <li><b>Kesesuaian jenis kabel.</b> R05 tidak membedakan kabel/nirkabel; AP dan switch diperlakukan sama untuk syarat ini.</li>
+      </ul>
+
+      <div class="warn">
+        <b>Untuk penilaian pengalamatan IP, jangan cukup melihat 7/7.</b> 7/7 dapat dicapai dengan semua IP kosong. Tetapkan kriteria tambahan: <b>7/7 + 2/2</b> dan periksa format IP secara manual, atau minta siswa menjelaskan aturan IP yang mereka pakai.
+      </div>
+
+      <h3>Kapan harus memvalidasi ulang?</h3>
+      <p>Setiap kali perangkat ditambah/dihapus, tautan dibuat/dihapus, nama diubah, atau IP diubah, hasil validasi lama otomatis dihapus. Klik <b>Periksa Jaringan</b> lagi. Memindahkan perangkat di kanvas tidak mengubah topologi, jadi hasil validasi tetap berlaku.</p>
+    </section>
+    <section class="doc-section" id="simulasi">
+      <div class="section-head">
+        <div class="section-no">9</div>
+        <div>
+          <h2>Simulasi paket</h2>
+          <p>Cara menandai endpoint, membaca animasi, dan menafsirkan narasi.</p>
+        </div>
+      </div>
+
+      <h3>Menyiapkan sumber dan tujuan</h3>
+      <ol class="steps">
+        <li><b>Pilih perangkat</b> di kanvas, lalu buka tab <b>Info</b>.</li>
+        <li>Klik <b>Jadikan Sumber</b>. Perangkat mendapat lencana <b>S</b>.</li>
+        <li>Pilih perangkat lain, klik <b>Jadikan Tujuan</b>. Perangkat mendapat lencana <b>D</b>.</li>
+        <li>Alternatif cepat: <kbd>Shift</kbd>+klik perangkat pertama, lalu <kbd>Shift</kbd>+klik perangkat kedua.</li>
+        <li>Buka tab <b>Simulasi</b> dan klik <b>Kirim Paket</b>.</li>
+      </ol>
+
+      <div class="note">
+        <b>Aturan endpoint:</b> sumber dan tujuan harus dua perangkat berbeda. Menetapkan perangkat yang sama untuk peran lain akan mengosongkan peran sebelumnya. Menekan tombol peran yang sama sekali lagi akan membatalkan peran tersebut. Semua jenis perangkat, termasuk Internet dan Server, boleh menjadi sumber/tujuan.
+      </div>
+
+      <h3>Apa yang terjadi saat paket dikirim</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tahap</th><th>Perilaku aktual</th><th>Waktu</th></tr></thead>
+          <tbody>
+            <tr><td>Persiapan</td><td>Toast “Mengirim paket dari A ke B…”, tab Simulasi aktif, rute ditampilkan.</td><td>Instan</td></tr>
+            <tr><td>Jeda awal</td><td>Packet belum bergerak; kartu hop pertama disorot.</td><td>320 ms</td></tr>
+            <tr><td>Per hop</td><td>Titik paket bergerak dari pusat perangkat A ke pusat perangkat B memakai <code>animateMotion</code>.</td><td>520–1500 ms, proporsional jarak</td></tr>
+            <tr><td>Bersihkan</td><td>Animasi dihapus; paket istirahat di perangkat tujuan hop.</td><td>80 ms</td></tr>
+            <tr><td>Jeda hop</td><td>Paket berhenti agar siswa membaca narasi.</td><td>650 ms</td></tr>
+            <tr><td>Selesai</td><td>Ringkasan sukses, lencana hop hilang, paket menetap di tujuan.</td><td>Setelah hop terakhir</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Rute 3 hop biasanya selesai dalam ± 4–6 detik. Nilai ini tidak dapat diubah dari antarmuka; ubah kode jika perlu (lihat bagian 11).</p>
+
+      <h3>Rute dan pemilihan jalur</h3>
+      <ul>
+        <li>Aplikasi memakai <b>BFS</b> (Breadth-First Search) pada graf tak berarah, sehingga memilih jalur dengan <b>jumlah hop paling sedikit</b>.</li>
+        <li>Jika ada beberapa jalur terpendek, jalur yang ditemukan lebih dulu berdasarkan <b>urutan tautan</b> yang menang. Urutan ini tidak terlihat oleh siswa.</li>
+        <li>Jumlah perangkat pada ringkasan = panjang jalur, termasuk sumber dan tujuan. Jumlah hop = jumlah perangkat − 1.</li>
+        <li>Tautan kabel dan nirkabel dianggap sama untuk pencarian jalur; jenisnya hanya memengaruhi teks narasi.</li>
+        <li>Perangkat terisolasi atau “pulau” terpisah menghasilkan <b>Tidak ada jalur</b>.</li>
+      </ul>
+
+      <h3>Pola narasi per hop</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Dari → ke</th><th>Teks narasi</th><th>Contoh Lab</th></tr></thead>
+          <tbody>
+            <tr><td>Endpoint → Switch</td><td>“{from} mengirim paket ke {to} melalui kabel Ethernet.”</td><td>“PC-01 mengirim paket ke Switch Lab melalui kabel Ethernet.”</td></tr>
+            <tr><td>Endpoint → AP</td><td>“{from} mengirim paket melalui Wi-Fi ke {to}.”</td><td>“Laptop Ayah mengirim paket melalui Wi-Fi ke AP Wi-Fi.”</td></tr>
+            <tr><td>Switch → Router</td><td>“{from} meneruskan paket ke {to}.”</td><td>“Switch Lab meneruskan paket ke Router Sekolah.”</td></tr>
+            <tr><td>AP → Router</td><td>“{from} mengirim paket ke {to} melalui kabel.”</td><td>“AP Wi-Fi mengirim paket ke Router Rumah melalui kabel.”</td></tr>
+            <tr><td>Router → Switch/AP</td><td>“{from} meneruskan paket ke {to}.”</td><td>“Router Sekolah meneruskan paket ke Switch Lab.”</td></tr>
+            <tr><td>Switch/AP → Endpoint</td><td>“{from} meneruskan paket ke {to}.” atau “… melalui Wi-Fi.” jika tautan nirkabel.</td><td>“Switch Lab meneruskan paket ke PC-04.”</td></tr>
+            <tr><td>Router → Internet</td><td>“{from} meneruskan paket ke jaringan Internet melalui ISP.”</td><td>“Router Sekolah meneruskan paket ke jaringan Internet melalui ISP.”</td></tr>
+            <tr><td>Internet → Router</td><td>“Respons datang dari Internet ke {to}.”</td><td>“Respons datang dari Internet ke Router Sekolah.”</td></tr>
+            <tr><td>Nirkabel lainnya</td><td>“{from} mengirim paket secara nirkabel ke {to}.”</td><td>“Laptop Ayah mengirim paket secara nirkabel ke HP Kakak.”</td></tr>
+            <tr><td>Kombinasi lain</td><td>“Paket berpindah dari {from} ke {to}.”</td><td>Kasus tepi, misalnya Server → Switch atau Switch → Server.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warn">
+        <b>Urutan prioritas narasi.</b> Jika Internet terlibat, aturan Internet selalu menang. Jika sumber adalah Internet, teksnya tetap “Respons datang dari Internet…”, meskipun secara teknis itu permintaan, bukan respons. Ini disengaja untuk menyederhanakan alur balasan bagi pemula. Jelaskan konteksnya saat mengajar.
+      </div>
+
+      <h3>Rute contoh lengkap</h3>
+      <div class="flow">
+        <span class="node src">PC-01</span><span class="arrow">→</span>
+        <span class="node">Switch Lab</span><span class="arrow">→</span>
+        <span class="node">Router Sekolah</span><span class="arrow">→</span>
+        <span class="node dst">Internet</span>
+      </div>
+      <ol>
+        <li>“PC-01 mengirim paket ke Switch Lab melalui kabel Ethernet.”</li>
+        <li>“Switch Lab meneruskan paket ke Router Sekolah.”</li>
+        <li>“Router Sekolah meneruskan paket ke jaringan Internet melalui ISP.”</li>
+      </ol>
+      <p>Ringkasan: <b>“Paket berhasil sampai ke Internet! Melewati 4 perangkat.”</b> Panel juga menampilkan judul <b>“Paket berhasil sampai!”</b>.</p>
+
+      <h3>Status dan kesalahan</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kondisi</th><th>Tampilan</th></tr></thead>
+          <tbody>
+            <tr><td>Berhasil</td><td>Progres “Selesai”, semua kartu bertanda selesai, ringkasan sukses, lencana S/D tetap terlihat.</td></tr>
+            <tr><td>Tidak ada jalur</td><td>Judul <b>“Tidak ada jalur”</b>, pesan <b>“Tidak ada jalur antara kedua perangkat ini. Periksa koneksi kabelmu.”</b>, tombol <b>Coba lagi</b> dan <b>Periksa perangkat</b>.</td></tr>
+            <tr><td>Sumber belum dipilih</td><td>Toast “Pilih perangkat sumber terlebih dahulu.”</td></tr>
+            <tr><td>Tujuan belum dipilih</td><td>Toast “Sekarang pilih perangkat tujuan.”</td></tr>
+            <tr><td>Perangkat sama</td><td>Toast “Pilih perangkat tujuan yang berbeda dari sumber.”</td></tr>
+            <tr><td>Dibatalkan</td><td><kbd>Esc</kbd> atau tombol <b>Hentikan</b> → toast “Simulasi dihentikan.”</td></tr>
+            <tr><td>Diulang</td><td>Tombol <b>Kirim ulang</b> menjalankan rute yang sama dari awal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Cara menafsirkan hasil bersama siswa</h3>
+      <ul>
+        <li><b>Jangan berhenti di pesan sukses.</b> Minta siswa menyebutkan urutan perangkat dan jenis tautan tiap hop.</li>
+        <li>Tanyakan <b>fungsi</b> tiap perangkat, bukan hanya namanya: switch meneruskan dalam LAN, router menghubungkan ke WAN, AP menjembatani Wi-Fi.</li>
+        <li>Bandingkan dua rute: PC-01 → Internet dan Laptop → Internet. Apa peran AP yang tidak dimiliki Lab?</li>
+        <li>Saat gagal, bedakan dua penyebab: <b>topologi</b> (tidak ada jalur) dan <b>aturan</b> (validasi gagal). Jalankan validasi untuk mempersempit.</li>
+        <li>Minta siswa memprediksi narasi hop berikutnya sebelum animasi mencapainya.</li>
+      </ul>
+
+      <div class="tip">
+        <b>Diskusi multi-jalur:</b> buat tautan tambahan antara Switch Lab dan AP Wi-Fi. Rute PC-01 → Internet tetap 3 hop; rute PC-04 → Internet juga 3 hop. Jika ada dua jalur sama panjang, siswa tidak dapat menebak dari tampilan—jelaskan bahwa aplikasi memilih yang ditemukan lebih dulu.
+      </div>
+    </section>
+
+    <section class="doc-section" id="latihan">
+      <div class="section-head">
+        <div class="section-no">10</div>
+        <div>
+          <h2>Latihan &amp; rubrik</h2>
+          <p>Aktivitas siap pakai, tantangan kesalahan, dan penilaian.</p>
+        </div>
+      </div>
+
+      <h3>Latihan berjenjang</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Tugas</th><th>Target</th><th>Fokus</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>1 · Terbimbing</b></td>
+              <td>Muat Lab. Ganti nama PC-01 menjadi “PC Siswa”, ubah IP menjadi 192.168.1.20, lalu kirim paket PC-01 → Internet.</td>
+              <td>7/7 dan rute 4 perangkat.</td>
+              <td>Mengenal perangkat, mengedit nama/IP, membaca narasi.</td>
+            </tr>
+            <tr>
+              <td><b>2 · Bangun</b></td>
+              <td>Reset, lalu bangun jaringan rumah dari nol: Internet, router, AP, laptop, HP. Hubungkan dengan 4 tautan yang benar dan isi IP.</td>
+              <td>7/7 + 2/2; rute laptop → Internet 4 perangkat.</td>
+              <td>Urutan membangun, peran AP, pengalamatan.</td>
+            </tr>
+            <tr>
+              <td><b>3 · Tambah server</b></td>
+              <td>Dari Lab, tambahkan Server, hubungkan ke Switch Lab, beri IP 192.168.1.50. Simulasikan PC-02 → Server dan Server → Internet.</td>
+              <td>7/7 + 2/2; dua rute berhasil.</td>
+              <td>Server sebagai sumber/tujuan; bukan endpoint R05.</td>
+            </tr>
+            <tr>
+              <td><b>4 · Dua switch</b></td>
+              <td>Bangun Internet–Router–Switch A–Switch B–PC, dengan AP terhubung ke Switch B dan laptop/HP ke AP.</td>
+              <td>7/7 + 2/2; PC → Internet berhasil.</td>
+              <td>Backbone bertingkat dan peran switch.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tantangan “cari kesalahan”</h3>
+      <p>Guru sengaja merusak topologi, lalu siswa mendiagnosis dari pesan validasi. Berikut variasi yang sudah terbukti menghasilkan kegagalan spesifik:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kerusakan yang dibuat</th><th>Gejala</th><th>Perbaikan yang diharapkan</th></tr></thead>
+          <tbody>
+            <tr><td>Hapus tautan Router → Internet</td><td>R06 gagal; simulasi Internet tidak punya jalur.</td><td>Hubungkan router ke Internet dengan kabel.</td></tr>
+            <tr><td>Hubungkan PC langsung ke Router, lepas dari switch</td><td>R05 gagal.</td><td>Pindahkan PC ke Switch/AP.</td></tr>
+            <tr><td>Hapus tautan Switch → Router</td><td>R07 gagal; rute ke Internet terputus.</td><td>Hubungkan switch/AP ke router.</td></tr>
+            <tr><td>Hapus tautan satu PC</td><td>R02 gagal untuk PC tersebut.</td><td>Hubungkan kembali ke switch/AP.</td></tr>
+            <tr><td>Samakan IP dua perangkat</td><td>R09 gagal (opsional); skor wajib tetap.</td><td>Ubah salah satu IP agar unik.</td></tr>
+            <tr><td>Kosongkan satu IP</td><td>R08 gagal (opsional).</td><td>Isi IP yang kosong.</td></tr>
+            <tr><td>Buat dua pulau terpisah</td><td>Validasi bisa 7/7, tetapi simulasi “Tidak ada jalur”.</td><td>Hubungkan pulau melalui switch/router; ajarkan bahwa validasi bukan bukti konektivitas penuh.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>Kunci diagnosis:</b> baca <b>pesan aturan</b>, bukan hanya jumlah skor. Setiap aturan yang gagal menyebut perangkat atau hubungan yang perlu diperbaiki. Setelah perubahan, validasi ulang—hasil lama sudah dihapus.
+      </div>
+
+      <h3>Rubrik penilaian</h3>
+      <p>Gunakan 4 kriteria dengan skala 1–4. Skor maksimum 16; nilai akhir dapat dihitung <code>(total / 16) × 100</code>.</p>
+      <div class="table-wrap">
+        <table class="rubric">
+          <thead>
+            <tr><th>Kriteria</th><th>1 — Perlu bimbingan</th><th>2 — Cukup</th><th>3 — Baik</th><th>4 — Sangat baik</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Topologi wajib</td>
+              <td>Skor 0–3/7; banyak komponen inti hilang.</td>
+              <td>Skor 4–5/7; router/switch/AP ada tetapi hubungan belum lengkap.</td>
+              <td>Skor 6/7; satu aturan tersisa.</td>
+              <td>Skor 7/7; semua aturan wajib lulus.</td>
+            </tr>
+            <tr>
+              <td>Pengalamatan IP</td>
+              <td>IP tidak diisi atau banyak duplikat.</td>
+              <td>R08 atau R09 lulus, bukan keduanya.</td>
+              <td>2/2 lulus; ada satu format yang perlu dikoreksi.</td>
+              <td>2/2 lulus; semua format IPv4 wajar dan segmen konsisten.</td>
+            </tr>
+            <tr>
+              <td>Simulasi &amp; penjelasan</td>
+              <td>Tidak dapat menjelaskan urutan hop.</td>
+              <td>Menyebut perangkat tetapi tidak menjelaskan perannya.</td>
+              <td>Menjelaskan urutan dan peran sebagian besar perangkat.</td>
+              <td>Menjelaskan urutan, peran, jenis tautan, dan mengapa jalur itu dipilih.</td>
+            </tr>
+            <tr>
+              <td>Ketelitian &amp; kolaborasi</td>
+              <td>Tidak memeriksa ulang; mengubah kabel secara acak.</td>
+              <td>Memperbaiki setelah diarahkan guru.</td>
+              <td>Memvalidasi dan memperbaiki mandiri.</td>
+              <td>Mendiagnosis dari pesan aturan dan membantu teman tanpa mengambil alih.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Exit ticket 5 menit</h3>
+      <ol>
+        <li>Sebutkan tiga perangkat yang dilewati paket dari PC di Lab menuju Internet.</li>
+        <li>Apa perbedaan switch dan access point?</li>
+        <li>Mengapa IP harus unik? Apa yang terjadi jika dua perangkat memakai IP sama?</li>
+        <li>Mengapa validasi 7/7 belum tentu berarti semua perangkat dapat saling terhubung?</li>
+      </ol>
+
+      <div class="tip">
+        <b>Diferensiasi:</b> siswa cepat dapat mengerjakan tantangan dua switch atau “pulau” dan menuliskan mengapa validasi lolos. Siswa yang perlu dukungan dapat memulai dari Lab, hanya mengubah nama/IP, lalu menceritakan rute yang sudah terlihat.
+      </div>
+    </section>
+    <section class="doc-section" id="kustomisasi">
+      <div class="section-head">
+        <div class="section-no">11</div>
+        <div>
+          <h2>Kustomisasi</h2>
+          <p>Mengubah teks, skenario, aturan, dan tampilan tanpa build step.</p>
+        </div>
+      </div>
+
+      <p class="lead">Seluruh aplikasi berada dalam <code>index.html</code>. Tidak ada bundler, npm, atau server. Cukup edit dengan editor teks (VS Code, Notepad++, Sublime Text), simpan sebagai <b>UTF-8</b>, lalu muat ulang browser dengan <kbd>Ctrl</kbd> + <kbd>F5</kbd>.</p>
+
+      <div class="warn">
+        <b>Selalu buat cadangan</b> (<code>index.backup.html</code>) sebelum mengedit. Satu tanda kurung yang hilang dapat membuat seluruh aplikasi kosong. Uji di browser setelah setiap perubahan besar.
+      </div>
+
+      <h3>Peta titik edit</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Yang ingin diubah</th><th>Cari di index.html</th><th>Perkiraan baris (v1.0)</th></tr></thead>
+          <tbody>
+            <tr><td>Warna, font, ukuran dasar</td><td><code>:root {</code></td><td class="mono">± 26</td></tr>
+            <tr><td>Judul header dan subjudul</td><td><code>&lt;h1&gt;Simulasi Jaringan&lt;/h1&gt;</code></td><td class="mono">± 1056</td></tr>
+            <tr><td>Label UI dan pesan umum</td><td><code>const STRINGS = {</code></td><td class="mono">1169</td></tr>
+            <tr><td>Ikon perangkat (SVG)</td><td><code>const DEVICE_ICONS = {</code></td><td class="mono">1193</td></tr>
+            <tr><td>Daftar jenis perangkat</td><td><code>const DEVICE_KINDS =</code></td><td class="mono">1248</td></tr>
+            <tr><td>Definisi endpoint R05</td><td><code>const ENDPOINT_KINDS =</code></td><td class="mono">1249</td></tr>
+            <tr><td>Skenario bawaan</td><td><code>const SCENARIOS = [</code></td><td class="mono">1251</td></tr>
+            <tr><td>Aturan validasi</td><td><code>const RULES = [</code></td><td class="mono">1294</td></tr>
+            <tr><td>Teks narasi per hop</td><td><code>function narrate(from, to, linkType)</code></td><td class="mono">1499</td></tr>
+            <tr><td>Jeda dan durasi animasi</td><td><code>async function runSimulation(token)</code></td><td class="mono">2145</td></tr>
+            <tr><td>Durasi gerak paket</td><td><code>function animatePacket(from, to, token)</code></td><td class="mono">2180</td></tr>
+            <tr><td>Auto-fit skenario</td><td><code>function fitToContent()</code></td><td class="mono">2285</td></tr>
+            <tr><td>Batas zoom roda mouse</td><td><code>function onWheel(event)</code></td><td class="mono">2474</td></tr>
+            <tr><td>Menu pilihan skenario</td><td><code>id="scenarioSelect"</code></td><td class="mono">± 1116</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small">Nomor baris dapat bergeser setelah edit. Gunakan teks pencarian, bukan hanya nomor baris.</p>
+
+      <h3>Mengubah teks dan judul</h3>
+      <ol>
+        <li>Cari <code>&lt;h1&gt;Simulasi Jaringan&lt;/h1&gt;</code> dan ubah judul yang terlihat di toolbar.</li>
+        <li>Cari <code>const STRINGS = {</code> untuk mengubah pesan seperti <code>packetSuccess</code>, <code>noPath</code>, dan <code>tipDefault</code>.</li>
+        <li>Label jenis perangkat ada di <code>deviceLabels</code>, misalnya ubah <code>phone: 'HP / Ponsel'</code> menjadi <code>phone: 'Ponsel'</code>.</li>
+        <li>Simpan sebagai UTF-8, lalu muat ulang. Karakter Indonesia dan tanda hubung panjang akan tampil benar.</li>
+      </ol>
+
+      <div class="note">
+        <b>Placeholder pada template.</b> <code>{dest}</code> diganti nama tujuan dan <code>{n}</code> diganti jumlah perangkat. Jangan menghapus placeholder jika ingin pesan tetap dinamis.
+      </div>
+
+      <h3>Menambah skenario</h3>
+      <p>Tambahkan objek baru ke array <code>SCENARIOS</code>, lalu tambahkan <code>&lt;option&gt;</code> dengan nilai yang sama ke <code>#scenarioSelect</code>.</p>
+<pre><code>{
+  id: 'sekolah-baru',
+  name: 'Lab Sekolah Baru',
+  devices: [
+    { id: 'nb-internet', kind: 'internet', label: 'Internet', ip: '', x: 520, y: 80 },
+    { id: 'nb-router',   kind: 'router',   label: 'Router Utama', ip: '10.0.0.1', x: 380, y: 190 },
+    { id: 'nb-switch',   kind: 'switch',   label: 'Switch Inti', ip: '10.0.0.2', x: 220, y: 300 },
+    { id: 'nb-pc',       kind: 'desktop',  label: 'PC-01', ip: '10.0.0.10', x: 90, y: 300 }
+  ],
+  links: [
+    { id: 'nb-l1', from: 'nb-router', to: 'nb-internet', type: 'wired' },
+    { id: 'nb-l2', from: 'nb-switch', to: 'nb-router', type: 'wired' },
+    { id: 'nb-l3', from: 'nb-pc', to: 'nb-switch', type: 'wired' }
+  ]
+}</code></pre>
+      <p>Aturan data: <code>id</code> perangkat unik di dalam skenario; <code>from</code>/<code>to</code> pada tautan merujuk ke id tersebut; <code>kind</code> harus salah satu dari 8 jenis; <code>type</code> hanya <code>wired</code> atau <code>wireless</code>. Koordinat bebas; aplikasi akan auto-fit saat dimuat.</p>
+
+      <h3>Menambah atau mengubah aturan validasi</h3>
+      <p>Setiap aturan adalah objek dengan <code>id</code>, <code>label</code>, <code>optional</code>, <code>failMessage</code>, dan fungsi <code>check(devices, links)</code> yang mengembalikan boolean.</p>
+<pre><code>{
+  id: 'R10',
+  label: 'Ada server',
+  optional: false,
+  failMessage: 'Tambahkan minimal satu Server ke jaringan.',
+  check: (devices) =&gt; devices.some((d) =&gt; d.kind === 'server')
+}</code></pre>
+      <div class="warn">
+        <b>Mengubah aturan wajib mengubah penyebut skor.</b> Menambah aturan wajib membuat skor menjadi <b>x/8</b>, bukan lagi 7/7. Perbarui panduan, rubrik, dan ekspektasi siswa. Jika hanya ingin latihan tambahan, jadikan <code>optional: true</code> agar skor inti tetap 7.
+      </div>
+
+      <h3>Mengubah waktu animasi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nilai</th><th>Lokasi</th><th>Efek</th></tr></thead>
+          <tbody>
+            <tr><td><code>await sleep(320)</code></td><td><code>runSimulation</code></td><td>Jeda sebelum paket mulai bergerak.</td></tr>
+            <tr><td><code>await sleep(650)</code></td><td><code>runSimulation</code></td><td>Jeda berhenti di setiap perangkat.</td></tr>
+            <tr><td><code>clamp(distance * 2.2, 520, 1500)</code></td><td><code>animatePacket</code></td><td>Durasi gerak per hop; perkecil angka untuk animasi lebih cepat.</td></tr>
+            <tr><td><code>duration + 80</code></td><td><code>animatePacket</code></td><td>Waktu pembersihan setelah animasi selesai.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Mengubah zoom</h3>
+      <ul>
+        <li><b>Auto-fit:</b> <code>clamp(..., 0.45, 1.25)</code> di <code>fitToContent</code>. Ubah batas atas jika ingin skenario lebih besar saat dimuat.</li>
+        <li><b>Zoom manual:</b> <code>clamp(..., 0.45, 2.2)</code> di <code>onWheel</code>. Jangan turunkan batas bawah terlalu jauh karena label akan tidak terbaca.</li>
+        <li><b>Langkah zoom:</b> <code>factor = 1.12</code>. Ubah ke 1.08 untuk langkah lebih halus.</li>
+      </ul>
+
+      <h3>Mengubah tampilan</h3>
+      <p>Palet warna utama ada di <code>:root</code>: <code>--c-navy</code>, <code>--c-teal</code>, <code>--c-paper</code>, <code>--c-amber</code>. Mengubah variabel ini akan memengaruhi seluruh aplikasi. Untuk mengubah ikon, edit markup SVG di <code>DEVICE_ICONS</code>; pertahankan <code>viewBox="0 0 48 48"</code> agar ukuran konsisten.</p>
+
+      <div class="tip">
+        <b>Uji setelah edit:</b> buka aplikasi, muat kedua skenario, validasi, jalankan simulasi, lalu cek konsol browser (<kbd>F12</kbd>). Jika ada error merah, kembalikan dari cadangan dan perbaiki satu perubahan pada satu waktu.
+      </div>
+    </section>
+
+    <section class="doc-section" id="masalah">
+      <div class="section-head">
+        <div class="section-no">12</div>
+        <div>
+          <h2>Troubleshooting</h2>
+          <p>Gejala umum, penyebab, dan solusi cepat di kelas.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Gejala</th><th>Kemungkinan penyebab</th><th>Solusi</th></tr></thead>
+          <tbody>
+            <tr><td>Aplikasi terbuka tetapi tampil tanpa warna/ikon</td><td>File dibuka di editor atau file tidak lengkap.</td><td>Buka dengan Chrome/Edge/Firefox; pastikan ukuran file ± 90 KB dan tidak terpotong saat dikirim.</td></tr>
+            <tr><td>Kanvas kosong dan tidak bisa menambah perangkat</td><td>File rusak atau JavaScript diblokir.</td><td>Buka konsol <kbd>F12</kbd>; cek error. Coba browser lain dan file asli.</td></tr>
+            <tr><td>Kartu palet tidak bisa diseret</td><td>Drag HTML5 tidak didukung pada konfigurasi tertentu.</td><td>Klik kartu palet untuk menambah di tengah kanvas, lalu seret perangkat dengan alat Pilih.</td></tr>
+            <tr><td>Kabel tidak terbentuk</td><td>Kedua perangkat sudah terhubung, perangkat sama, atau klik bukan pada perangkat.</td><td>Perhatikan toast: “Kedua perangkat sudah terhubung.” atau “tidak bisa dihubungkan ke dirinya sendiri.” Hapus tautan lama jika ingin mengganti jenis.</td></tr>
+            <tr><td>Validasi 0/7</td><td>Kanvas kosong atau belum ada perangkat.</td><td>Tambahkan minimal dua perangkat, lalu validasi ulang.</td></tr>
+            <tr><td>7/7 tetapi simulasi “Tidak ada jalur”</td><td>Topologi terdiri dari dua pulau terpisah; validasi tidak memeriksa konektivitas end-to-end.</td><td>Hubungkan pulau melalui switch/router. Jalankan simulasi sebagai bukti akhir.</td></tr>
+            <tr><td>IP Internet tidak bisa diisi</td><td>Disengaja; Internet tidak memiliki IP lokal.</td><td>Biarkan kosong. Isi IP perangkat lain.</td></tr>
+            <tr><td>Format IP salah tetap diterima</td><td>Validasi hanya memeriksa kosong dan duplikat.</td><td>Periksa format secara manual; ajarkan IPv4 yang benar.</td></tr>
+            <tr><td>Pemeriksaan IP “belum aktif”</td><td>Belum ada satu pun IP non-Internet yang diisi.</td><td>Isi minimal satu IP; R08/R09 akan aktif. Untuk 2/2, isi semua.</td></tr>
+            <tr><td>Paket tidak terlihat</td><td>Zoom terlalu kecil, panel menutupi, atau simulasi sudah selesai dan paket berhenti di tujuan.</td><td>Perbesar zoom, pan, dan lihat titik di perangkat tujuan. Buka tab Simulasi untuk narasi.</td></tr>
+            <tr><td>Tombol Kirim Paket tidak memulai</td><td>Sumber/tujuan belum dipilih atau keduanya sama.</td><td>Baca toast; tetapkan dua perangkat berbeda lewat tab Info atau Shift+klik.</td></tr>
+            <tr><td>Validasi hilang setelah edit</td><td>Perubahan topologi/nama/IP memang menghapus hasil lama.</td><td>Klik Periksa Jaringan lagi.</td></tr>
+            <tr><td>Semua pekerjaan hilang</td><td>Refresh, tutup tab, atau memuat skenario/reset.</td><td>Tidak ada autosave. Selesaikan dalam satu sesi; minta siswa tidak me-refresh.</td></tr>
+            <tr><td>Font terlihat berbeda</td><td>Font Manrope/DM Serif tidak tersedia offline.</td><td>Normal; aplikasi memakai fallback Segoe UI/Georgia. Tidak ada unduhan font.</td></tr>
+            <tr><td>Layar terpotong</td><td>Lebar &lt; 1024 px atau zoom browser terlalu besar.</td><td>Reset zoom browser ke 100%, gunakan layar lebih lebar, atau F11.</td></tr>
+            <tr><td>Dialog konfirmasi tidak muncul</td><td>Kanvas kosong.</td><td>Normal; konfirmasi hanya muncul jika ada perangkat.</td></tr>
+            <tr><td>Data tidak tersimpan di server</td><td>Disengaja; aplikasi sepenuhnya lokal.</td><td>Gunakan tangkapan layar atau catat hasil manual.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Jika aplikasi benar-benar tidak dapat dibuka</h3>
+      <ol class="steps">
+        <li>Pastikan file berekstensi <code>.html</code>, bukan <code>.txt</code> atau <code>.htm.txt</code>.</li>
+        <li>Klik kanan → <b>Open with</b> → pilih browser, atau seret file ke jendela browser.</li>
+        <li>Coba mode incognito untuk menyingkirkan ekstensi yang agresif.</li>
+        <li>Salin ulang file dari sumber asli; bandingkan ukurannya (± 90 KB).</li>
+        <li>Jika masih gagal, buka konsol dan catat pesan error pertama; biasanya menunjuk baris yang bermasalah setelah kustomisasi.</li>
+      </ol>
+
+      <div class="note">
+        <b>Jangan mengubah state melalui console</b> saat mengajar. Aplikasi tidak menyediakan API publik; manipulasi langsung dapat membuat tampilan dan data tidak sinkron. Gunakan antarmuka yang tersedia.
+      </div>
+    </section>
+
+    <section class="doc-section" id="checklist">
+      <div class="section-head">
+        <div class="section-no">13</div>
+        <div>
+          <h2>Checklist &amp; batasan</h2>
+          <p>Verifikasi sebelum dipakai, hasil uji yang sudah dilakukan, dan hal yang di luar cakupan.</p>
+        </div>
+      </div>
+
+      <h3>Checklist serah terima ke kelas</h3>
+      <ul class="checklist">
+        <li>Folder berisi <code>index.html</code>, <code>panduan-guru.html</code>, dan <code>README.md</code>.</li>
+        <li><code>index.html</code> terbuka di Chrome/Edge/Firefox tanpa error konsol.</li>
+        <li>Palet menampilkan <b>8 kartu perangkat</b>.</li>
+        <li>Muat <b>Lab Komputer Sekolah</b>: 8 perangkat, 7 tautan, validasi <b>7/7</b> dan IP <b>2/2</b>.</li>
+        <li>Simulasi PC-01 → Internet berhasil, <b>4 perangkat</b>, ringkasan “Melewati 4 perangkat.”</li>
+        <li>Muat <b>Jaringan Rumah Sederhana</b>: 5 perangkat, 4 tautan, validasi <b>7/7</b> dan IP <b>2/2</b>.</li>
+        <li>Reset menghasilkan kanvas kosong, 0 perangkat, 0 tautan, dan validasi <b>0/7</b>.</li>
+        <li>Tautan duplikat ditolak dengan toast “Kedua perangkat sudah terhubung.”</li>
+        <li>Hapus perangkat juga menghapus tautannya.</li>
+        <li>IP duplikat menghasilkan R09 gagal (opsional) tanpa menurunkan skor wajib.</li>
+        <li>Lebar layar minimal 1024 px; proyektor menampilkan label dan IP dengan jelas.</li>
+        <li>Guru sudah membaca bagian <a href="#validasi">8</a> dan <a href="#simulasi">9</a>.</li>
+      </ul>
+
+      <h3>Hasil uji implementasi v1.0</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Uji</th><th>Hasil yang diamati</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Palet perangkat</td><td>8 kartu, ikon dan label tampil.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Lab Komputer Sekolah</td><td>8 perangkat, 7 tautan, validasi 7/7, 2/2.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Simulasi PC-01 → Internet</td><td>“Paket berhasil sampai ke Internet! Melewati 4 perangkat.” 3 kartu narasi.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Reset</td><td>0 perangkat; validasi kosong 0/7; R01 gagal dengan pesan yang benar.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Jaringan Rumah Sederhana</td><td>5 perangkat, 4 tautan, validasi 7/7, 2/2.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Tidak ada jalur</td><td>Pesan persis “Tidak ada jalur antara kedua perangkat ini. Periksa koneksi kabelmu.”</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Tautan duplikat</td><td>Ditolak; toast “Kedua perangkat sudah terhubung.”</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Escape saat menautkan</td><td>Tautan tertunda dibatalkan; toast “Pembuatan koneksi dibatalkan.”</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Hapus perangkat</td><td>Perangkat dan seluruh tautannya hilang.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Edit popover</td><td>Label di kanvas berubah sesuai input.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>IP duplikat</td><td>R09 gagal; skor wajib tetap 7/7.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Drag palet</td><td>Router ditambahkan tepat di titik jatuh.</td><td><span class="pill ok">Lulus</span></td></tr>
+            <tr><td>Error runtime</td><td>Tidak ada error pada pengujian akhir headless Edge.</td><td><span class="pill ok">Lulus</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Batasan resmi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Keterbatasan</th><th>Dampak</th><th>Alternatif</th></tr></thead>
+          <tbody>
+            <tr><td>Tidak ada autosave</td><td>Refresh/menutup tab menghapus pekerjaan.</td><td>Selesaikan dalam satu sesi; screenshot hasil.</td></tr>
+            <tr><td>Tidak ada ekspor PNG/PDF</td><td>Tidak ada tombol unduh kanvas.</td><td>Gunakan <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> atau cetak halaman.</td></tr>
+            <tr><td>Tanpa DNS/DHCP/NAT/subnet</td><td>Tidak dapat mengajarkan resolusi nama atau konfigurasi gateway.</td><td>Lanjutkan dengan materi/slide terpisah.</td></tr>
+            <tr><td>IP hanya diperiksa kosong/duplikat</td><td>Format salah tetap diterima.</td><td>Periksa format manual; gunakan rubrik.</td></tr>
+            <tr><td>Validasi bukan uji konektivitas penuh</td><td>Dua pulau dapat memperoleh 7/7.</td><td>Wajib jalankan simulasi endpoint → Internet.</td></tr>
+            <tr><td>Tautan dua arah, tanpa VLAN/arah</td><td>Tidak ada konsep link satu arah atau segmentasi.</td><td>Jelaskan sebagai penyederhanaan.</td></tr>
+            <tr><td>Tidak ada packet loss/latency</td><td>Semua paket selalu sampai jika ada jalur.</td><td>Bahas konsep QoS/latency secara teori.</td></tr>
+            <tr><td>Bukan multi-pengguna</td><td>Tidak ada kolaborasi real-time atau akun.</td><td>Kerja berpasangan di satu komputer atau presentasi.</td></tr>
+            <tr><td>Tidak responsif untuk ponsel</td><td>Di bawah 1024 px muncul banner; kanvas sempit.</td><td>Gunakan laptop/PC.</td></tr>
+            <tr><td>Tidak ada kuis/rekap nilai</td><td>Penilaian manual.</td><td>Gunakan rubrik bagian 10.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Jangan gunakan aplikasi untuk…</h3>
+      <ul>
+        <li>Mengklaim bahwa IP telah valid secara protokol hanya karena R08/R09 lulus.</li>
+        <li>Membuktikan konektivitas tanpa menjalankan simulasi.</li>
+        <li>Mengajarkan DNS, DHCP, NAT, routing dinamis, atau subnetting sebagai fitur aplikasi.</li>
+        <li>Menyimpan pekerjaan siswa sebagai satu-satunya bukti penilaian tanpa screenshot/catatan.</li>
+        <li>Menguji performa jaringan nyata atau keamanan siber.</li>
+      </ul>
+
+      <div class="important">
+        <b>Prinsip penggunaan:</b> aplikasi adalah alat bantu visual untuk <b>topologi dan alur paket dasar</b>. Guru tetap menjadi sumber kebenaran konsep dan penilai penjelasan siswa.
+      </div>
+    </section>
+
+    <section class="doc-section" id="teknis">
+      <div class="section-head">
+        <div class="section-no">14</div>
+        <div>
+          <h2>Referensi teknis</h2>
+          <p>Arsitektur, kompatibilitas, privasi, dan catatan pemeliharaan.</p>
+        </div>
+      </div>
+
+      <h3>Arsitektur singkat</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th>Implementasi</th></tr></thead>
+          <tbody>
+            <tr><td>Berkas</td><td>Satu <code>index.html</code> berisi HTML, CSS, JavaScript modul, dan ikon SVG inline.</td></tr>
+            <tr><td>Ukuran</td><td>± 90 KB (di bawah target 200 KB).</td></tr>
+            <tr><td>Dependensi</td><td>Tidak ada. Tanpa framework, CDN, font eksternal, atau gambar eksternal.</td></tr>
+            <tr><td>Build</td><td>Tidak ada. Edit → simpan → refresh.</td></tr>
+            <tr><td>Data</td><td>State di memori: <code>devices</code>, <code>links</code>, <code>tool</code>, <code>simSource</code>, <code>simDest</code>, <code>validation</code>, <code>sim</code>, <code>pan</code>, <code>zoom</code>.</td></tr>
+            <tr><td>Penyimpanan</td><td>Tidak memakai localStorage, cookie, IndexedDB, atau server.</td></tr>
+            <tr><td>Render</td><td>SVG berlapis: <code>linkLayer</code>, <code>deviceLayer</code>, <code>packetLayer</code>; transform pan/zoom pada <code>viewport</code>.</td></tr>
+            <tr><td>Validasi</td><td>Array <code>RULES</code>; setiap aturan fungsi murni <code>check(devices, links)</code>.</td></tr>
+            <tr><td>Rute</td><td>BFS pada graf tak berarah; tautan diperlakukan dua arah.</td></tr>
+            <tr><td>Animasi</td><td>SVG <code>animateMotion</code> per hop, dengan jeda <code>sleep</code>.</td></tr>
+            <tr><td>Ikon</td><td>SVG inline 48 × 48 di <code>DEVICE_ICONS</code>.</td></tr>
+            <tr><td>Font</td><td>Fallback sistem: Segoe UI/Georgia; tidak ada unduhan font.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Kompatibilitas</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Lingkungan</th><th>Status</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td>Microsoft Edge (Chromium)</td><td><span class="pill ok">Diuji</span></td><td>Dipakai untuk pengujian otomatis headless.</td></tr>
+            <tr><td>Google Chrome</td><td><span class="pill ok">Didukung</span></td><td>Mesin Chromium yang sama; disarankan versi terbaru.</td></tr>
+            <tr><td>Mozilla Firefox</td><td><span class="pill ok">Didukung</span></td><td>Mendukung SVG <code>animateMotion</code> dan modul ES.</td></tr>
+            <tr><td>Microsoft Edge lama (EdgeHTML)</td><td><span class="pill bad">Tidak didukung</span></td><td>Gunakan Edge Chromium.</td></tr>
+            <tr><td>Internet Explorer</td><td><span class="pill bad">Tidak didukung</span></td><td>Tidak kompatibel.</td></tr>
+            <tr><td>Ponsel/tablet</td><td><span class="pill warn">Tidak dioptimalkan</span></td><td>Banner peringatan di bawah 1024 px.</td></tr>
+            <tr><td>File lokal <code>file://</code></td><td><span class="pill ok">Diuji</span></td><td>Tidak memerlukan server.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Privasi &amp; keamanan</h3>
+      <ul>
+        <li><b>Tidak ada data keluar.</b> Tidak ada fetch/XHR, analytics, atau telemetry.</li>
+        <li><b>Tidak ada akun.</b> Tidak ada login, email, atau identitas siswa.</li>
+        <li><b>Tidak ada penyimpanan persisten.</b> Semua data hilang saat tab ditutup.</li>
+        <li><b>Tidak ada input berbahaya.</b> Nama dan IP di-escape sebelum dirender ke SVG/HTML.</li>
+        <li><b>Aman untuk lab sekolah</b> yang membatasi internet; aplikasi berjalan offline penuh.</li>
+      </ul>
+
+      <h3>Aksesibilitas</h3>
+      <ul>
+        <li>Toolbar memakai <code>aria-label</code>, <code>aria-pressed</code>, dan judul pintasan.</li>
+        <li>Tab memakai <code>role="tab"</code>, <code>aria-selected</code>, <code>aria-controls</code>.</li>
+        <li>Panel hasil validasi dan simulasi memakai <code>aria-live</code> untuk pembaca layar.</li>
+        <li>Kartu palet dapat difokuskan dengan <kbd>Tab</kbd> dan diaktifkan dengan <kbd>Enter</kbd>/<kbd>Space</kbd>.</li>
+        <li>Navigasi keyboard untuk memindahkan perangkat tidak disediakan; gunakan mouse/trackpad.</li>
+      </ul>
+
+      <h3>Catatan pemeliharaan</h3>
+      <ul>
+        <li><b>Sumber kebenaran perilaku</b> adalah <code>index.html</code> versi ini. Dokumen spesifikasi menjelaskan maksud desain; jika berbeda, ikuti implementasi dan catat penyimpangan (misalnya AP pada Skenario 2).</li>
+        <li><b>Jika mengubah aturan wajib</b>, perbarui angka 7/7 di panduan, rubrik, checklist, dan komunikasi ke siswa.</li>
+        <li><b>Jika mengubah skenario</b>, perbarui tabel perangkat/tautan dan hasil yang diharapkan di bagian 7.</li>
+        <li><b>Jika mengubah teks narasi</b>, perbarui tabel pola narasi di bagian 9.</li>
+        <li><b>Jika mengubah timing</b>, perbarui perkiraan durasi di bagian 9.</li>
+        <li><b>Uji ulang</b> setelah perubahan: kedua skenario, validasi, simulasi sukses, simulasi tanpa jalur, reset, duplikat tautan, dan IP duplikat.</li>
+      </ul>
+
+      <h3>Kartu cepat guru</h3>
+      <div class="note">
+        <b>Nilai bawaan yang paling sering ditanyakan</b>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pertanyaan</th><th>Jawaban</th></tr></thead>
+          <tbody>
+            <tr><td>Berapa skor maksimum?</td><td><b>7/7</b> wajib; IP <b>2/2</b> opsional terpisah.</td></tr>
+            <tr><td>Berapa perangkat di Lab?</td><td><b>8</b> perangkat, <b>7</b> tautan kabel.</td></tr>
+            <tr><td>Berapa perangkat di Rumah?</td><td><b>5</b> perangkat, <b>4</b> tautan (2 kabel, 2 nirkabel).</td></tr>
+            <tr><td>Rute demo tercepat?</td><td><b>PC-01 → Switch Lab → Router Sekolah → Internet</b>.</td></tr>
+            <tr><td>Apakah Internet punya IP?</td><td><b>Tidak</b>; bidang IP dinonaktifkan.</td></tr>
+            <tr><td>Apakah IP wajib untuk lulus?</td><td><b>Tidak</b>; 7/7 bisa dicapai dengan IP kosong. Gunakan 2/2 untuk menilai IP.</td></tr>
+            <tr><td>Apakah 7/7 menjamin ada jalur?</td><td><b>Tidak selalu</b>; selalu jalankan simulasi.</td></tr>
+            <tr><td>Apakah pekerjaan tersimpan?</td><td><b>Tidak</b>; tidak ada autosave.</td></tr>
+            <tr><td>Pintasan alat?</td><td><kbd>V</kbd> Pilih · <kbd>L</kbd> Kabel · <kbd>W</kbd> Nirkabel · <kbd>D</kbd> Hapus.</td></tr>
+            <tr><td>Lebar layar minimum?</td><td><b>1024 px</b>; optimal 1366 px.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip">
+        <b>Satu kalimat untuk siswa:</b> “Bangun topologinya, validasi aturannya, lalu buktikan dengan mengirim paket dan menceritakan setiap hop.”
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer class="doc-footer">
+  <p><b>Simulasi Jaringan — Panduan Guru</b> · Disusun untuk tim pengajar IDN Mengajar · Edisi 28 Oktober 2026.</p>
+  <p>Aplikasi berjalan sepenuhnya di browser. Tidak ada data siswa yang dikirim ke server mana pun.</p>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="Kembali ke atas">↑</button>
+
+<script>
+(function () {
+  const printBtn = document.getElementById('printBtn');
+  if (printBtn) printBtn.addEventListener('click', () => window.print());
+
+  const toTop = document.getElementById('toTop');
+  if (toTop) {
+    const toggleTop = () => toTop.classList.toggle('show', window.scrollY > 600);
+    window.addEventListener('scroll', toggleTop, { passive: true });
+    toggleTop();
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  const links = Array.from(document.querySelectorAll('.toc nav a[href^="#"]'));
+  const sections = links
+    .map((link) => document.getElementById(link.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && sections.length) {
+    const byId = new Map(links.map((link) => [link.getAttribute('href').slice(1), link]));
+    const setActive = (id) => {
+      links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+    };
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible.length) setActive(visible[0].target.id);
+    }, { rootMargin: '-12% 0px -68% 0px', threshold: [0, .2, .5, 1] });
+
+    sections.forEach((section) => observer.observe(section));
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.slice(1);
+      if (byId.has(id)) setActive(id);
+    });
+  }
+}());
+</script>
+</body>
+</html>
