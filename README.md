@@ -100,3 +100,5 @@ Semua modifikasi dapat dilakukan langsung pada berkas `index.html` tanpa memerlu
 * Tag `:root` (CSS) — Mengubah tema warna dan jenis font aplikasi.
 
 > 📝 **Tips Keamanan:** Selalu cadangkan (*backup*) berkas asli sebelum melakukan pengeditan. Simpan file dengan encoding **UTF-8**, lalu muat ulang halaman browser menggunakan kombinasi tombol <kbd>Ctrl</kbd> + <kbd>F5</kbd>.
+
+Made By: Ringga for Everyone.
