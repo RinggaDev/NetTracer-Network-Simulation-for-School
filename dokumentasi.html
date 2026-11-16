@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Dokumentasi — Simulasi Jaringan Kelas X</title>
+  <link rel="icon" href="./assets/NetTrace_Icon_Main.png" type="image/x-icon">
+  <style>
+    :root {
+      --c-navy: #12233f;
+      --c-navy-deep: #0d1a2e;
+      --c-teal: #0f8b8d;
+      --c-teal-dark: #0a6a6c;
+      --c-teal-soft: #e2f2f1;
+      --c-paper: #fbf9f3;
+      --c-paper-deep: #efece5;
+      --c-card: #ffffff;
+      --c-ink: #1f2430;
+      --c-muted: #667085;
+      --c-line: #dcd5c7;
+      --c-line-soft: #e9e4d9;
+      --c-ok: #1f9d55;
+      --c-ok-soft: #e6f6ec;
+      --c-bad: #cf4444;
+      --c-bad-soft: #fbeaea;
+      --c-warn: #c98216;
+      --c-warn-soft: #fdf1dc;
+      --c-amber: #f2b544;
+      --font-sans: 'Manrope', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --shadow-sm: 0 1px 2px rgba(18, 35, 63, .05), 0 8px 24px rgba(18, 35, 63, .06);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+
+    body {
+      margin: 0;
+      background: var(--c-paper-deep);
+      color: var(--c-ink);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    a { color: var(--c-teal-dark); }
+    a:hover { color: var(--c-teal); }
+    b, strong { color: var(--c-navy); }
+
+    code, pre, kbd { font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--c-line);
+      border-radius: 5px;
+      background: #fff;
+      color: #0a5f61;
+      font-size: .88em;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      border: 1px solid var(--c-line);
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      background: #fff;
+      color: var(--c-navy);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .mobile-banner {
+      display: none;
+      padding: 9px 16px;
+      background: var(--c-amber);
+      color: #3a2a04;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 34px;
+      padding: 46px clamp(24px, 6vw, 84px) 50px;
+      overflow: hidden;
+      color: var(--c-paper);
+      background:
+        radial-gradient(circle at 82% 20%, rgba(15, 139, 141, .34), transparent 26%),
+        radial-gradient(circle at 12% 90%, rgba(242, 181, 68, .13), transparent 24%),
+        linear-gradient(140deg, #17315b 0%, var(--c-navy) 48%, var(--c-navy-deep) 100%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, .14) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: .22;
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 820px; }
+
+    .hero-kicker {
+      margin: 0 0 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #87e3e1;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -.02em;
+    }
+
+    .hero h1 span {
+      display: block;
+      margin-top: 5px;
+      font-size: .43em;
+      letter-spacing: .05em;
+      color: #f3c46f;
+      text-transform: uppercase;
+    }
+
+    .hero-lead {
+      max-width: 700px;
+      margin: 18px 0 0;
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(251, 249, 243, .79);
+    }
+
+    .hero-lead b { color: #fff; }
+
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 17px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, transform .1s ease;
+    }
+
+    .hero-btn svg { width: 17px; height: 17px; flex: none; }
+    .hero-btn:active { transform: translateY(1px); }
+
+    .hero-btn.primary {
+      background: var(--c-teal);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(15, 139, 141, .4);
+    }
+
+    .hero-btn.primary:hover { background: var(--c-teal-dark); color: #fff; }
+
+    .hero-btn.ghost {
+      border-color: rgba(255, 255, 255, .26);
+      background: rgba(255, 255, 255, .06);
+      color: var(--c-paper);
+    }
+
+    .hero-btn.ghost:hover { background: rgba(255, 255, 255, .13); color: #fff; }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 20px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      font-size: 11.5px;
+      color: rgba(251, 249, 243, .66);
+    }
+
+    .hero-meta b { color: rgba(251, 249, 243, .92); }
+
+    .hero-art {
+      position: relative;
+      z-index: 1;
+      flex: none;
+      width: 250px;
+      opacity: .9;
+    }
+
+    .hero-art svg { width: 100%; height: auto; }
+
+    /* === LAYOUT === */
+    .shell {
+      display: grid;
+      grid-template-columns: 252px minmax(0, 1fr);
+      align-items: start;
+      gap: 34px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 34px clamp(18px, 4vw, 54px) 60px;
+    }
+
+    .toc { position: sticky; top: 22px; }
+
+    .toc-card {
+      padding: 18px;
+      border: 1px solid var(--c-line);
+      border-radius: 16px;
+      background: var(--c-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toc-title {
+      margin: 0 0 10px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+
+    .toc nav { display: flex; flex-direction: column; gap: 2px; }
+
+    .toc nav a {
+      padding: 7px 9px;
+      border-radius: 8px;
+      color: #465064;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background .15s ease, color .15s ease;
+    }
+
+    .toc nav a:hover { background: var(--c-teal-soft); color: var(--c-teal-dark); }
+    .toc nav a.active { background: var(--c-teal-soft); color: var(--c-teal-dark); box-shadow: inset 3px 0 0 var(--c-teal); }
+
+    .toc-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: var(--c-teal);
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(15, 139, 141, .28);
+      transition: background .15s ease;
+    }
+
+    .toc-cta:hover { background: var(--c-teal-dark); color: #fff; }
+    .toc-cta svg { width: 15px; height: 15px; }
+
+    .toc-print {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--c-line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--c-navy);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .toc-print:hover { border-color: var(--c-teal); color: var(--c-teal-dark); }
+
+    .toc-note {
+      margin: 12px 0 0;
+      padding-top: 11px;
+      border-top: 1px solid var(--c-line-soft);
+      font-size: 10.5px;
+      line-height: 1.55;
+      color: var(--c-muted);
+    }
+
+    /* === DOC SECTIONS === */
+    .doc-section {
+      margin-bottom: 22px;
+      padding: clamp(22px, 3vw, 34px);
+      border: 1px solid var(--c-line);
+      border-radius: 18px;
+      background: var(--c-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .doc-section:target { border-color: #a9d8d6; box-shadow: 0 0 0 4px rgba(15, 139, 141, .1), var(--shadow-sm); }
+
+    .section-head {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--c-line-soft);
+    }
+
+    .section-no {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--c-navy);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 1.12;
+      color: var(--c-navy);
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--c-muted);
+    }
+
+    .doc-section h3 {
+      margin: 26px 0 8px;
+      font-size: 16.5px;
+      font-weight: 850;
+      letter-spacing: -.01em;
+      color: var(--c-navy);
+    }
+
+    .doc-section h3:first-of-type { margin-top: 0; }
+
+    .doc-section p { margin: 0 0 12px; }
+    .doc-section ul, .doc-section ol { margin: 0 0 14px; padding-left: 22px; }
+    .doc-section li { margin-bottom: 5px; }
+    .doc-section li::marker { color: var(--c-teal); font-weight: 800; }
+
+    .lead {
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: #3f4a5c;
+    }
+
+    /* === TABLES === */
+    .table-wrap {
+      margin: 14px 0 18px;
+      overflow-x: auto;
+      border: 1px solid var(--c-line);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    thead th {
+      padding: 10px 12px;
+      background: #f3f0e9;
+      border-bottom: 1px solid var(--c-line);
+      color: var(--c-navy);
+      font-size: 10.5px;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--c-line-soft);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) { background: #fcfbf8; }
+
+    td.num, th.num { text-align: center; white-space: nowrap; }
+    td.mono, th.mono { font-family: 'Cascadia Code', Consolas, monospace; font-size: 11.5px; white-space: nowrap; }
+    td.nowrap { white-space: nowrap; }
+
+    /* === CALLOUTS === */
+    .note, .tip, .warn {
+      position: relative;
+      margin: 16px 0;
+      padding: 13px 16px 13px 44px;
+      border: 1px solid var(--c-line);
+      border-radius: 11px;
+      background: #faf8f3;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .note::before, .tip::before, .warn::before {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .note::before { content: 'i'; background: var(--c-teal); font-family: Georgia, serif; }
+    .tip::before { content: '✓'; background: var(--c-ok); }
+    .warn::before { content: '!'; background: var(--c-warn); }
+
+    .tip { border-color: #bfe4cb; background: var(--c-ok-soft); }
+    .warn { border-color: #eed5a4; background: var(--c-warn-soft); }
+
+    .note b, .tip b, .warn b { color: inherit; }
+
+    /* === QUICK START / STEPS === */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0 4px;
+    }
+
+    .quick-card {
+      padding: 14px;
+      border: 1px solid var(--c-line);
+      border-radius: 12px;
+      background: #fcfbf8;
+    }
+
+    .quick-card .qno {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      background: var(--c-teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .quick-card h4 { margin: 0 0 4px; font-size: 12px; }
+    .quick-card p { margin: 0; font-size: 11px; line-height: 1.5; color: var(--c-muted); }
+
+    .steps { counter-reset: step; margin: 14px 0; padding: 0; list-style: none; }
+
+    .steps > li {
+      position: relative;
+      margin: 0 0 10px;
+      padding: 12px 14px 12px 48px;
+      border: 1px solid var(--c-line-soft);
+      border-radius: 10px;
+      background: #fcfbf8;
+      font-size: 13px;
+    }
+
+    .steps > li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      background: var(--c-navy);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .steps > li:last-child { margin-bottom: 0; }
+
+    /* === FLOW CHIPS === */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin: 14px 0;
+      padding: 14px;
+      border: 1px solid var(--c-line);
+      border-radius: 12px;
+      background: #fcfbf8;
+    }
+
+    .flow .node {
+      padding: 6px 10px;
+      border: 1px solid #b9d8d7;
+      border-radius: 7px;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--c-navy);
+      white-space: nowrap;
+    }
+
+    .flow .node.src { border-color: var(--c-teal); background: var(--c-teal-soft); }
+    .flow .node.dst { border-color: var(--c-amber); background: #fdf5e6; }
+    .flow .arrow { color: var(--c-teal); font-weight: 900; }
+
+    /* === MISC === */
+    .pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--c-teal-soft);
+      color: var(--c-teal-dark);
+      font-size: 10px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .pill.ok { background: var(--c-ok-soft); color: var(--c-ok); }
+    .pill.opt { background: #edf2fa; color: #3e5d86; }
+
+    .checklist { margin: 12px 0; padding: 0; list-style: none; }
+    .checklist li { position: relative; margin: 0 0 7px; padding-left: 26px; font-size: 12.5px; }
+    .checklist li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #b9c8de;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .big-stat {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .big-stat div {
+      flex: 1 1 130px;
+      padding: 12px 14px;
+      border: 1px solid var(--c-line);
+      border-radius: 11px;
+      background: #fcfbf8;
+    }
+
+    .big-stat b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.1; color: var(--c-teal-dark); }
+    .big-stat span { font-size: 10.5px; font-weight: 700; color: var(--c-muted); }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 14px 0;
+    }
+
+    .split .box {
+      padding: 14px;
+      border: 1px solid var(--c-line);
+      border-radius: 11px;
+      background: #fcfbf8;
+    }
+
+    .split .box h4 { margin: 0 0 6px; font-size: 12.5px; }
+    .split .box ul { margin: 0; padding-left: 18px; font-size: 12px; }
+
+    .doc-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 14px 0;
+      padding: 16px 18px;
+      border: 1px solid #b9d8d7;
+      border-radius: 12px;
+      background: var(--c-teal-soft);
+      text-decoration: none;
+    }
+
+    .doc-link:hover { border-color: var(--c-teal); }
+
+    .doc-link strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14px;
+      color: var(--c-navy);
+    }
+
+    .doc-link span { font-size: 11.5px; color: #3f6666; }
+
+    .doc-link .arrow {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--c-teal);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .doc-footer {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px 44px;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--c-muted);
+    }
+
+    .doc-footer p { margin: 0 0 4px; }
+
+    .to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--c-navy);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity .2s ease, transform .2s ease;
+      box-shadow: 0 8px 22px rgba(18, 35, 63, .24);
+    }
+
+    .to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+
+    /* === PRINT === */
+    @media print {
+      @page { margin: 14mm; }
+      body { background: #fff; font-size: 10.5pt; }
+      .mobile-banner, .hero-art, .toc, .to-top, .hero-badges, .hero-actions { display: none !important; }
+      .hero { padding: 0 0 18px; color: #111; background: #fff; border-bottom: 3px solid #12233f; }
+      .hero::after { display: none; }
+      .hero-kicker, .hero h1 span { color: #0a6a6c; }
+      .hero h1 { font-size: 34pt; color: #12233f; }
+      .hero-lead, .hero-meta { color: #333; }
+      .hero-lead b, .hero-meta b { color: #111; }
+      .shell { display: block; padding: 0; }
+      .doc-section { break-inside: avoid; margin: 0 0 14px; padding: 14px 0; border: 0; border-bottom: 1px solid #ccc; box-shadow: none; border-radius: 0; }
+      .doc-section h2 { font-size: 20pt; }
+      .table-wrap, .note, .tip, .warn, .flow, .quick-card, .split .box, .big-stat div, .doc-link { break-inside: avoid; }
+      .table-wrap { overflow: visible; }
+      table { font-size: 8.5pt; }
+      thead th { background: #eee !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      a { color: #111; text-decoration: none; }
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 210px minmax(0, 1fr); gap: 22px; }
+    }
+
+    @media (max-width: 900px) {
+      .mobile-banner { display: block; }
+      .hero { padding: 34px 22px 38px; }
+      .hero-art { display: none; }
+      .hero h1 { font-size: 38px; }
+      .shell { display: block; padding: 20px 14px 40px; }
+      .toc { position: static; margin-bottom: 16px; }
+      .toc-card { padding: 14px; }
+      .toc nav { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+      .toc nav a { padding: 6px 8px; font-size: 11.5px; }
+      .toc-note { display: none; }
+      .doc-section { padding: 20px 16px; border-radius: 14px; }
+      .section-head h2 { font-size: 24px; }
+      .quick-grid { grid-template-columns: 1fr 1fr; }
+      .split { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .hero-kicker { font-size: 9.5px; }
+      .hero h1 { font-size: 31px; }
+      .hero-badges { gap: 5px; }
+      .badge { font-size: 9px; padding: 4px 8px; }
+      .toc nav { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: 1fr; }
+      .section-head { gap: 10px; }
+      .section-no { width: 32px; height: 32px; font-size: 15px; }
+      .section-head h2 { font-size: 21px; }
+      .hero-meta { gap: 4px 12px; font-size: 10.5px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-banner">Dokumentasi ini nyaman dibaca di layar lebar. Aplikasi simulasi sendiri memerlukan lebar minimal 1024 px.</div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-kicker">Dokumentasi Resmi · Ringkasan README.md</p>
+      <h1>Simulasi Jaringan <span>Dokumentasi</span></h1>
+      <p class="hero-lead">Laboratorium jaringan visual berbasis browser untuk siswa SMA/SMK kelas X. Halaman ini merangkum isi <b>README.md</b> dalam format dokumentasi: cara menjalankan, nilai bawaan, aturan validasi, kontrol, batasan, dan panduan kustomisasi.</p>
+      <div class="hero-badges">
+        <span class="badge">100% Offline</span>
+        <span class="badge">Tanpa instalasi</span>
+        <span class="badge">Tanpa backend</span>
+        <span class="badge">Bahasa Indonesia</span>
+        <span class="badge">Satu file HTML</span>
+      </div>
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3l14 8-6 1.6L10 19z" />
+          </svg>
+          Buka Simulasi
+        </a>
+        <a class="hero-btn ghost" href="panduan-guru.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+          Panduan Guru
+        </a>
+      </div>
+      <div class="hero-meta">
+        <span><b>Aplikasi:</b> index.html</span>
+        <span><b>Sumber:</b> README.md</span>
+        <span><b>Halaman:</b> dokumentasi.html</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 260 220" fill="none">
+        <path d="M60 160h140M130 160V100M130 100L72 62M130 100l58-38" stroke="#7dd8d6" stroke-width="2.4" stroke-linecap="round" />
+        <circle cx="130" cy="160" r="20" fill="#0f8b8d" stroke="#9de7e4" stroke-width="3" />
+        <path d="M130 148v6M130 166v6M118 160h6M136 160h6" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+        <circle cx="60" cy="160" r="15" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2" />
+        <circle cx="200" cy="160" r="15" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2" />
+        <circle cx="72" cy="62" r="17" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2" />
+        <circle cx="188" cy="62" r="17" fill="#fbf9f3" stroke="#7dd8d6" stroke-width="2" />
+        <path d="M66 62h12M72 56v12M182 62h12M188 56v12" stroke="#f2b544" stroke-width="2" stroke-linecap="round" />
+        <text x="130" y="166" text-anchor="middle" fill="#fff" font-family="Segoe UI, sans-serif" font-size="9" font-weight="700">SWITCH</text>
+      </svg>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="toc" aria-label="Daftar isi dokumentasi">
+      <div class="toc-card">
+        <p class="toc-title">Daftar Isi</p>
+        <nav>
+          <a href="#ringkasan">1. Ringkasan</a>
+          <a href="#struktur">2. Struktur berkas</a>
+          <a href="#menjalankan">3. Cara menjalankan</a>
+          <a href="#mulai-cepat">4. Panduan mulai cepat</a>
+          <a href="#nilai-bawaan">5. Nilai bawaan</a>
+          <a href="#validasi">6. Aturan validasi</a>
+          <a href="#kontrol">7. Kontrol &amp; shortcut</a>
+          <a href="#batasan">8. Batasan aplikasi</a>
+          <a href="#pengajar">9. Dokumentasi pengajar</a>
+          <a href="#kustomisasi">10. Panduan kustomisasi</a>
+        </nav>
+        <a class="toc-cta" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3l14 8-6 1.6L10 19z" />
+          </svg>
+          Buka Simulasi
+        </a>
+        <button class="toc-print" id="printBtn" type="button">Cetak / Simpan PDF</button>
+        <p class="toc-note">Tips: gunakan <kbd>Ctrl</kbd> + <kbd>F</kbd> untuk mencari istilah seperti <b>R05</b>, <b>PC-01</b>, atau <b>192.168.1.1</b>.</p>
+      </div>
+    </aside>
+
+    <main id="konten">
+      <section class="doc-section" id="ringkasan">
+        <div class="section-head">
+          <div class="section-no">1</div>
+          <div>
+            <h2>Ringkasan</h2>
+            <p>Apa yang dibangun dan untuk siapa aplikasi ini dibuat.</p>
+          </div>
+        </div>
+
+        <p class="lead"><b>Simulasi Jaringan</b> adalah laboratorium jaringan visual berbasis browser yang dirancang khusus untuk siswa SMA/SMK kelas X. Siswa dapat menyusun perangkat, menghubungkannya dengan kabel/nirkabel, mengisi IP, memvalidasi topologi, hingga mengirim paket data dan membaca perjalanannya secara <i>hop demi hop</i>.</p>
+        <p>Aplikasi ini berjalan <b>sepenuhnya offline</b>, tanpa perlu instalasi, backend, pendaftaran akun, maupun dependensi eksternal.</p>
+
+        <div class="big-stat">
+          <div><b>100%</b><span>Berjalan di browser tanpa internet</span></div>
+          <div><b>0</b><span>Instalasi, akun, dan dependensi</span></div>
+          <div><b>7/7</b><span>Target skor validasi utama</span></div>
+          <div><b>2</b><span>Skenario bawaan siap pakai</span></div>
+        </div>
+
+        <div class="split">
+          <div class="box">
+            <h4>Cocok untuk</h4>
+            <ul>
+              <li>Guru Informatika kelas X yang butuh media praktik tanpa perangkat fisik.</li>
+              <li>Siswa yang baru mengenal perangkat dan topologi jaringan.</li>
+              <li>Laboratorium komputer dengan akses internet terbatas.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4>Yang dapat dilakukan siswa</h4>
+            <ul>
+              <li>Menyeret perangkat ke kanvas dan menghubungkannya.</li>
+              <li>Mengisi nama perangkat dan alamat IP.</li>
+              <li>Memvalidasi topologi lalu menyimulasikan perjalanan paket.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="struktur">
+        <div class="section-head">
+          <div class="section-no">2</div>
+          <div>
+            <h2>Struktur berkas</h2>
+            <p>Berkas utama di dalam folder proyek.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Berkas</th><th>Fungsi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">index.html</td><td>Aplikasi simulasi lengkap (HTML + CSS + JavaScript + ikon SVG).</td></tr>
+              <tr><td class="mono">panduan-guru.html</td><td>Panduan lengkap untuk pengajar (antarmuka, skenario, rubrik, kustomisasi).</td></tr>
+              <tr><td class="mono">dokumentasi.html</td><td>Dokumentasi ringkas ini — ringkasan README dalam format halaman web.</td></tr>
+              <tr><td class="mono">README.md</td><td>Ringkasan repositori dan dokumentasi utama.</td></tr>
+              <tr><td class="mono">Network Simulation Spec.md</td><td>Spesifikasi teknis internal untuk pengembangan aplikasi.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">Semua berkas aplikasi bersifat statis. Tidak ada proses <i>build</i>, server, ataupun database yang diperlukan.</div>
+      </section>
+
+      <section class="doc-section" id="menjalankan">
+        <div class="section-head">
+          <div class="section-no">3</div>
+          <div>
+            <h2>Cara menjalankan</h2>
+            <p>Empat langkah, tanpa instalasi.</p>
+          </div>
+        </div>
+
+        <ol class="steps">
+          <li><b>Unduh atau salin</b> folder proyek ini ke komputer Anda.</li>
+          <li><b>Klik dua kali</b> file <code>index.html</code> menggunakan browser modern (Chrome, Edge, atau Firefox).</li>
+          <li><b>Spesifikasi layar:</b> minimal lebar 1024px (sangat optimal pada resolusi 1366px atau lebih).</li>
+          <li><b>Tanpa koneksi:</b> tidak memerlukan internet ataupun server lokal.</li>
+        </ol>
+
+        <div class="tip"><b>Tips:</b> simpan seluruh folder, bukan hanya <code>index.html</code>, agar ikon dan halaman panduan tetap tampil dengan benar.</div>
+      </section>
+
+      <section class="doc-section" id="mulai-cepat">
+        <div class="section-head">
+          <div class="section-no">4</div>
+          <div>
+            <h2>Panduan mulai cepat</h2>
+            <p>Alur demo tercepat untuk mencoba aplikasi.</p>
+          </div>
+        </div>
+
+        <div class="quick-grid">
+          <div class="quick-card">
+            <div class="qno">1</div>
+            <h4>Pilih skenario</h4>
+            <p>Klik <b>Muat Skenario</b> → pilih <b>Lab Komputer Sekolah</b>.</p>
+          </div>
+          <div class="quick-card">
+            <div class="qno">2</div>
+            <h4>Cek topologi</h4>
+            <p>Buka tab <b>Validasi</b> → klik <b>Periksa Jaringan</b>. Target skor <b>7/7</b>.</p>
+          </div>
+          <div class="quick-card">
+            <div class="qno">3</div>
+            <h4>Setup simulasi</h4>
+            <p>Tentukan <b>PC-01</b> sebagai sumber dan <b>Internet</b> sebagai tujuan.</p>
+          </div>
+          <div class="quick-card">
+            <div class="qno">4</div>
+            <h4>Jalankan</h4>
+            <p>Klik <b>Kirim Paket</b> dan ikuti narasi perjalanan paket.</p>
+          </div>
+        </div>
+
+        <h3>Rute perjalanan paket</h3>
+        <div class="flow">
+          <span class="node src">PC-01</span>
+          <span class="arrow">→</span>
+          <span class="node">Switch Lab</span>
+          <span class="arrow">→</span>
+          <span class="node">Router Sekolah</span>
+          <span class="arrow">→</span>
+          <span class="node dst">Internet</span>
+        </div>
+
+        <div class="tip"><b>Alur demo tercepat:</b> muat <b>Lab Komputer Sekolah</b> → validasi <b>7/7</b> → pilih <b>PC-01</b> sebagai sumber dan <b>Internet</b> sebagai tujuan → <b>Kirim Paket</b>.</div>
+      </section>
+
+      <section class="doc-section" id="nilai-bawaan">
+        <div class="section-head">
+          <div class="section-no">5</div>
+          <div>
+            <h2>Nilai bawaan (default)</h2>
+            <p>Perilaku awal perangkat dan data kedua skenario.</p>
+          </div>
+        </div>
+
+        <ul class="checklist">
+          <li><b>Perangkat baru:</b> memiliki nama otomatis dengan kondisi IP yang masih kosong.</li>
+          <li><b>Internet:</b> dibuat tidak memiliki IP, sehingga bidang pengisian IP otomatis dinonaktifkan.</li>
+        </ul>
+
+        <h3>Ringkasan skenario</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Skenario</th><th class="num">Perangkat</th><th class="num">Tautan</th><th class="num">Target validasi</th><th class="num">IP</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="nowrap"><b>Lab Komputer Sekolah</b></td>
+                <td class="num">8</td>
+                <td class="num">7 kabel</td>
+                <td class="num">7/7</td>
+                <td class="num">2/2</td>
+              </tr>
+              <tr>
+                <td class="nowrap"><b>Jaringan Rumah Sederhana</b></td>
+                <td class="num">5</td>
+                <td class="num">4 (2 kabel, 2 nirkabel)</td>
+                <td class="num">7/7</td>
+                <td class="num">2/2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note"><b>Catatan:</b> nilai bawaan ini dapat diubah pada konstanta <code>SCENARIOS</code> di dalam <code>index.html</code>. Lihat bagian <a href="#kustomisasi">Panduan kustomisasi</a>.</div>
+      </section>
+
+      <section class="doc-section" id="validasi">
+        <div class="section-head">
+          <div class="section-no">6</div>
+          <div>
+            <h2>Aturan validasi</h2>
+            <p>Sembilan pemeriksaan: tujuh wajib dan dua opsional.</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="box">
+            <h4>Skor utama — <span class="pill">x/7</span></h4>
+            <ul>
+              <li>Ditentukan oleh <b>7 aturan wajib</b> (R01–R07).</li>
+              <li>IP kosong tidak akan mengurangi skor utama ini.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4>Skor IP — <span class="pill opt">x/2</span></h4>
+            <ul>
+              <li>Ditentukan oleh <b>2 pemeriksaan IP opsional</b> (R08–R09).</li>
+              <li>Ditampilkan secara terpisah dari skor utama.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Aturan wajib (R01–R07)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th class="num">ID</th><th>Aturan</th><th>Arti</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="num mono">R01</td><td>Minimal 2 perangkat</td><td>Kanvas harus berisi minimal dua perangkat.</td></tr>
+              <tr><td class="num mono">R02</td><td>Semua perangkat terhubung</td><td>Tidak ada perangkat yang terisolasi tanpa tautan.</td></tr>
+              <tr><td class="num mono">R03</td><td>Ada router</td><td>Harus ada satu Router sebagai penghubung jaringan.</td></tr>
+              <tr><td class="num mono">R04</td><td>Ada switch atau access point</td><td>Harus ada Switch atau Access Point untuk menghubungkan perangkat.</td></tr>
+              <tr><td class="num mono">R05</td><td>PC/laptop tersambung ke switch atau AP</td><td>Setiap komputer, laptop, dan HP terhubung ke Switch atau Access Point.</td></tr>
+              <tr><td class="num mono">R06</td><td>Router terhubung ke internet</td><td>Router memiliki tautan ke perangkat Internet.</td></tr>
+              <tr><td class="num mono">R07</td><td>Switch/AP terhubung ke router</td><td>Minimal satu Switch atau Access Point terhubung ke Router.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pemeriksaan IP opsional (R08–R09)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th class="num">ID</th><th>Aturan</th><th>Arti</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="num mono">R08</td><td>IP address diisi semua</td><td>Semua perangkat (kecuali Internet) memiliki alamat IP.</td></tr>
+              <tr><td class="num mono">R09</td><td>Tidak ada IP duplikat</td><td>Tidak ada alamat IP yang dipakai lebih dari satu perangkat.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="warn"><b>Catatan penting:</b> validasi hanya memeriksa struktur topologi dan tidak menjamin konektivitas <i>end-to-end</i>. Selalu jalankan mode <b>Simulasi</b> untuk membuktikan jalur komunikasi. Untuk menilai pengalamatan secara penuh, gunakan target <b>7/7 + 2/2</b> dan periksa format IPv4 secara manual.</div>
+      </section>
+
+      <section class="doc-section" id="kontrol">
+        <div class="section-head">
+          <div class="section-no">7</div>
+          <div>
+            <h2>Kontrol &amp; shortcut</h2>
+            <p>Pintasan keyboard dan mouse yang sering dipakai.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kontrol</th><th>Fungsi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="nowrap"><kbd>V</kbd></td><td>Mode Pilih (<i>Select</i>).</td></tr>
+              <tr><td class="nowrap"><kbd>L</kbd></td><td>Hubungkan via Kabel.</td></tr>
+              <tr><td class="nowrap"><kbd>W</kbd></td><td>Hubungkan via Nirkabel (<i>Wireless</i>).</td></tr>
+              <tr><td class="nowrap"><kbd>D</kbd> atau <kbd>Delete</kbd></td><td>Hapus perangkat atau tautan yang dipilih.</td></tr>
+              <tr><td class="nowrap"><kbd>Esc</kbd></td><td>Membatalkan tautan / menutup popover / menghentikan simulasi.</td></tr>
+              <tr><td class="nowrap"><kbd>Space</kbd> + seret mouse</td><td>Menggeser area kerja (<i>pan</i>). Klik tengah juga berfungsi.</td></tr>
+              <tr><td class="nowrap">Roda mouse</td><td><i>Zoom in / zoom out</i> dengan rentang 45%–220%.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">Klik dua kali perangkat untuk membuka editor nama dan alamat IP.</div>
+      </section>
+
+      <section class="doc-section" id="batasan">
+        <div class="section-head">
+          <div class="section-no">8</div>
+          <div>
+            <h2>Batasan aplikasi</h2>
+            <p>Hal yang perlu diketahui sebelum digunakan di kelas.</p>
+          </div>
+        </div>
+
+        <ul class="checklist">
+          <li><b>Penyimpanan:</b> belum mendukung <i>autosave</i>. Melakukan <i>refresh</i> atau menutup tab akan menghapus seluruh pekerjaan.</li>
+          <li><b>Ekspor data:</b> tidak menyediakan fitur bawaan untuk ekspor ke format PNG atau PDF.</li>
+          <li><b>Fungsi jaringan:</b> tidak mensimulasikan protokol DNS, DHCP, NAT, subnetting, <i>packet loss</i>, ataupun <i>latency</i>.</li>
+          <li><b>Pengecekan IP:</b> sistem hanya memeriksa apakah IP kosong atau duplikat, bukan keabsahan format subnet IPv4-nya.</li>
+          <li><b>Responsivitas:</b> aplikasi tidak dioptimalkan untuk perangkat ponsel/smartphone.</li>
+        </ul>
+
+        <div class="warn"><b>Penting:</b> minta siswa menyelesaikan pekerjaan dalam satu sesi, atau catat konfigurasi penting sebelum menutup tab.</div>
+      </section>
+
+      <section class="doc-section" id="pengajar">
+        <div class="section-head">
+          <div class="section-no">9</div>
+          <div>
+            <h2>Dokumentasi pengajar</h2>
+            <p>Panduan mengajar yang lebih lengkap tersedia terpisah.</p>
+          </div>
+        </div>
+
+        <a class="doc-link" href="panduan-guru.html">
+          <div>
+            <strong>Buka panduan-guru.html</strong>
+            <span>Tur antarmuka, skenario, rubrik, RPP, latihan, troubleshooting, dan checklist laboratorium.</span>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <ul>
+          <li>Tur antarmuka dan visualisasi seluruh kontrol.</li>
+          <li>Nilai bawaan (<i>default</i>) untuk setiap jenis perangkat.</li>
+          <li>Data teknis lengkap dari kedua skenario bawaan.</li>
+          <li>Penjelasan detail sembilan aturan validasi beserta contoh skornya.</li>
+          <li>Pola narasi perjalanan paket untuk setiap <i>hop</i>.</li>
+          <li>Rencana Pelaksanaan Pembelajaran (RPP), bank latihan, dan rubrik penilaian.</li>
+          <li>Panduan kustomisasi teks UI, skenario kustom, aturan baru, dan durasi animasi.</li>
+          <li>Solusi masalah (<i>troubleshooting</i>) beserta <i>checklist</i> serah terima laboratorium.</li>
+        </ul>
+      </section>
+
+      <section class="doc-section" id="kustomisasi">
+        <div class="section-head">
+          <div class="section-no">10</div>
+          <div>
+            <h2>Panduan kustomisasi</h2>
+            <p>Titik edit utama di dalam <code>index.html</code>.</p>
+          </div>
+        </div>
+
+        <p>Semua modifikasi dapat dilakukan langsung pada berkas <code>index.html</code> tanpa memerlukan proses <i>build step</i>.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Titik edit</th><th>Fungsi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">const STRINGS</td><td>Mengubah label antarmuka (UI) dan pesan notifikasi.</td></tr>
+              <tr><td class="mono">const SCENARIOS</td><td>Mengubah atau menambahkan data skenario bawaan.</td></tr>
+              <tr><td class="mono">const RULES</td><td>Mengatur logika dan parameter aturan validasi.</td></tr>
+              <tr><td class="mono">function narrate</td><td>Menyesuaikan teks narasi log yang muncul per <i>hop</i>.</td></tr>
+              <tr><td class="mono">runSimulation / animatePacket</td><td>Mengatur kecepatan dan durasi animasi paket.</td></tr>
+              <tr><td class="mono">Tag :root (CSS)</td><td>Mengubah tema warna dan jenis font aplikasi.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="warn"><b>Tips keamanan:</b> selalu cadangkan (<i>backup</i>) berkas asli sebelum melakukan pengeditan. Simpan file dengan encoding <b>UTF-8</b>, lalu muat ulang halaman browser menggunakan kombinasi tombol <kbd>Ctrl</kbd> + <kbd>F5</kbd>.</div>
+
+        <h3>Siap mencoba?</h3>
+        <p>Setelah melakukan perubahan, buka kembali aplikasi utama dan uji salah satu skenario bawaan.</p>
+        <a class="doc-link" href="index.html">
+          <div>
+            <strong>Buka Simulasi Jaringan</strong>
+            <span>Kembali ke aplikasi utama — index.html.</span>
+          </div>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </section>
+    </main>
+  </div>
+
+  <footer class="doc-footer">
+    <p><b>Simulasi Jaringan — Dokumentasi</b> · Ringkasan README.md · Edisi 16 November 2026 · Selamat Belajar!</p>
+    <p>Made By: Ringga for Everyone.</p>
+    <p>Aplikasi berjalan sepenuhnya di browser. Tidak ada data siswa yang dikirim ke server mana pun.</p>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Kembali ke atas">↑</button>
+
+  <script>
+    (function () {
+      const printBtn = document.getElementById('printBtn');
+      if (printBtn) printBtn.addEventListener('click', () => window.print());
+
+      const toTop = document.getElementById('toTop');
+      if (toTop) {
+        const toggleTop = () => toTop.classList.toggle('show', window.scrollY > 600);
+        window.addEventListener('scroll', toggleTop, { passive: true });
+        toggleTop();
+        toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }
+
+      const links = Array.from(document.querySelectorAll('.toc nav a[href^="#"]'));
+      const sections = links
+        .map((link) => document.getElementById(link.getAttribute('href').slice(1)))
+        .filter(Boolean);
+
+      if ('IntersectionObserver' in window && sections.length) {
+        const byId = new Map(links.map((link) => [link.getAttribute('href').slice(1), link]));
+        const setActive = (id) => {
+          links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+        };
+        const observer = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible.length) setActive(visible[0].target.id);
+        }, { rootMargin: '-12% 0px -68% 0px', threshold: [0, .2, .5, 1] });
+
+        sections.forEach((section) => observer.observe(section));
+        window.addEventListener('hashchange', () => {
+          const id = location.hash.slice(1);
+          if (byId.has(id)) setActive(id);
+        });
+      }
+    }());
+  </script>
+</body>
+
+</html>

@@ -12,6 +12,7 @@ Aplikasi ini berjalan **sepenuhnya offline**, tanpa perlu instalasi, backend, pe
 | :--- | :--- |
 | `index.html` | Aplikasi simulasi lengkap (HTML + CSS + JavaScript + ikon SVG). |
 | `panduan-guru.html` | Panduan lengkap untuk pengajar (antarmuka, skenario, rubrik, kustomisasi). |
+| `dokumentasi.html` | Dokumentasi ringkas dalam format halaman web, merangkum isi README ini. |
 | `README.md` | Ringkasan repositori dan dokumentasi utama (file ini). |
 
 ---
@@ -22,6 +23,8 @@ Aplikasi ini berjalan **sepenuhnya offline**, tanpa perlu instalasi, backend, pe
 2. **Klik dua kali** file `index.html` menggunakan browser modern (Chrome, Edge, atau Firefox).
 3. **Spesifikasi Layar:** Minimal lebar 1024px (sangat optimal pada resolusi 1366px atau lebih).
 4. **Tanpa Koneksi:** Tidak memerlukan internet ataupun server lokal.
+
+> 📄 **Versi web:** buka `dokumentasi.html` untuk membaca ringkasan README ini dalam format halaman dokumentasi, lengkap dengan tombol menuju aplikasi simulasi.
 
 ---
 
