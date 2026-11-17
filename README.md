@@ -4,6 +4,10 @@ Laboratorium jaringan visual berbasis browser yang dirancang khusus untuk siswa 
 
 Aplikasi ini berjalan **sepenuhnya offline**, tanpa perlu instalasi, backend, pendaftaran akun, maupun dependensi eksternal.
 
+| Online Documentation |
+|:---|
+[Documentation Webpage](https://ringgadev.github.io/NetTracer-Network-Simulation-for-School/dokumentasi.html)
+
 ---
 
 ## 📁 Struktur Berkas
